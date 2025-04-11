@@ -1,0 +1,32 @@
+[gd_scene load_steps=5 format=3 uid="uid://bcoffnw0mrm78"]
+
+[ext_resource type="Texture2D" uid="uid://bg2fqsxfkr8re" path="res://assets/tilemap_white_packed.png" id="1_paxxb"]
+[ext_resource type="Script" uid="uid://dhmy6x7v6exko" path="res://scripts/map.gd" id="2_gldc4"]
+
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_0cso3"]
+texture = ExtResource("1_paxxb")
+17:9/0 = 0
+17:9/0/modulate = Color(0.387642, 0.477643, 0.98232, 1)
+18:9/0 = 0
+18:9/0/modulate = Color(0.343848, 0.619727, 0, 1)
+19:9/0 = 0
+20:9/0 = 0
+21:9/0 = 0
+22:9/0 = 0
+23:9/0 = 0
+24:9/0 = 0
+25:9/0 = 0
+25:9/0/modulate = Color(1, 0, 0, 1)
+26:9/0 = 0
+26:9/0/modulate = Color(1, 1, 1, 0.513726)
+29:6/0 = 0
+30:6/0 = 0
+
+[sub_resource type="TileSet" id="TileSet_2klcf"]
+sources/0 = SubResource("TileSetAtlasSource_0cso3")
+
+[node name="Map" type="TileMapLayer"]
+position = Vector2(64, 120)
+scale = Vector2(4, 4)
+tile_set = SubResource("TileSet_2klcf")
+script = ExtResource("2_gldc4")

@@ -40,7 +40,7 @@ func _physics_process(_delta: float) -> void:
 	
 func _unhandled_input(event: InputEvent) -> void:
 	if event.is_action_pressed(action_map[Actions.ACTION_DIG]):
-		EventBus.req_player_dig.emit(position, player_id)
+		EventBus.on_player_dig.emit(position, player_id)
 
 func rename(new_name: String) -> void:
 	player_name = new_name
