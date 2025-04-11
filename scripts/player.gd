@@ -28,16 +28,14 @@ func _ready() -> void:
 	action_map.append('move_right_p%d' % [player_id])
 	action_map.append('move_up_p%d'    % [player_id])
 	action_map.append('move_down_p%d'  % [player_id])
-	action_map.append('move_dig_p%d'   % [player_id])
-	action_map.append('move_flag_p%d'  % [player_id])
+	action_map.append('dig_p%d'   % [player_id])
+	action_map.append('flag_p%d'  % [player_id])
 	
 func _physics_process(_delta: float) -> void:
 	velocity = Input.get_vector( action_map[Actions.ACTION_LEFT], 
 								 action_map[Actions.ACTION_RIGHT], 
 								 action_map[Actions.ACTION_UP], 
 								 action_map[Actions.ACTION_DOWN]) * INPUT_SCALE
-	if velocity != Vector2.ZERO:
-		print(velocity)
 	move_and_slide()
 	
 func _unhandled_input(event: InputEvent) -> void:
