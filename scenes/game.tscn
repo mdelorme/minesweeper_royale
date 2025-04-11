@@ -19,20 +19,24 @@ normal = Vector2(-1, 0)
 [node name="Map" parent="." instance=ExtResource("1_uwrxv")]
 position = Vector2(16, 30)
 
-[node name="Player1" parent="." instance=ExtResource("2_yqjtg")]
+[node name="Player1" parent="." node_paths=PackedStringArray("map") instance=ExtResource("2_yqjtg")]
 position = Vector2(65, 53)
+map = NodePath("../Map")
 
-[node name="Player2" parent="." instance=ExtResource("2_yqjtg")]
+[node name="Player2" parent="." node_paths=PackedStringArray("map") instance=ExtResource("2_yqjtg")]
 position = Vector2(67, 221)
 id = 2
+map = NodePath("../Map")
 
-[node name="Player3" parent="." instance=ExtResource("2_yqjtg")]
+[node name="Player3" parent="." node_paths=PackedStringArray("map") instance=ExtResource("2_yqjtg")]
 position = Vector2(395, 57)
 id = 3
+map = NodePath("../Map")
 
-[node name="Player4" parent="." instance=ExtResource("2_yqjtg")]
+[node name="Player4" parent="." node_paths=PackedStringArray("map") instance=ExtResource("2_yqjtg")]
 position = Vector2(400, 228)
 id = 4
+map = NodePath("../Map")
 
 [node name="TopWall" type="StaticBody2D" parent="."]
 position = Vector2(248, 16)

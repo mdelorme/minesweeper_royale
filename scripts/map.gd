@@ -1,7 +1,17 @@
 extends TileMapLayer
+class_name Map
 
 
-func update_tile(coords: Vector2i):
+func snap_to_grid(_global_position: Vector2) -> Vector2:
+	return to_global(map_to_local(
+		local_to_map(to_local(_global_position)).clamp(
+			Vector2i(0, 0),
+			Vector2i(GameState.map.width - 1, GameState.map.height - 1)
+		)
+	))
+
+
+func update_tile(coords: Vector2i) -> void:
 	var atlas_coords := Vector2i(29, 6)
 	var secret: CellState.Secret = GameState.map.grid[coords.y][coords.x].secret
 	if secret == 0:
@@ -12,14 +22,14 @@ func update_tile(coords: Vector2i):
 	set_cell(coords, 0, atlas_coords)
 
 
-func update_tiles():
+func update_tiles() -> void:
 	var map := GameState.map
 	for y in map.height:
 		for x in map.width:
 			update_tile(Vector2i(x, y))
 
 
-func _ready():
+func _ready() -> void:
 	EventBus.on_game_reset.connect(update_tiles)
 	GameState.reset()
 

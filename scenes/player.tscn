@@ -1,7 +1,12 @@
-[gd_scene load_steps=5 format=3 uid="uid://byy5a0wd3wx42"]
+[gd_scene load_steps=7 format=3 uid="uid://byy5a0wd3wx42"]
 
 [ext_resource type="Script" uid="uid://12btqrrgnu8s" path="res://scripts/player.gd" id="1_g2els"]
+[ext_resource type="Texture2D" uid="uid://bg2fqsxfkr8re" path="res://assets/tilemap_white_packed.png" id="2_dqkch"]
 [ext_resource type="Texture2D" uid="uid://c7jvjd882xkmj" path="res://assets/coincoin.png" id="2_qhqgy"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_qlg0r"]
+atlas = ExtResource("2_dqkch")
+region = Rect2(464, 96, 16, 16)
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_dqkch"]
 radius = 6.08276
@@ -15,6 +20,10 @@ outline_color = Color(0, 0, 0, 0.74902)
 [node name="Player" type="CharacterBody2D"]
 motion_mode = 1
 script = ExtResource("1_g2els")
+
+[node name="Highlight" type="Sprite2D" parent="."]
+unique_name_in_owner = true
+texture = SubResource("AtlasTexture_qlg0r")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
 unique_name_in_owner = true
