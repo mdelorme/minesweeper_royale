@@ -26,7 +26,5 @@ texture = ExtResource("1_paxxb")
 sources/0 = SubResource("TileSetAtlasSource_0cso3")
 
 [node name="Map" type="TileMapLayer"]
-position = Vector2(64, 120)
-scale = Vector2(4, 4)
 tile_set = SubResource("TileSet_2klcf")
 script = ExtResource("2_gldc4")

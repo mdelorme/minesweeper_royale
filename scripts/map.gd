@@ -21,7 +21,6 @@ func update_tiles():
 
 func _ready():
 	EventBus.on_game_reset.connect(update_tiles)
-
 	GameState.reset()
 
 

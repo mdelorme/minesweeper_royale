@@ -11,6 +11,7 @@ config_version=5
 [application]
 
 config/name="Minesweeper Royale"
+run/main_scene="uid://mostrtwvswno"
 config/features=PackedStringArray("4.4", "Forward Plus")
 config/icon="res://icon.svg"
 
@@ -22,8 +23,8 @@ AudioBus="*res://autoload/audio_bus.gd"
 
 [display]
 
-window/size/viewport_width=1920
-window/size/viewport_height=1080
+window/size/viewport_width=480
+window/size/viewport_height=270
 window/size/mode=2
 window/stretch/mode="canvas_items"
 

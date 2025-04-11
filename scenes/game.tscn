@@ -1,0 +1,59 @@
+[gd_scene load_steps=7 format=3 uid="uid://mostrtwvswno"]
+
+[ext_resource type="PackedScene" uid="uid://bcoffnw0mrm78" path="res://scenes/map.tscn" id="1_uwrxv"]
+[ext_resource type="PackedScene" uid="uid://byy5a0wd3wx42" path="res://scenes/player.tscn" id="2_yqjtg"]
+
+[sub_resource type="WorldBoundaryShape2D" id="WorldBoundaryShape2D_yqjtg"]
+normal = Vector2(0, 1)
+
+[sub_resource type="WorldBoundaryShape2D" id="WorldBoundaryShape2D_lnu2h"]
+normal = Vector2(1, 0)
+
+[sub_resource type="WorldBoundaryShape2D" id="WorldBoundaryShape2D_lbhrr"]
+
+[sub_resource type="WorldBoundaryShape2D" id="WorldBoundaryShape2D_iywne"]
+normal = Vector2(-1, 0)
+
+[node name="Game" type="Node2D"]
+
+[node name="Map" parent="." instance=ExtResource("1_uwrxv")]
+position = Vector2(16, 30)
+
+[node name="Player1" parent="." instance=ExtResource("2_yqjtg")]
+position = Vector2(65, 53)
+
+[node name="Player2" parent="." instance=ExtResource("2_yqjtg")]
+position = Vector2(67, 221)
+id = 2
+
+[node name="Player3" parent="." instance=ExtResource("2_yqjtg")]
+position = Vector2(395, 57)
+id = 3
+
+[node name="Player4" parent="." instance=ExtResource("2_yqjtg")]
+position = Vector2(400, 228)
+id = 4
+
+[node name="TopWall" type="StaticBody2D" parent="."]
+position = Vector2(248, 16)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="TopWall"]
+shape = SubResource("WorldBoundaryShape2D_yqjtg")
+
+[node name="LeftWall" type="StaticBody2D" parent="."]
+position = Vector2(0, 134)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="LeftWall"]
+shape = SubResource("WorldBoundaryShape2D_lnu2h")
+
+[node name="BottomWall" type="StaticBody2D" parent="."]
+position = Vector2(253, 270)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="BottomWall"]
+shape = SubResource("WorldBoundaryShape2D_lbhrr")
+
+[node name="RightWall" type="StaticBody2D" parent="."]
+position = Vector2(480, 135)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="RightWall"]
+shape = SubResource("WorldBoundaryShape2D_iywne")
