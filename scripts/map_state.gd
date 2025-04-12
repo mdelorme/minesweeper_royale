@@ -78,7 +78,7 @@ func player_digs(position: Vector2i, player_id: int, propagate: bool = true) -> 
 					continue
 				
 				var new_pos := Vector2i(nx, ny)
-				if is_cell_diggable(new_pos):
+				if get_cell(new_pos).diggable():
 					player_digs(new_pos, player_id, false)
 	EventBus.on_tile_update.emit(position)
 	var dead := cell_state.secret == CellState.Secret.MINED
