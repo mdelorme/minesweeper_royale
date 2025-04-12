@@ -42,12 +42,11 @@ func update_tile(coords: Vector2i) -> void:
 			atlas_coords = Vector2i(0, 3)
 		else:
 			atlas_coords = Vector2i(1 + secret, cell_state.owner_id-1)
-			add_gained_points(coords, cell_state)
+			if cell_state.owner_id < 5:
+				add_gained_points(coords, cell_state)
 	elif cell_state.flagged():
 		source_id = 1
 		atlas_coords = Vector2i(cell_state.owner_id - 1, 0)
-	print("Updating tile at coords %d %d with owner %d" % [coords.x, coords.y, cell_state.owner_id])
-	print("Atlas coords is %d %d" % [atlas_coords.x, atlas_coords.y])
 
 	numbers.set_cell(coords, source_id, atlas_coords)
 	
