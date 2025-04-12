@@ -5,13 +5,15 @@ class_name Map
 @onready var terrain := $Terrain
 
 
+func pos_to_tile(_global_position: Vector2) -> Vector2i:
+	return terrain.local_to_map(to_local(_global_position)).clamp(
+		Vector2i(0, 0),
+		Vector2i(GameState.map.width - 1, GameState.map.height - 1)
+	)
+
+
 func snap_to_grid(_global_position: Vector2) -> Vector2:
-	return to_global(terrain.map_to_local(
-		terrain.local_to_map(to_local(_global_position)).clamp(
-			Vector2i(0, 0),
-			Vector2i(GameState.map.width - 1, GameState.map.height - 1)
-		)
-	))
+	return to_global(terrain.map_to_local(pos_to_tile(_global_position)))
 
 func update_tile(coords: Vector2i) -> void:
 	## Numbers
@@ -43,9 +45,6 @@ func update_tiles() -> void:
 	for y in map.height:
 		for x in map.width:
 			update_tile(Vector2i(x, y))
-
-func pos_to_tile(_global_position: Vector2) -> Vector2i:
-	return terrain.local_to_map(to_local(snap_to_grid(_global_position)))
 
 func _ready() -> void:
 	EventBus.on_game_reset.connect(update_tiles)
