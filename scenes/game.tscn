@@ -68,30 +68,53 @@ shape = SubResource("WorldBoundaryShape2D_iywne")
 
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
 
-[node name="ScoreBox" type="HBoxContainer" parent="CanvasLayer"]
-custom_minimum_size = Vector2(0, 24)
+[node name="dbg_label" type="RichTextLabel" parent="CanvasLayer"]
+offset_top = 96.0
+offset_right = 396.0
+offset_bottom = 269.0
+theme_override_font_sizes/normal_font_size = 10
+text = "Blah :"
+
+[node name="MarginContainer" type="MarginContainer" parent="CanvasLayer"]
 anchors_preset = 10
 anchor_right = 1.0
+offset_bottom = 24.0
 grow_horizontal = 2
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 5
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 0
+
+[node name="HBoxContainer" type="HBoxContainer" parent="CanvasLayer/MarginContainer"]
+layout_mode = 2
+
+[node name="ScoreBox" type="HBoxContainer" parent="CanvasLayer/MarginContainer/HBoxContainer"]
+custom_minimum_size = Vector2(0, 24)
+layout_mode = 2
+size_flags_horizontal = 3
 script = ExtResource("4_lbhrr")
 
-[node name="Score_p1" type="ColorRect" parent="CanvasLayer/ScoreBox"]
-custom_minimum_size = Vector2(100, 0)
+[node name="Score_p1" type="ColorRect" parent="CanvasLayer/MarginContainer/HBoxContainer/ScoreBox"]
 layout_mode = 2
+size_flags_horizontal = 3
 color = Color(0.027451, 0.396078, 0.596078, 1)
 
-[node name="Score_p2" type="ColorRect" parent="CanvasLayer/ScoreBox"]
+[node name="Score_p2" type="ColorRect" parent="CanvasLayer/MarginContainer/HBoxContainer/ScoreBox"]
 layout_mode = 2
+size_flags_horizontal = 3
 color = Color(0.262745, 0.529412, 0.101961, 1)
 
-[node name="Score_p3" type="ColorRect" parent="CanvasLayer/ScoreBox"]
+[node name="Score_p3" type="ColorRect" parent="CanvasLayer/MarginContainer/HBoxContainer/ScoreBox"]
 layout_mode = 2
+size_flags_horizontal = 3
 color = Color(0.690196, 0.435294, 0.0941176, 1)
 
-[node name="Score_p4" type="ColorRect" parent="CanvasLayer/ScoreBox"]
+[node name="Score_p4" type="ColorRect" parent="CanvasLayer/MarginContainer/HBoxContainer/ScoreBox"]
 layout_mode = 2
+size_flags_horizontal = 3
 color = Color(0.552941, 0.121569, 0.521569, 1)
 
 [node name="Music" type="AudioStreamPlayer2D" parent="."]
 stream = ExtResource("5_iywne")
-autoplay = true
+
+[connection signal="resized" from="CanvasLayer/MarginContainer/HBoxContainer/ScoreBox" to="CanvasLayer/MarginContainer/HBoxContainer/ScoreBox" method="_on_resized"]

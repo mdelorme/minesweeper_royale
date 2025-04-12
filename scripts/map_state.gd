@@ -77,8 +77,10 @@ func player_digs(position: Vector2i, player_id: int, propagate: bool = true) -> 
 				var ny := position.y + j
 				if ny < 0 or ny >= height-1:
 					continue
-					
-				player_digs(Vector2i(nx, ny), player_id, false)
+				
+				var new_pos := Vector2i(nx, ny)
+				if is_cell_diggable(new_pos):
+					player_digs(new_pos, player_id, false)
 	EventBus.on_tile_update.emit(position)
 	var dead := cell_state.secret == CellState.Secret.MINED
 	var score := cell_state.secret if not dead else 0
