@@ -5,21 +5,23 @@ class_name Map
 @onready var terrain := $Terrain
 
 
+func pos_to_tile(_global_position: Vector2) -> Vector2i:
+	return terrain.local_to_map(to_local(_global_position)).clamp(
+		Vector2i(0, 0),
+		Vector2i(GameState.map.width - 1, GameState.map.height - 1)
+	)
+
+
 func snap_to_grid(_global_position: Vector2) -> Vector2:
-	return to_global(terrain.map_to_local(
-		terrain.local_to_map(to_local(_global_position)).clamp(
-			Vector2i(0, 0),
-			Vector2i(GameState.map.width - 1, GameState.map.height - 1)
-		)
-	))
+	return to_global(terrain.map_to_local(pos_to_tile(_global_position)))
 
 func update_tile(coords: Vector2i) -> void:
 	## Numbers
-	var cell_state : CellState = GameState.map.grid[coords.y][coords.x]
-	var interaction : CellState.Interaction = cell_state.interaction
+	var cell_state : CellState = GameState.map.get_cell(coords)
 	var atlas_coords := Vector2i(0, 3)
+	var source_id := 0
 	## Hide the number if not dug
-	if interaction == CellState.Interaction.DUG:
+	if cell_state.dug():
 		var secret: CellState.Secret = cell_state.secret
 		if secret == 0:
 			atlas_coords = Vector2i(0, 3)
@@ -27,11 +29,14 @@ func update_tile(coords: Vector2i) -> void:
 			atlas_coords = Vector2i(0, 3)
 		else:
 			atlas_coords = Vector2i(1 + secret, cell_state.owner_id-1)
+	elif cell_state.flagged():
+		source_id = 1
+		atlas_coords = Vector2i(cell_state.owner_id - 1, 0)
 
-	numbers.set_cell(coords, 0, atlas_coords)
+	numbers.set_cell(coords, source_id, atlas_coords)
 	
 	## Terrain
-	if interaction == CellState.Interaction.DUG:
+	if cell_state.dug():
 		atlas_coords = Vector2i(0, 0)
 	else:
 		atlas_coords = Vector2i(0, 1)
@@ -43,9 +48,6 @@ func update_tiles() -> void:
 	for y in map.height:
 		for x in map.width:
 			update_tile(Vector2i(x, y))
-
-func pos_to_tile(_global_position: Vector2) -> Vector2i:
-	return terrain.local_to_map(to_local(snap_to_grid(_global_position)))
 
 func _ready() -> void:
 	EventBus.on_game_reset.connect(update_tiles)

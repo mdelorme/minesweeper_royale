@@ -1,21 +1,17 @@
-[gd_scene load_steps=7 format=3 uid="uid://byy5a0wd3wx42"]
+[gd_scene load_steps=6 format=3 uid="uid://byy5a0wd3wx42"]
 
 [ext_resource type="Script" uid="uid://12btqrrgnu8s" path="res://scripts/player.gd" id="1_g2els"]
-[ext_resource type="Texture2D" uid="uid://bg2fqsxfkr8re" path="res://assets/tilemap_white_packed.png" id="2_dqkch"]
 [ext_resource type="Texture2D" uid="uid://dskuafc8g8m5p" path="res://assets/Tileset.png" id="3_qhqgy"]
 
+[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_g2els"]
+load_path = "res://.godot/imported/tilemap_white_packed.png-439d1877c2b5c019bc5106a619caa86d.ctex"
+
 [sub_resource type="AtlasTexture" id="AtlasTexture_qlg0r"]
-atlas = ExtResource("2_dqkch")
+atlas = SubResource("CompressedTexture2D_g2els")
 region = Rect2(464, 96, 16, 16)
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_dqkch"]
 radius = 6.08276
-
-[sub_resource type="LabelSettings" id="LabelSettings_g2els"]
-font_size = 10
-font_color = Color(1, 1, 1, 0.74902)
-outline_size = 2
-outline_color = Color(0, 0, 0, 0.74902)
 
 [node name="Player" type="CharacterBody2D"]
 motion_mode = 1
@@ -27,19 +23,9 @@ texture = SubResource("AtlasTexture_qlg0r")
 
 [node name="Sprite" type="Sprite2D" parent="."]
 unique_name_in_owner = true
-scale = Vector2(0.5, 0.5)
 texture = ExtResource("3_qhqgy")
 region_enabled = true
 region_rect = Rect2(160, 0, 32, 16)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource("CircleShape2D_dqkch")
-
-[node name="PlayerName" type="Label" parent="."]
-offset_left = -30.0
-offset_top = -28.0
-offset_right = 30.0
-offset_bottom = -11.0
-text = "Player 1"
-label_settings = SubResource("LabelSettings_g2els")
-horizontal_alignment = 1

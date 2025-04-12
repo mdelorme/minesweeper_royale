@@ -33,9 +33,6 @@ func _ready() -> void:
 	rng = RandomNumberGenerator.new()
 	poot_cooldown = rng.randf_range(1.0, 20.0)
 
-	EventBus.on_player_rename.connect(on_rename)
-	on_rename(id, state.label)
-	$PlayerName.modulate = state.color
 	%Highlight.modulate = state.color
 	%Sprite.region_rect.position.y += index * 16
 
@@ -72,6 +69,8 @@ func _unhandled_input(event: InputEvent) -> void:
 	if event.is_action_pressed(action_map[Actions.ACTION_DIG]):
 		EventBus.on_player_dig.emit(position, id)
 		dig()
+	elif event.is_action_pressed(action_map[Actions.ACTION_FLAG]):
+		EventBus.on_player_flag.emit(position, id)
 
 func _process(delta: float) -> void:
 	if not active:
@@ -86,11 +85,6 @@ func _process(delta: float) -> void:
 	var new_scale = base_scale + Vector2(cos(time*time_scale), sin(time*time_scale))*squish_scale
 	%Sprite.scale = new_scale
 	time += delta
-
-
-func on_rename(_id: int, new_name: String) -> void:
-	if _id == id:
-		$PlayerName.text = new_name
 
 func dig() -> void:
 	var tween := get_tree().create_tween()

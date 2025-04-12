@@ -20,3 +20,26 @@ enum Interaction { UNTOUCHED, DUG, FLAGGED }
 var secret: Secret = Secret.EMPTY
 var owner_id: int = -1
 var interaction: Interaction = Interaction.UNTOUCHED
+
+func dug() -> bool:
+	return interaction == Interaction.DUG
+
+func diggable() -> bool:
+	return interaction != Interaction.DUG
+
+func flagged() -> bool:
+	return interaction == Interaction.FLAGGED
+
+
+func toggle_flag(player_id: int) -> bool:
+	if not diggable():
+		return false
+	if flagged():
+		if player_id == owner_id:
+			interaction = Interaction.UNTOUCHED
+			owner_id = -1
+			return true
+		return false
+	interaction = Interaction.FLAGGED
+	owner_id = player_id
+	return true
