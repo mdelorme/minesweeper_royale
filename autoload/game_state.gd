@@ -8,7 +8,7 @@ var map: MapState
 var players: Array[PlayerState]
 
 var nb_players_alive:
-	get: return len(players.filter(func(p): return not p.is_dead))
+	get: return len(players.filter(func(p): return p.hearts > 0))
 
 func _init():
 	randomize_next_game()

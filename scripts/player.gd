@@ -25,6 +25,10 @@ enum Actions {
 var rng : RandomNumberGenerator
 var poot_cooldown : float
 
+@onready var hearts_rects: Array[TextureRect] = [
+	%Heart1, %Heart2, %Heart3,
+]
+
 func _ready() -> void:
 	var index := id - 1
 	state = GameState.players[index]
@@ -82,8 +86,20 @@ func dig() -> void:
 
 
 func die() -> void:
-	state.is_dead = true
+	if state.invincible:
+		return
 	
+	state.hearts -= 1
+	if state.hearts > 0:
+		state.invincible = true
+		for heart in range(state.MAX_HEARTS):
+			hearts_rects[heart].visible = heart < state.hearts
+		var blink_tween := get_tree().create_tween().set_loops(5)
+		blink_tween.tween_property(%Sprite, "modulate:v", 2.0, 0.2)
+		blink_tween.tween_property(%Sprite, "modulate:v", 1.0, 0.2)
+		blink_tween.tween_callback(state.unset_invincible)
+		return
+
 	var shake_tween := get_tree().create_tween().set_loops(10)
 	shake_tween.tween_property(%Sprite, "rotation", PI/8, 0.015)
 	shake_tween.tween_property(%Sprite, "rotation", -PI/8, 0.015)

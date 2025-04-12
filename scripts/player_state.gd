@@ -14,6 +14,7 @@ static var INITIAL_POSITIONS: Array[Vector2] = [
 	Vector2(1024, 64),
 	Vector2(1024, 512),
 ]
+const MAX_HEARTS: int = 3
 
 
 var id: int:
@@ -23,10 +24,15 @@ var id: int:
 		position = INITIAL_POSITIONS[id - 1]
 var color: Color
 var position: Vector2
+var hearts: int = MAX_HEARTS
+var invincible: bool = false
 var score: int = 1
-var is_dead: bool = false
 var is_leader: bool = false
 
 func _init(_id: int):
 	id = _id
 	score = 1
+
+
+func unset_invincible():
+	invincible = false
