@@ -1,11 +1,13 @@
 [gd_scene load_steps=7 format=3 uid="uid://byy5a0wd3wx42"]
 
 [ext_resource type="Script" uid="uid://12btqrrgnu8s" path="res://scripts/player.gd" id="1_g2els"]
-[ext_resource type="Texture2D" uid="uid://bg2fqsxfkr8re" path="res://assets/tilemap_white_packed.png" id="2_dqkch"]
 [ext_resource type="Texture2D" uid="uid://dskuafc8g8m5p" path="res://assets/Tileset.png" id="3_qhqgy"]
 
+[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_g2els"]
+load_path = "res://.godot/imported/tilemap_white_packed.png-439d1877c2b5c019bc5106a619caa86d.ctex"
+
 [sub_resource type="AtlasTexture" id="AtlasTexture_qlg0r"]
-atlas = ExtResource("2_dqkch")
+atlas = SubResource("CompressedTexture2D_g2els")
 region = Rect2(464, 96, 16, 16)
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_dqkch"]

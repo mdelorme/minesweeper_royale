@@ -17,11 +17,11 @@ func snap_to_grid(_global_position: Vector2) -> Vector2:
 
 func update_tile(coords: Vector2i) -> void:
 	## Numbers
-	var cell_state : CellState = GameState.map.grid[coords.y][coords.x]
-	var interaction : CellState.Interaction = cell_state.interaction
+	var cell_state : CellState = GameState.map.get_cell(coords)
 	var atlas_coords := Vector2i(0, 3)
+	var source_id := 0
 	## Hide the number if not dug
-	if interaction == CellState.Interaction.DUG:
+	if cell_state.dug():
 		var secret: CellState.Secret = cell_state.secret
 		if secret == 0:
 			atlas_coords = Vector2i(0, 3)
@@ -29,11 +29,14 @@ func update_tile(coords: Vector2i) -> void:
 			atlas_coords = Vector2i(0, 3)
 		else:
 			atlas_coords = Vector2i(1 + secret, cell_state.owner_id-1)
+	elif cell_state.flagged():
+		source_id = 1
+		atlas_coords = Vector2i(cell_state.owner_id - 1, 0)
 
-	numbers.set_cell(coords, 0, atlas_coords)
+	numbers.set_cell(coords, source_id, atlas_coords)
 	
 	## Terrain
-	if interaction == CellState.Interaction.DUG:
+	if cell_state.dug():
 		atlas_coords = Vector2i(0, 0)
 	else:
 		atlas_coords = Vector2i(0, 1)

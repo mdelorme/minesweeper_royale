@@ -56,10 +56,9 @@ func add_mines() -> void:
 		increment_neighbors(x, y)
 		mines_count -= 1
 
-func is_cell_diggable(position: Vector2i) -> bool:
-	## Position should always be coming from map.pos_to_tile but ... could be worth testing
-	return grid[position.y][position.x].interaction != CellState.Interaction.DUG
-	
+func get_cell(position: Vector2i) -> CellState:
+	return grid[position.y][position.x]
+
 func player_digs(position: Vector2i, player_id: int, propagate: bool = true) -> bool:
 	## Returns true if the player is still alive, false otherwise
 	var cell_state : CellState = grid[position.y][position.x]
@@ -84,7 +83,14 @@ func player_digs(position: Vector2i, player_id: int, propagate: bool = true) -> 
 	var score := cell_state.secret if not dead else 0
 	EventBus.on_player_score.emit(player_id, score)
 	return not dead 
-	
+
+func player_flag(position: Vector2i, player_id: int) -> bool:
+	var cell := get_cell(position)
+	var changed := cell.toggle_flag(player_id)
+	if changed:
+		EventBus.on_tile_update.emit(position)
+	return changed
+
 func get_score_at(position: Vector2i) -> int:
 	var cell_state : CellState = grid[position.y][position.x]
 	if cell_state.secret == CellState.Secret.MINED:

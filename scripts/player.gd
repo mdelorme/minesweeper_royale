@@ -64,6 +64,8 @@ func _unhandled_input(event: InputEvent) -> void:
 	if event.is_action_pressed(action_map[Actions.ACTION_DIG]):
 		EventBus.on_player_dig.emit(position, id)
 		dig()
+	elif event.is_action_pressed(action_map[Actions.ACTION_FLAG]):
+		EventBus.on_player_flag.emit(position, id)
 
 func _process(delta: float) -> void:
 	poot_cooldown = max(0.0, poot_cooldown - delta)
