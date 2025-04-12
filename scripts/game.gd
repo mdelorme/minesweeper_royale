@@ -9,7 +9,8 @@ func _ready() -> void:
 	## Connecting to relevant signals of the event bus
 	EventBus.on_player_dig.connect(on_player_dig)
 	EventBus.on_player_score.connect(on_player_score)
-	
+	EventBus.on_game_ended.connect(on_game_ended)
+
 func on_player_dig(pos: Vector2, player_id: int) -> void:
 	var map_position := map.pos_to_tile(pos)
 	var map_state := GameState.map
@@ -27,3 +28,8 @@ func kill_player(player_id: int) -> void:
 	var player: Player = get_node("Player%d" % [player_id])
 	assert(player)
 	player.die()
+
+func on_game_ended():
+	# Wait a bit then restart the game
+	await get_tree().create_timer(1.3).timeout
+	get_tree().reload_current_scene()
