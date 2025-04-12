@@ -4,7 +4,7 @@ class_name Player
 @export var id: int = 1
 @export var map: Map
 var state: PlayerState
-var poot_sound := "res://sounds/poooot.wav"
+var poot_sound := preload("res://sounds/poooot.wav")
 var base_scale : Vector2
 var time : float = 0.0
 var squish_scale : float = 0.1
