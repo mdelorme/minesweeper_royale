@@ -21,9 +21,6 @@ func on_player_dig(pos: Vector2, player_id: int) -> void:
 		else:
 			AudioBus.play_sound(explosion_sound)
 			kill_player(player_id)
-			
-		map.update_tile(map_position)
-			
 		
 func kill_player(player_id: int) -> void:
 	var player := get_node("Player%d" % [player_id])

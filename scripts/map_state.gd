@@ -8,7 +8,6 @@ var width: int
 var height: int
 var mines_count: int
 
-
 func _init(_width: int, _height: int, _mines_count: int) -> void:
 	width = _width
 	height = _height
@@ -61,11 +60,26 @@ func is_cell_diggable(position: Vector2i) -> bool:
 	## Position should always be coming from map.pos_to_tile but ... could be worth testing
 	return grid[position.y][position.x].interaction != CellState.Interaction.DUG
 	
-func player_digs(position: Vector2i, player_id: int) -> bool:
+func player_digs(position: Vector2i, player_id: int, propagate: bool = true) -> bool:
 	## Returns true if the player is still alive, false otherwise
 	var cell_state : CellState = grid[position.y][position.x]
 	cell_state.interaction = CellState.Interaction.DUG
 	cell_state.owner_id = player_id
+	
+	## Propagate if cell is empty
+	if propagate and cell_state.secret == 0:
+		for i in range(-1, 2):
+			var nx := position.x + i
+			if nx < 0 or nx > width-1:
+				continue
+				
+			for j in range(-1, 2):
+				var ny := position.y + j
+				if ny < 0 or ny >= height-1:
+					continue
+					
+				player_digs(Vector2i(nx, ny), player_id, false)
+	EventBus.on_tile_update.emit(position)
 	return cell_state.secret != CellState.Secret.MINED 
 	
 func get_score_at(position: Vector2i) -> int:

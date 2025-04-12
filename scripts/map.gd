@@ -49,6 +49,7 @@ func pos_to_tile(_global_position: Vector2) -> Vector2i:
 
 func _ready() -> void:
 	EventBus.on_game_reset.connect(update_tiles)
+	EventBus.on_tile_update.connect(update_tile)
 	GameState.reset()
 
 
