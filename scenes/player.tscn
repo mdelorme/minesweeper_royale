@@ -59,3 +59,9 @@ unique_name_in_owner = true
 layout_mode = 2
 texture = ExtResource("3_dqkch")
 stretch_mode = 2
+
+[node name="Heart3" type="TextureRect" parent="HBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+texture = ExtResource("3_dqkch")
+stretch_mode = 2
