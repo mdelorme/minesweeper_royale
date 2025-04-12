@@ -24,7 +24,8 @@ var id: int:
 var color: Color
 var position: Vector2
 var score: int = 1
-
+var is_dead: bool = false
+var is_leader: bool = false
 
 func _init(_id: int):
 	id = _id

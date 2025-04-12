@@ -1,8 +1,10 @@
 extends Node2D
 class_name Map
 
-@onready var numbers := $Numbers
-@onready var terrain := $Terrain
+static var gained_points_scene := preload("res://scenes/gained_points.tscn")
+
+@onready var numbers: TileMapLayer = $Numbers
+@onready var terrain: TileMapLayer = $Terrain
 
 
 func pos_to_tile(_global_position: Vector2) -> Vector2i:
@@ -16,6 +18,15 @@ func tile_to_pos(_coord: Vector2i) -> Vector2:
 	
 func snap_to_grid(_global_position: Vector2) -> Vector2:
 	return to_global(terrain.map_to_local(pos_to_tile(_global_position)))
+
+func add_gained_points(coords: Vector2i, cell_state: CellState) -> void:
+	var gained_points: GainedPoints = gained_points_scene.instantiate()
+	gained_points.value = cell_state.secret
+	gained_points.owner_id = cell_state.owner_id
+	add_child(gained_points)
+	gained_points.position = (
+		terrain.map_to_local(coords) - Vector2(terrain.tile_set.tile_size) / 2.0
+	)
 
 func update_tile(coords: Vector2i) -> void:
 	## Numbers
@@ -31,6 +42,7 @@ func update_tile(coords: Vector2i) -> void:
 			atlas_coords = Vector2i(0, 3)
 		else:
 			atlas_coords = Vector2i(1 + secret, cell_state.owner_id-1)
+			add_gained_points(coords, cell_state)
 	elif cell_state.flagged():
 		source_id = 1
 		atlas_coords = Vector2i(cell_state.owner_id - 1, 0)

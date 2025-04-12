@@ -47,7 +47,7 @@ func _ready() -> void:
 	time = rng.randf()*PI
 
 func _physics_process(_delta: float) -> void:
-	if not active:
+	if state.is_dead:
 		return
 		
 	velocity = Input.get_vector(
@@ -63,7 +63,7 @@ func _physics_process(_delta: float) -> void:
 	%Highlight.global_position = map.snap_to_grid(global_position)
 
 func _unhandled_input(event: InputEvent) -> void:
-	if not active:
+	if state.is_dead:
 		return
 		
 	if event.is_action_pressed(action_map[Actions.ACTION_DIG]):
@@ -73,7 +73,7 @@ func _unhandled_input(event: InputEvent) -> void:
 		EventBus.on_player_flag.emit(position, id)
 
 func _process(delta: float) -> void:
-	if not active:
+	if state.is_dead:
 		return
 		
 	poot_cooldown = max(0.0, poot_cooldown - delta)
@@ -93,11 +93,11 @@ func dig() -> void:
 
 
 func die() -> void:
-	active = false
+	state.is_dead = true
 	
 	global_position = map.snap_to_grid(global_position)
 	
-	var shake_tween := get_tree().create_tween().set_loops(20)
+	var shake_tween := get_tree().create_tween().set_loops(10)
 	shake_tween.tween_property(%Sprite, "rotation", PI/8, 0.015)
 	shake_tween.tween_property(%Sprite, "rotation", -PI/8, 0.015)
 

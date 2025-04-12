@@ -1,7 +1,6 @@
 extends Node
 class_name MapState
 
-
 # TODO: Replace with Array[Array[CellState]] when Godot supports it.
 var grid: Array[Array]
 var width: int

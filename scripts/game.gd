@@ -2,6 +2,7 @@ extends Node2D
 
 @onready var map : Map = $Map
 @onready var timer : Timer = $TimerGameEnd
+@onready var crowns: Array[Control] = [%Score_p1/Crown,%Score_p2/Crown,%Score_p3/Crown,%Score_p4/Crown]
 
 const dig_sound            := preload("res://sounds/dig.wav")
 const explosion_sound      := preload("res://sounds/explosion.wav")
@@ -57,6 +58,8 @@ func kill_player(player_id: int) -> void:
 	var player: Player = get_node("Player%d" % [player_id])
 	assert(player)
 	player.die()
+	if GameState.nb_players_alive == 1:
+		EventBus.on_game_ended.emit()
 
 func on_timer_end():
 	EventBus.on_game_ended.emit()
@@ -66,9 +69,15 @@ func on_game_ended():
 	# Wait a bit, then restart the game.
 	# TODO: instead, reveal the endgame HUD.
 	await get_tree().create_timer(1.3).timeout
+	GameState.randomize_next_game()
 	get_tree().reload_current_scene()
 	
 func on_reveal_mine(pos: Vector2i) -> void:
 	var new_mine := detonated_mine_scene.instantiate()
 	new_mine.global_position = map.tile_to_pos(pos)
 	add_child(new_mine)
+
+func _process(_dt):
+	GameState.compute_leaders()
+	for i in range(4):
+		crowns[i].visible = GameState.players[i].is_leader
