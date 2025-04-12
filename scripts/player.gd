@@ -101,10 +101,12 @@ func die() -> void:
 		return
 
 	state.hearts -= 1
+	
+	for heart in range(state.MAX_HEARTS):
+		hearts_rects[heart].visible = heart < state.hearts
+	
 	if state.hearts > 0:
 		state.invincible = true
-		for heart in range(state.MAX_HEARTS):
-			hearts_rects[heart].visible = heart < state.hearts
 		var blink_tween := get_tree().create_tween().set_loops(5)
 		blink_tween.tween_property(%Sprite, "modulate:v", 2.0, 0.2)
 		blink_tween.tween_property(%Sprite, "modulate:v", 1.0, 0.2)

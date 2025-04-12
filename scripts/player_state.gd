@@ -38,4 +38,4 @@ func unset_invincible():
 	invincible = false
 
 func is_dead():
-	return hearts == 0
+	return hearts <= 0
