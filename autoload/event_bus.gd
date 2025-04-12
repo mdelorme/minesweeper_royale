@@ -7,6 +7,8 @@ signal on_player_flag(position: Vector2, player_id: int)
 signal on_player_score(player_id: int, score: int)
 signal on_update_player_score(player_id: int)
 signal on_tile_update(coord: Vector2i)
+signal on_explosion(coord: Vector2i)
+signal on_reveal_mine(coord: Vector2i)
 
 func _input(ev: InputEvent):
 	if ev.is_action_pressed("dev_end_game"):

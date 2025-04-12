@@ -9,6 +9,7 @@ var base_scale : Vector2
 var time : float = 0.0
 var squish_scale : float = 0.1
 var time_scale   : float = 10.0
+var active: bool
 
 ## Input and actions
 const INPUT_SCALE := 100.0
@@ -31,6 +32,7 @@ var poot_cooldown : float
 
 func _ready() -> void:
 	var index := id - 1
+	active = true
 	state = GameState.players[index]
 	rng = RandomNumberGenerator.new()
 	poot_cooldown = rng.randf_range(1.0, 20.0)
@@ -49,6 +51,9 @@ func _ready() -> void:
 	time = rng.randf()*PI
 
 func _physics_process(_delta: float) -> void:
+	if state.is_dead():
+		return
+
 	velocity = Input.get_vector(
 		action_map[Actions.ACTION_LEFT],
 		action_map[Actions.ACTION_RIGHT],
@@ -62,6 +67,9 @@ func _physics_process(_delta: float) -> void:
 	%Highlight.global_position = map.snap_to_grid(global_position)
 
 func _unhandled_input(event: InputEvent) -> void:
+	if state.is_dead():
+		return
+
 	if event.is_action_pressed(action_map[Actions.ACTION_DIG]):
 		EventBus.on_player_dig.emit(position, id)
 		dig()
@@ -69,6 +77,9 @@ func _unhandled_input(event: InputEvent) -> void:
 		EventBus.on_player_flag.emit(position, id)
 
 func _process(delta: float) -> void:
+	if state.is_dead():
+		return
+
 	poot_cooldown = max(0.0, poot_cooldown - delta)
 	if poot_cooldown == 0.0:
 		AudioBus.play_sound(poot_sound, 1.0, 1.5)
@@ -88,7 +99,7 @@ func dig() -> void:
 func die() -> void:
 	if state.invincible:
 		return
-	
+
 	state.hearts -= 1
 	if state.hearts > 0:
 		state.invincible = true
@@ -107,4 +118,13 @@ func die() -> void:
 	var explode_tween := get_tree().create_tween().set_ease(Tween.EASE_OUT)
 	explode_tween.tween_property(%Sprite, "scale", Vector2(5.0, 5.0), 0.3)
 	explode_tween.parallel().tween_property(%Sprite, "modulate:a", 0.0, 0.2).set_delay(0.1)
-	explode_tween.tween_callback(queue_free)
+
+	explode_tween.tween_property(%Sprite, "scale", base_scale, 0.3)
+	explode_tween.parallel().tween_property(%Sprite, "modulate:a", 1.0, 0.2).set_delay(0.1)
+	await explode_tween.finished
+
+	%Sprite.rotation = 0.0
+	%Sprite.region_rect.position = Vector2(192, 0)
+	%Highlight.hide()
+
+	active = false

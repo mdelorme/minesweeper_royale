@@ -4,10 +4,12 @@ extends Node2D
 @onready var timer : Timer = $TimerGameEnd
 @onready var crowns: Array[Control] = [%Score_p1/Crown,%Score_p2/Crown,%Score_p3/Crown,%Score_p4/Crown]
 
-const dig_sound       := preload("res://sounds/dig.wav")
-const explosion_sound := preload("res://sounds/explosion.wav")
-const flag_on_sound := preload("res://sounds/flag_on.wav")
-const flag_off_sound := preload("res://sounds/flag_off.wav")
+const dig_sound            := preload("res://sounds/dig.wav")
+const explosion_sound      := preload("res://sounds/explosion.wav")
+const flag_on_sound        := preload("res://sounds/flag_on.wav")
+const flag_off_sound       := preload("res://sounds/flag_off.wav")
+const explosion_scene      := preload("res://scenes/explosion.tscn")
+const detonated_mine_scene := preload("res://scenes/detonated_mine.tscn")
 
 func _ready() -> void:
 	## Connecting to relevant signals of the event bus
@@ -15,6 +17,8 @@ func _ready() -> void:
 	EventBus.on_player_flag.connect(on_player_flag)
 	EventBus.on_player_score.connect(on_player_score)
 	EventBus.on_game_ended.connect(on_game_ended)
+	EventBus.on_explosion.connect(on_explosion)
+	EventBus.on_reveal_mine.connect(on_reveal_mine)
 	timer.timeout.connect(on_timer_end)
 	
 	%TimerHud.timer = timer
@@ -44,6 +48,11 @@ func on_player_flag(pos: Vector2, player_id: int) -> void:
 func on_player_score(player_id: int, score: int) -> void:
 	GameState.players[player_id-1].score += score
 	EventBus.on_update_player_score.emit(player_id)
+	
+func on_explosion(pos: Vector2i) -> void:
+	var new_explosion := explosion_scene.instantiate()
+	new_explosion.global_position = map.tile_to_pos(pos)
+	add_child(new_explosion)
 
 func kill_player(player_id: int) -> void:
 	var player: Player = get_node("Player%d" % [player_id])
@@ -62,6 +71,11 @@ func on_game_ended():
 	await get_tree().create_timer(1.3).timeout
 	GameState.randomize_next_game()
 	get_tree().reload_current_scene()
+	
+func on_reveal_mine(pos: Vector2i) -> void:
+	var new_mine := detonated_mine_scene.instantiate()
+	new_mine.global_position = map.tile_to_pos(pos)
+	add_child(new_mine)
 
 func _process(_dt):
 	GameState.compute_leaders()

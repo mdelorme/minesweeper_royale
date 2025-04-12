@@ -36,3 +36,6 @@ func _init(_id: int):
 
 func unset_invincible():
 	invincible = false
+
+func is_dead():
+	return hearts == 0

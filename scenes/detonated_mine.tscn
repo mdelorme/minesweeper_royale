@@ -1,0 +1,8 @@
+[gd_scene load_steps=2 format=3 uid="uid://blh6sefmv7nps"]
+
+[ext_resource type="Texture2D" uid="uid://dskuafc8g8m5p" path="res://assets/Tileset.png" id="1_q0uxf"]
+
+[node name="DetonatedMine" type="Sprite2D"]
+texture = ExtResource("1_q0uxf")
+region_enabled = true
+region_rect = Rect2(16, 0, 16, 16)
