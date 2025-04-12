@@ -48,6 +48,8 @@ func kill_player(player_id: int) -> void:
 	var player: Player = get_node("Player%d" % [player_id])
 	assert(player)
 	player.die()
+	if GameState.nb_players_alive == 1:
+		EventBus.on_game_ended.emit()
 
 func on_timer_end():
 	EventBus.on_game_ended.emit()
