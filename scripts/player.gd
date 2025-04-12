@@ -68,7 +68,6 @@ func _unhandled_input(event: InputEvent) -> void:
 		
 func _process(delta: float) -> void:
 	poot_cooldown = max(0.0, poot_cooldown - delta)
-	print(poot_cooldown)
 	if poot_cooldown == 0.0:
 		AudioBus.play_sound(poot_sound, 1.0, 1.5)
 		poot_cooldown = rng.randf_range(1.0, 10.0)
