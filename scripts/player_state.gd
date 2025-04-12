@@ -28,9 +28,8 @@ var label: String:
 		EventBus.on_player_rename.emit(id, value)
 var color: Color
 var position: Vector2
-var score: int
+var score: int = 0
 
 
 func _init(_id: int):
 	id = _id
-	score = 0

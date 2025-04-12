@@ -25,8 +25,6 @@ func on_player_score(player_id: int, score: int) -> void:
 	GameState.players[player_id-1].score += score
 		
 func kill_player(player_id: int) -> void:
-	var player := get_node("Player%d" % [player_id])
+	var player: Player = get_node("Player%d" % [player_id])
 	assert(player)
-	player.queue_free()
-	
-	
+	player.die()
