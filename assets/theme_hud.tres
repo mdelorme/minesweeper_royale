@@ -4,4 +4,6 @@
 
 [resource]
 default_font = ExtResource("1_tsmp0")
-default_font_size = 20
+default_font_size = 16
+score_box/base_type = &"Panel"
+score_box/styles/panel = null

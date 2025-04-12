@@ -33,3 +33,4 @@ var score: int = 1
 
 func _init(_id: int):
 	id = _id
+	score = 1

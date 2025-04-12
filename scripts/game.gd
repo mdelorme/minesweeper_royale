@@ -28,6 +28,7 @@ func on_player_dig(pos: Vector2, player_id: int) -> void:
 
 func on_player_score(player_id: int, score: int) -> void:
 	GameState.players[player_id-1].score += score
+	EventBus.on_update_player_score.emit(player_id)
 
 func kill_player(player_id: int) -> void:
 	var player: Player = get_node("Player%d" % [player_id])

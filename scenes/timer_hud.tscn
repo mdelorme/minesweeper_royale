@@ -1,6 +1,6 @@
-[gd_scene load_steps=3 format=3 uid="uid://ciypk2uq81l4"]
+[gd_scene load_steps=3 format=3 uid="uid://cjrldkt1yuita"]
 
-[ext_resource type="Script" uid="uid://c0o65g8egn3u2" path="res://scripts/timer_hud.gd" id="1_2u28t"]
+[ext_resource type="Script" path="res://scripts/timer_hud.gd" id="1_2u28t"]
 [ext_resource type="Theme" uid="uid://rk6qj71lika4" path="res://assets/theme_hud.tres" id="1_y8pur"]
 
 [node name="hbox" type="HBoxContainer"]
