@@ -80,7 +80,10 @@ func player_digs(position: Vector2i, player_id: int, propagate: bool = true) -> 
 					
 				player_digs(Vector2i(nx, ny), player_id, false)
 	EventBus.on_tile_update.emit(position)
-	return cell_state.secret != CellState.Secret.MINED 
+	var dead := cell_state.secret == CellState.Secret.MINED
+	var score := cell_state.secret if not dead else 0
+	EventBus.on_player_score.emit(player_id, score)
+	return not dead 
 	
 func get_score_at(position: Vector2i) -> int:
 	var cell_state : CellState = grid[position.y][position.x]
