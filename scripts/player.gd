@@ -82,6 +82,8 @@ func dig() -> void:
 
 
 func die() -> void:
+	state.is_dead = true
+	
 	var shake_tween := get_tree().create_tween().set_loops(10)
 	shake_tween.tween_property(%Sprite, "rotation", PI/8, 0.015)
 	shake_tween.tween_property(%Sprite, "rotation", -PI/8, 0.015)
