@@ -19,13 +19,8 @@ static var INITIAL_POSITIONS: Array[Vector2] = [
 var id: int:
 	set(value):
 		id = value
-		label = "Player %s" % id
 		color = COLORS[id - 1]
 		position = INITIAL_POSITIONS[id - 1]
-var label: String:
-	set(value):
-		label = value
-		EventBus.on_player_rename.emit(id, value)
 var color: Color
 var position: Vector2
 var score: int = 1
