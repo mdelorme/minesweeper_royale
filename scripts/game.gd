@@ -2,6 +2,7 @@ extends Node2D
 
 @onready var map : Map = $Map
 @onready var timer : Timer = $TimerGameEnd
+@onready var crowns: Array[Control] = [%Score_p1/Crown,%Score_p2/Crown,%Score_p3/Crown,%Score_p4/Crown]
 
 const dig_sound       := preload("res://sounds/dig.wav")
 const explosion_sound := preload("res://sounds/explosion.wav")
@@ -64,3 +65,5 @@ func on_game_ended():
 
 func _process(_dt):
 	GameState.compute_leaders()
+	for i in range(4):
+		crowns[i].visible = GameState.players[i].is_leader
