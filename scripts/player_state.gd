@@ -3,10 +3,10 @@ class_name PlayerState
 
 
 static var COLORS: Array[Color] = [
-	Color.RED,
-	Color.GREEN,
-	Color.BLUE,
-	Color.YELLOW,
+	Color("#076598"),
+	Color("#43871a"),
+	Color("#b06f18"),
+	Color("#8d1f85"),
 ]
 static var INITIAL_POSITIONS: Array[Vector2] = [
 	Vector2(64, 64),
@@ -28,7 +28,9 @@ var label: String:
 		EventBus.on_player_rename.emit(id, value)
 var color: Color
 var position: Vector2
+var score: int
 
 
 func _init(_id: int):
 	id = _id
+	score = 0

@@ -26,6 +26,7 @@ func _ready() -> void:
 	$PlayerName.modulate = state.color
 	modulate = state.color.blend(Color(1.0, 1.0, 1.0, 0.5))
 	%Highlight.modulate = state.color
+	$Sprite.region_rect.position.y += index * 16
 
 	action_map.append('move_left_p%d'  % [index])
 	action_map.append('move_right_p%d' % [index])
@@ -42,7 +43,7 @@ func _physics_process(_delta: float) -> void:
 		action_map[Actions.ACTION_DOWN],
 	) * INPUT_SCALE
 	if velocity.x != 0:
-		%Sprite2D.flip_h = velocity.x < 0
+		%Sprite.flip_h = velocity.x < 0
 	move_and_slide()
 
 	%Highlight.global_position = map.snap_to_grid(global_position)
@@ -50,8 +51,14 @@ func _physics_process(_delta: float) -> void:
 func _unhandled_input(event: InputEvent) -> void:
 	if event.is_action_pressed(action_map[Actions.ACTION_DIG]):
 		EventBus.on_player_dig.emit(position, id)
+		dig()
 
 
 func on_rename(_id: int, new_name: String) -> void:
 	if _id == id:
 		$PlayerName.text = new_name
+		
+func dig() -> void:
+	var tween := get_tree().create_tween()
+	tween.tween_property($Sprite, "rotation", PI*0.5, 0.05)
+	tween.tween_property($Sprite, "rotation", 0.0, 0.05)

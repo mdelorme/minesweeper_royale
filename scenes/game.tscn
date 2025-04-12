@@ -1,5 +1,6 @@
-[gd_scene load_steps=7 format=3 uid="uid://mostrtwvswno"]
+[gd_scene load_steps=8 format=3 uid="uid://mostrtwvswno"]
 
+[ext_resource type="Script" uid="uid://bimu248y1t0ka" path="res://scripts/game.gd" id="1_lnu2h"]
 [ext_resource type="PackedScene" uid="uid://bcoffnw0mrm78" path="res://scenes/map.tscn" id="1_uwrxv"]
 [ext_resource type="PackedScene" uid="uid://byy5a0wd3wx42" path="res://scenes/player.tscn" id="2_yqjtg"]
 
@@ -15,6 +16,7 @@ normal = Vector2(1, 0)
 normal = Vector2(-1, 0)
 
 [node name="Game" type="Node2D"]
+script = ExtResource("1_lnu2h")
 
 [node name="Map" parent="." instance=ExtResource("1_uwrxv")]
 position = Vector2(16, 30)

@@ -2,7 +2,7 @@
 
 [ext_resource type="Script" uid="uid://12btqrrgnu8s" path="res://scripts/player.gd" id="1_g2els"]
 [ext_resource type="Texture2D" uid="uid://bg2fqsxfkr8re" path="res://assets/tilemap_white_packed.png" id="2_dqkch"]
-[ext_resource type="Texture2D" uid="uid://c7jvjd882xkmj" path="res://assets/coincoin.png" id="2_qhqgy"]
+[ext_resource type="Texture2D" uid="uid://dskuafc8g8m5p" path="res://assets/Tileset.png" id="3_qhqgy"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_qlg0r"]
 atlas = ExtResource("2_dqkch")
@@ -25,10 +25,12 @@ script = ExtResource("1_g2els")
 unique_name_in_owner = true
 texture = SubResource("AtlasTexture_qlg0r")
 
-[node name="Sprite2D" type="Sprite2D" parent="."]
+[node name="Sprite" type="Sprite2D" parent="."]
 unique_name_in_owner = true
-scale = Vector2(0.333, 0.333)
-texture = ExtResource("2_qhqgy")
+scale = Vector2(0.5, 0.5)
+texture = ExtResource("3_qhqgy")
+region_enabled = true
+region_rect = Rect2(160, 0, 32, 16)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource("CircleShape2D_dqkch")

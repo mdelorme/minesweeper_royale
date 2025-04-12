@@ -1,5 +1,7 @@
 extends Node
 
+const MAP_WIDTH  := 28
+const MAP_HEIGHT := 14
 
 var map: MapState
 var players: Array[PlayerState]
@@ -10,7 +12,7 @@ func _init():
 
 
 func reset():
-	map = MapState.new(28, 14, 40)
+	map = MapState.new(MAP_WIDTH, MAP_HEIGHT, 40)
 	players = [
 		PlayerState.new(1),
 		PlayerState.new(2),
