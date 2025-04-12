@@ -93,7 +93,7 @@ id = 4
 map = NodePath("../Map")
 
 [node name="TimerGameEnd" type="Timer" parent="."]
-wait_time = 25.0
+wait_time = 90.0
 
 [node name="TopWall" type="StaticBody2D" parent="."]
 position = Vector2(248, 16)
