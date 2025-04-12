@@ -14,7 +14,7 @@ func on_player_dig(pos: Vector2, player_id: int) -> void:
 	var map_position := map.pos_to_tile(pos)
 	var map_state := GameState.map
 	if map_state.is_cell_diggable(map_position):
-		AudioBus.play_sound(dig_sound)
+		AudioBus.play_sound(dig_sound, 0.2)
 		## Player is still alive, score increased
 		if map_state.player_digs(map_position, player_id):
 			GameState.players[player_id].score += map_state.get_score_at(map_position)
