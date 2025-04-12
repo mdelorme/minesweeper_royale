@@ -4,22 +4,6 @@
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_0cso3"]
 texture = ExtResource("1_gio8g")
-17:9/0 = 0
-17:9/0/modulate = Color(0.387642, 0.477643, 0.98232, 1)
-18:9/0 = 0
-18:9/0/modulate = Color(0.343848, 0.619727, 0, 1)
-19:9/0 = 0
-20:9/0 = 0
-21:9/0 = 0
-22:9/0 = 0
-23:9/0 = 0
-24:9/0 = 0
-25:9/0 = 0
-25:9/0/modulate = Color(1, 0, 0, 1)
-26:9/0 = 0
-26:9/0/modulate = Color(1, 1, 1, 0.513726)
-29:6/0 = 0
-30:6/0 = 0
 0:0/0 = 0
 2:0/0 = 0
 3:0/0 = 0
