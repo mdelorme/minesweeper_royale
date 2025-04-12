@@ -14,7 +14,7 @@ static var INITIAL_POSITIONS: Array[Vector2] = [
 	Vector2(1024, 64),
 	Vector2(1024, 512),
 ]
-const MAX_HEARTS: int = 3
+const MAX_HEARTS: int = 2
 
 
 var id: int:
