@@ -30,3 +30,18 @@ func reset():
 		PlayerState.new(4),
 	]
 	EventBus.on_game_reset.emit()
+
+func compute_leaders():
+	var max_so_far = -1
+	var leaders = []
+	for i in range(len(players)):
+		if GameState.players[i].is_dead:
+			continue
+		var score = GameState.players[i].score
+		if score > max_so_far:
+			max_so_far = score
+			leaders = [i]
+		elif score == max_so_far:
+			leaders.append(i)
+	for i in range(len(players)):
+		GameState.players[i].is_leader = i in leaders

@@ -61,3 +61,6 @@ func on_game_ended():
 	await get_tree().create_timer(1.3).timeout
 	GameState.randomize_next_game()
 	get_tree().reload_current_scene()
+
+func _process(_dt):
+	GameState.compute_leaders()
