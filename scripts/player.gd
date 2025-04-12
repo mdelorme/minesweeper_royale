@@ -35,7 +35,7 @@ func _ready() -> void:
 	on_rename(id, state.label)
 	$PlayerName.modulate = state.color
 	%Highlight.modulate = state.color
-	$Sprite.region_rect.position.y += index * 16
+	%Sprite.region_rect.position.y += index * 16
 
 	action_map.append('move_left_p%d'  % [index])
 	action_map.append('move_right_p%d' % [index])
@@ -43,8 +43,8 @@ func _ready() -> void:
 	action_map.append('move_down_p%d'  % [index])
 	action_map.append('dig_p%d'   % [index])
 	action_map.append('flag_p%d'  % [index])
-	
-	base_scale = $Sprite.scale
+
+	base_scale = %Sprite.scale
 	time = rng.randf()*PI
 
 func _physics_process(_delta: float) -> void:
@@ -64,25 +64,35 @@ func _unhandled_input(event: InputEvent) -> void:
 	if event.is_action_pressed(action_map[Actions.ACTION_DIG]):
 		EventBus.on_player_dig.emit(position, id)
 		dig()
-		
+
 func _process(delta: float) -> void:
 	poot_cooldown = max(0.0, poot_cooldown - delta)
 	if poot_cooldown == 0.0:
 		AudioBus.play_sound(poot_sound, 1.0, 1.5)
 		poot_cooldown = rng.randf_range(1.0, 10.0)
-		
+
 	## Squish
 	var new_scale = base_scale + Vector2(cos(time*time_scale), sin(time*time_scale))*squish_scale
-	$Sprite.scale = new_scale
+	%Sprite.scale = new_scale
 	time += delta
 
 
 func on_rename(_id: int, new_name: String) -> void:
 	if _id == id:
 		$PlayerName.text = new_name
-		
+
 func dig() -> void:
 	var tween := get_tree().create_tween()
-	tween.tween_property($Sprite, "rotation", PI*0.5, 0.05)
-	tween.tween_property($Sprite, "rotation", 0.0, 0.05)
-	
+	tween.tween_property(%Sprite, "rotation", PI*0.5, 0.05)
+	tween.tween_property(%Sprite, "rotation", 0.0, 0.05)
+
+
+func die() -> void:
+	var shake_tween := get_tree().create_tween().set_loops(10)
+	shake_tween.tween_property(%Sprite, "rotation", PI/8, 0.015)
+	shake_tween.tween_property(%Sprite, "rotation", -PI/8, 0.015)
+
+	var explode_tween := get_tree().create_tween().set_ease(Tween.EASE_OUT)
+	explode_tween.tween_property(%Sprite, "scale", Vector2(5.0, 5.0), 0.3)
+	explode_tween.parallel().tween_property(%Sprite, "modulate:a", 0.0, 0.2).set_delay(0.1)
+	explode_tween.tween_callback(queue_free)

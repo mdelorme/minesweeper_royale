@@ -23,8 +23,6 @@ func on_player_dig(pos: Vector2, player_id: int) -> void:
 			kill_player(player_id)
 		
 func kill_player(player_id: int) -> void:
-	var player := get_node("Player%d" % [player_id])
+	var player: Player = get_node("Player%d" % [player_id])
 	assert(player)
-	player.queue_free()
-	
-	
+	player.die()
