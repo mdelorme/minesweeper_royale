@@ -29,7 +29,7 @@ var rng : RandomNumberGenerator
 var poot_cooldown : float
 
 @onready var hearts_rects: Array[TextureRect] = [
-	%Heart1, %Heart2, %Heart3,
+	%Heart1, %Heart2,
 ]
 
 func _ready() -> void:

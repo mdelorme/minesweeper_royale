@@ -1,15 +1,15 @@
-[gd_scene load_steps=21 format=3 uid="uid://mostrtwvswno"]
+[gd_scene load_steps=20 format=3 uid="uid://mostrtwvswno"]
 
 [ext_resource type="Script" uid="uid://bimu248y1t0ka" path="res://scripts/game.gd" id="1_lnu2h"]
 [ext_resource type="PackedScene" uid="uid://bcoffnw0mrm78" path="res://scenes/map.tscn" id="1_uwrxv"]
-[ext_resource type="Shader" path="res://scripts/background_shader.gdshader" id="2_vtaks"]
+[ext_resource type="Shader" uid="uid://ty7hg2c526kh" path="res://scripts/background_shader.gdshader" id="2_vtaks"]
 [ext_resource type="PackedScene" uid="uid://byy5a0wd3wx42" path="res://scenes/player.tscn" id="2_yqjtg"]
 [ext_resource type="Texture2D" uid="uid://boddmekl73kn8" path="res://assets/kenney-pattern-pack/pattern_81.png" id="3_kvpfn"]
 [ext_resource type="Script" uid="uid://cjxltybofifg3" path="res://scripts/score_box.gd" id="4_lbhrr"]
 [ext_resource type="Theme" uid="uid://rk6qj71lika4" path="res://assets/theme_hud.tres" id="4_u5sy4"]
 [ext_resource type="AudioStream" uid="uid://bmkv3p0dgqcer" path="res://sounds/game_music.wav" id="5_iywne"]
-[ext_resource type="PackedScene" uid="uid://cjrldkt1yuita" path="res://scenes/timer_hud.tscn" id="5_p57ef"]
-[ext_resource type="Texture2D" uid="uid://dskuafc8g8m5p" path="res://assets/Tileset.png" id="6_gee14"]
+[ext_resource type="PackedScene" uid="uid://ciypk2uq81l4" path="res://scenes/timer_hud.tscn" id="5_p57ef"]
+[ext_resource type="Texture2D" uid="uid://dmpr5haeoteyv" path="res://assets/crown.png" id="8_vtaks"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_dinhu"]
 shader = ExtResource("2_vtaks")
@@ -40,10 +40,6 @@ corner_radius_top_left = 5
 corner_radius_top_right = 5
 corner_radius_bottom_right = 5
 corner_radius_bottom_left = 5
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_0tnpc"]
-atlas = ExtResource("6_gee14")
-region = Rect2(96, 32, 16, 16)
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_gee14"]
 bg_color = Color(0.262745, 0.529412, 0.101961, 1)
@@ -179,7 +175,7 @@ grow_vertical = 2
 
 [node name="sprite" type="TextureRect" parent="CanvasLayer/MarginContainer/HBoxContainer/ScoreBox/Score_p1/Crown"]
 layout_mode = 2
-texture = SubResource("AtlasTexture_0tnpc")
+texture = ExtResource("8_vtaks")
 
 [node name="Score_p2" type="Panel" parent="CanvasLayer/MarginContainer/HBoxContainer/ScoreBox"]
 unique_name_in_owner = true
@@ -197,7 +193,7 @@ grow_vertical = 2
 
 [node name="sprite" type="TextureRect" parent="CanvasLayer/MarginContainer/HBoxContainer/ScoreBox/Score_p2/Crown"]
 layout_mode = 2
-texture = SubResource("AtlasTexture_0tnpc")
+texture = ExtResource("8_vtaks")
 
 [node name="Score_p3" type="Panel" parent="CanvasLayer/MarginContainer/HBoxContainer/ScoreBox"]
 unique_name_in_owner = true
@@ -216,7 +212,7 @@ grow_vertical = 2
 
 [node name="sprite" type="TextureRect" parent="CanvasLayer/MarginContainer/HBoxContainer/ScoreBox/Score_p3/Crown"]
 layout_mode = 2
-texture = SubResource("AtlasTexture_0tnpc")
+texture = ExtResource("8_vtaks")
 
 [node name="Score_p4" type="Panel" parent="CanvasLayer/MarginContainer/HBoxContainer/ScoreBox"]
 unique_name_in_owner = true
@@ -235,7 +231,7 @@ grow_vertical = 2
 
 [node name="sprite" type="TextureRect" parent="CanvasLayer/MarginContainer/HBoxContainer/ScoreBox/Score_p4/Crown"]
 layout_mode = 2
-texture = SubResource("AtlasTexture_0tnpc")
+texture = ExtResource("8_vtaks")
 
 [node name="TimerHud" parent="CanvasLayer/MarginContainer/HBoxContainer/ScoreBox" instance=ExtResource("5_p57ef")]
 unique_name_in_owner = true
