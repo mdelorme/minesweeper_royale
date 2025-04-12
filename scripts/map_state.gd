@@ -64,7 +64,7 @@ func player_digs(position: Vector2i, player_id: int, propagate: bool = true) -> 
 	var cell_state : CellState = grid[position.y][position.x]
 	cell_state.interaction = CellState.Interaction.DUG
 	cell_state.owner_id = player_id
-	
+	print("player digs called at pos %d %d; with id %d" % [position.x, position.y, player_id])
 	## Propagate if cell is empty
 	if propagate and cell_state.secret == 0:
 		for i in range(-1, 2):
@@ -81,10 +81,27 @@ func player_digs(position: Vector2i, player_id: int, propagate: bool = true) -> 
 				if get_cell(new_pos).diggable():
 					player_digs(new_pos, player_id, false)
 	EventBus.on_tile_update.emit(position)
-	var dead := cell_state.secret == CellState.Secret.MINED
-	var score := cell_state.secret if not dead else 0
-	EventBus.on_player_score.emit(player_id, score)
-	return not dead 
+	var cell_exploded := cell_state.secret == CellState.Secret.MINED
+	
+	if not cell_exploded and player_id < 5:
+		var score := cell_state.secret if not cell_exploded else 0
+		EventBus.on_player_score.emit(player_id, score)
+	elif cell_exploded:
+		EventBus.on_reveal_mine.emit(position)
+		for i in range(-1, 2):
+			var nx := position.x + i
+			if nx < 0 or nx > width-1:
+				continue
+			for j in range(-1, 2):
+				var ny := position.y + j
+				if ny < 0 or ny > height-1:
+					continue
+					
+				var new_pos := Vector2i(nx, ny)
+				if not get_cell(new_pos).dug():
+					player_digs(new_pos, 5, false)
+				EventBus.on_explosion.emit(Vector2i(nx, ny))
+	return not cell_exploded
 
 func player_flag(position: Vector2i, player_id: int) -> bool:
 	var cell := get_cell(position)

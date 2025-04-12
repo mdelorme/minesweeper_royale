@@ -11,7 +11,9 @@ func pos_to_tile(_global_position: Vector2) -> Vector2i:
 		Vector2i(GameState.map.width - 1, GameState.map.height - 1)
 	)
 
-
+func tile_to_pos(_coord: Vector2i) -> Vector2:
+	return to_global(terrain.map_to_local(_coord))
+	
 func snap_to_grid(_global_position: Vector2) -> Vector2:
 	return to_global(terrain.map_to_local(pos_to_tile(_global_position)))
 
@@ -32,6 +34,8 @@ func update_tile(coords: Vector2i) -> void:
 	elif cell_state.flagged():
 		source_id = 1
 		atlas_coords = Vector2i(cell_state.owner_id - 1, 0)
+	print("Updating tile at coords %d %d with owner %d" % [coords.x, coords.y, cell_state.owner_id])
+	print("Atlas coords is %d %d" % [atlas_coords.x, atlas_coords.y])
 
 	numbers.set_cell(coords, source_id, atlas_coords)
 	
