@@ -35,8 +35,6 @@ func compute_leaders():
 	var max_so_far = -1
 	var leaders = []
 	for i in range(len(players)):
-		if GameState.players[i].is_dead:
-			continue
 		var score = GameState.players[i].score
 		if score > max_so_far:
 			max_so_far = score
