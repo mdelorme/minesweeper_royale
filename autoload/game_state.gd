@@ -1,18 +1,25 @@
 extends Node
 
-const MAP_WIDTH  := 28
-const MAP_HEIGHT := 14
+var map_width  := 28
+var map_height := 14
+var nb_bombs := 40
 
 var map: MapState
 var players: Array[PlayerState]
 
-
 func _init():
+	randomize_next_game()
 	reset()
 
+func randomize_next_game():
+	return
+	# TODO: reenable once player spawns take map size into account
+	#map_width = randi_range(20, 28)
+	#map_height = randi_range(10, 14)
+	#nb_bombs = floor(map_width*map_height / randf_range(9, 10))
 
 func reset():
-	map = MapState.new(MAP_WIDTH, MAP_HEIGHT, 40)
+	map = MapState.new(map_width, map_height, nb_bombs)
 	players = [
 		PlayerState.new(1),
 		PlayerState.new(2),

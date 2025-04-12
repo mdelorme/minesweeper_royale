@@ -57,4 +57,5 @@ func on_game_ended():
 	# Wait a bit, then restart the game.
 	# TODO: instead, reveal the endgame HUD.
 	await get_tree().create_timer(1.3).timeout
+	GameState.randomize_next_game()
 	get_tree().reload_current_scene()
