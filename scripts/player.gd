@@ -5,6 +5,8 @@ class_name Player
 @export var map: Map
 var state: PlayerState
 var poot_sound := preload("res://sounds/poooot.wav")
+var hurt_sound := preload("res://sounds/poulou_mort.wav")
+var laughing_sound := preload("res://sounds/poulou_rigoulou.wav")
 var base_scale : Vector2
 var time : float = 0.0
 var squish_scale : float = 0.1
@@ -49,6 +51,8 @@ func _ready() -> void:
 
 	base_scale = %Sprite.scale
 	time = rng.randf()*PI
+	
+	EventBus.on_player_die.connect(on_player_die)
 
 func _physics_process(_delta: float) -> void:
 	if state.is_dead():
@@ -82,7 +86,7 @@ func _process(delta: float) -> void:
 
 	poot_cooldown = max(0.0, poot_cooldown - delta)
 	if poot_cooldown == 0.0:
-		AudioBus.play_sound(poot_sound, 1.0, 1.5)
+		AudioBus.play_sound(poot_sound, global_position, 1.0, 1.5)
 		poot_cooldown = rng.randf_range(1.0, 10.0)
 
 	## Squish
@@ -97,10 +101,12 @@ func dig() -> void:
 
 
 func die() -> void:
-	if state.invincible:
+	if state.invincible or state.is_dead():
 		return
 
 	state.hearts -= 1
+	
+	AudioBus.play_sound(hurt_sound, global_position)
 	
 	for heart in range(state.MAX_HEARTS):
 		hearts_rects[heart].visible = heart < state.hearts
@@ -128,5 +134,13 @@ func die() -> void:
 	%Sprite.rotation = 0.0
 	%Sprite.region_rect.position = Vector2(192, 0)
 	%Highlight.hide()
+	
+	EventBus.on_player_die.emit()
 
 	active = false
+
+func on_player_die() -> void:
+	if state.is_dead():
+		return
+	
+	AudioBus.play_sound(laughing_sound, global_position)

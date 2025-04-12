@@ -28,7 +28,7 @@ func on_player_dig(pos: Vector2, player_id: int) -> void:
 	var map_position := map.pos_to_tile(pos)
 	var map_state := GameState.map
 	if map_state.get_cell(map_position).diggable():
-		AudioBus.play_sound(dig_sound, 0.2)
+		AudioBus.play_sound(dig_sound, map_position, 0.2)
 		## Player is still alive, score increased
 		if not map_state.player_digs(map_position, player_id):
 			AudioBus.play_sound(explosion_sound)
@@ -41,9 +41,9 @@ func on_player_flag(pos: Vector2, player_id: int) -> void:
 	var changed := map_state.player_flag(map_position, player_id)
 	if changed:
 		if map_state.get_cell(map_position).flagged():
-			AudioBus.play_sound(flag_on_sound, 0.2)
+			AudioBus.play_sound(flag_on_sound, map_position, 0.2)
 		else:
-			AudioBus.play_sound(flag_off_sound, 0.2)
+			AudioBus.play_sound(flag_off_sound, map_position, 0.2)
 
 func on_player_score(player_id: int, score: int) -> void:
 	GameState.players[player_id-1].score += score

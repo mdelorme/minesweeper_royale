@@ -8,7 +8,7 @@
 [ext_resource type="Script" uid="uid://cjxltybofifg3" path="res://scripts/score_box.gd" id="4_lbhrr"]
 [ext_resource type="Theme" uid="uid://rk6qj71lika4" path="res://assets/theme_hud.tres" id="4_u5sy4"]
 [ext_resource type="AudioStream" uid="uid://bmkv3p0dgqcer" path="res://sounds/game_music.wav" id="5_iywne"]
-[ext_resource type="PackedScene" uid="uid://ciypk2uq81l4" path="res://scenes/timer_hud.tscn" id="5_p57ef"]
+[ext_resource type="PackedScene" uid="uid://cjrldkt1yuita" path="res://scenes/timer_hud.tscn" id="5_p57ef"]
 [ext_resource type="Texture2D" uid="uid://dskuafc8g8m5p" path="res://assets/Tileset.png" id="6_gee14"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_dinhu"]
@@ -243,5 +243,9 @@ layout_mode = 2
 
 [node name="Music" type="AudioStreamPlayer2D" parent="."]
 stream = ExtResource("5_iywne")
+autoplay = true
+
+[node name="AudioListener2D" type="AudioListener2D" parent="."]
+position = Vector2(248, 140)
 
 [connection signal="resized" from="CanvasLayer/MarginContainer/HBoxContainer/ScoreBox" to="CanvasLayer/MarginContainer/HBoxContainer/ScoreBox" method="_on_resized"]
