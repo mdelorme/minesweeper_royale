@@ -1,10 +1,12 @@
-[gd_scene load_steps=10 format=3 uid="uid://mostrtwvswno"]
+[gd_scene load_steps=16 format=3 uid="uid://mostrtwvswno"]
 
 [ext_resource type="Script" uid="uid://bimu248y1t0ka" path="res://scripts/game.gd" id="1_lnu2h"]
 [ext_resource type="PackedScene" uid="uid://bcoffnw0mrm78" path="res://scenes/map.tscn" id="1_uwrxv"]
 [ext_resource type="PackedScene" uid="uid://byy5a0wd3wx42" path="res://scenes/player.tscn" id="2_yqjtg"]
 [ext_resource type="Script" uid="uid://dhs2t820gnl8a" path="res://scripts/score_box.gd" id="4_lbhrr"]
+[ext_resource type="Theme" uid="uid://rk6qj71lika4" path="res://assets/theme_hud.tres" id="4_u5sy4"]
 [ext_resource type="AudioStream" uid="uid://bmkv3p0dgqcer" path="res://sounds/game_music.wav" id="5_iywne"]
+[ext_resource type="PackedScene" uid="uid://cjrldkt1yuita" path="res://scenes/timer_hud.tscn" id="5_p57ef"]
 
 [sub_resource type="WorldBoundaryShape2D" id="WorldBoundaryShape2D_yqjtg"]
 normal = Vector2(0, 1)
@@ -16,6 +18,54 @@ normal = Vector2(1, 0)
 
 [sub_resource type="WorldBoundaryShape2D" id="WorldBoundaryShape2D_iywne"]
 normal = Vector2(-1, 0)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_u5sy4"]
+bg_color = Color(0.027451, 0.396078, 0.596078, 1)
+border_width_left = 3
+border_width_top = 3
+border_width_right = 3
+border_width_bottom = 3
+border_color = Color(0.272, 0.6477, 0.85, 1)
+corner_radius_top_left = 5
+corner_radius_top_right = 5
+corner_radius_bottom_right = 5
+corner_radius_bottom_left = 5
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_gee14"]
+bg_color = Color(0.262745, 0.529412, 0.101961, 1)
+border_width_left = 3
+border_width_top = 3
+border_width_right = 3
+border_width_bottom = 3
+border_color = Color(0.470855, 0.77, 0.2849, 1)
+corner_radius_top_left = 5
+corner_radius_top_right = 5
+corner_radius_bottom_right = 5
+corner_radius_bottom_left = 5
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_0tnpc"]
+bg_color = Color(0.690196, 0.435294, 0.0941176, 1)
+border_width_left = 3
+border_width_top = 3
+border_width_right = 3
+border_width_bottom = 3
+border_color = Color(0.85, 0.636367, 0.357, 1)
+corner_radius_top_left = 5
+corner_radius_top_right = 5
+corner_radius_bottom_right = 5
+corner_radius_bottom_left = 5
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_vtaks"]
+bg_color = Color(0.552941, 0.121569, 0.521569, 1)
+border_width_left = 3
+border_width_top = 3
+border_width_right = 3
+border_width_bottom = 3
+border_color = Color(0.89, 0.4005, 0.857367, 1)
+corner_radius_top_left = 5
+corner_radius_top_right = 5
+corner_radius_bottom_right = 5
+corner_radius_bottom_left = 5
 
 [node name="Game" type="Node2D"]
 script = ExtResource("1_lnu2h")
@@ -41,6 +91,9 @@ map = NodePath("../Map")
 position = Vector2(400, 228)
 id = 4
 map = NodePath("../Map")
+
+[node name="TimerGameEnd" type="Timer" parent="."]
+wait_time = 25.0
 
 [node name="TopWall" type="StaticBody2D" parent="."]
 position = Vector2(248, 16)
@@ -68,30 +121,59 @@ shape = SubResource("WorldBoundaryShape2D_iywne")
 
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
 
-[node name="ScoreBox" type="HBoxContainer" parent="CanvasLayer"]
-custom_minimum_size = Vector2(0, 24)
+[node name="dbg_label" type="RichTextLabel" parent="CanvasLayer"]
+offset_top = 96.0
+offset_right = 396.0
+offset_bottom = 269.0
+theme_override_font_sizes/normal_font_size = 10
+text = "Blah :"
+
+[node name="MarginContainer" type="MarginContainer" parent="CanvasLayer"]
 anchors_preset = 10
 anchor_right = 1.0
+offset_bottom = 27.0
 grow_horizontal = 2
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 2
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 0
+
+[node name="HBoxContainer" type="HBoxContainer" parent="CanvasLayer/MarginContainer"]
+layout_mode = 2
+
+[node name="ScoreBox" type="HBoxContainer" parent="CanvasLayer/MarginContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme = ExtResource("4_u5sy4")
 script = ExtResource("4_lbhrr")
 
-[node name="Score_p1" type="ColorRect" parent="CanvasLayer/ScoreBox"]
-custom_minimum_size = Vector2(100, 0)
+[node name="Score_p1" type="Panel" parent="CanvasLayer/MarginContainer/HBoxContainer/ScoreBox"]
 layout_mode = 2
-color = Color(0.027451, 0.396078, 0.596078, 1)
+size_flags_horizontal = 3
+theme_override_styles/panel = SubResource("StyleBoxFlat_u5sy4")
 
-[node name="Score_p2" type="ColorRect" parent="CanvasLayer/ScoreBox"]
+[node name="Score_p2" type="Panel" parent="CanvasLayer/MarginContainer/HBoxContainer/ScoreBox"]
 layout_mode = 2
-color = Color(0.262745, 0.529412, 0.101961, 1)
+size_flags_horizontal = 3
+theme_override_styles/panel = SubResource("StyleBoxFlat_gee14")
 
-[node name="Score_p3" type="ColorRect" parent="CanvasLayer/ScoreBox"]
+[node name="Score_p3" type="Panel" parent="CanvasLayer/MarginContainer/HBoxContainer/ScoreBox"]
 layout_mode = 2
-color = Color(0.690196, 0.435294, 0.0941176, 1)
+size_flags_horizontal = 3
+theme_type_variation = &"score_box"
+theme_override_styles/panel = SubResource("StyleBoxFlat_0tnpc")
 
-[node name="Score_p4" type="ColorRect" parent="CanvasLayer/ScoreBox"]
+[node name="Score_p4" type="Panel" parent="CanvasLayer/MarginContainer/HBoxContainer/ScoreBox"]
 layout_mode = 2
-color = Color(0.552941, 0.121569, 0.521569, 1)
+size_flags_horizontal = 3
+theme_type_variation = &"score_box"
+theme_override_styles/panel = SubResource("StyleBoxFlat_vtaks")
+
+[node name="TimerHud" parent="CanvasLayer/MarginContainer/HBoxContainer/ScoreBox" instance=ExtResource("5_p57ef")]
+unique_name_in_owner = true
+layout_mode = 2
 
 [node name="Music" type="AudioStreamPlayer2D" parent="."]
 stream = ExtResource("5_iywne")
-autoplay = true
+
+[connection signal="resized" from="CanvasLayer/MarginContainer/HBoxContainer/ScoreBox" to="CanvasLayer/MarginContainer/HBoxContainer/ScoreBox" method="_on_resized"]
