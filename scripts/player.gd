@@ -55,7 +55,7 @@ func _ready() -> void:
 	EventBus.on_player_die.connect(on_player_die)
 
 func _physics_process(_delta: float) -> void:
-	if state.is_dead():
+	if state.is_dead() or not active:
 		return
 
 	velocity = Input.get_vector(
@@ -71,7 +71,7 @@ func _physics_process(_delta: float) -> void:
 	%Highlight.global_position = map.snap_to_grid(global_position)
 
 func _unhandled_input(event: InputEvent) -> void:
-	if state.is_dead():
+	if state.is_dead() or not active:
 		return
 
 	if event.is_action_pressed(action_map[Actions.ACTION_DIG]):
@@ -81,7 +81,7 @@ func _unhandled_input(event: InputEvent) -> void:
 		EventBus.on_player_flag.emit(position, id)
 
 func _process(delta: float) -> void:
-	if state.is_dead():
+	if state.is_dead() or not active:
 		return
 
 	poot_cooldown = max(0.0, poot_cooldown - delta)
@@ -101,7 +101,7 @@ func dig() -> void:
 
 
 func die() -> void:
-	if state.invincible or state.is_dead():
+	if state.invincible or state.is_dead() or not active:
 		return
 
 	state.hearts -= 1
@@ -140,7 +140,7 @@ func die() -> void:
 	active = false
 
 func on_player_die() -> void:
-	if state.is_dead():
+	if state.is_dead() or not active:
 		return
 	
 	AudioBus.play_sound(laughing_sound, global_position)

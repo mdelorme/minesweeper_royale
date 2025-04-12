@@ -22,12 +22,43 @@ func _ready() -> void:
 	EventBus.on_player_flag.connect(on_player_flag)
 	EventBus.on_player_score.connect(on_player_score)
 	EventBus.on_game_ended.connect(on_game_ended)
+	EventBus.on_game_restarted.connect(on_game_restarted)
 	EventBus.on_explosion.connect(on_explosion)
 	EventBus.on_reveal_mine.connect(on_reveal_mine)
 	timer.timeout.connect(on_timer_end)
 	
 	%TimerHud.timer = timer
+	
+	toggle_players(false)
+	
+	%Counter1.modulate.a = 0.0
+	%Counter2.modulate.a = 0.0
+	%Counter3.modulate.a = 0.0
+	%Counter4.modulate.a = 0.0
+	
+	var tween := get_tree().create_tween()
+	%FadeRect.modulate.a = 1.0
+	%FadeRect.visible = true
+	%GreyRect.visible = true
+	tween.tween_property(%FadeRect, "modulate:a", 0.0, 0.2)
+	await tween.finished
+	
+	const max_scale := 1.5
+	for i in range(4, 0, -1):
+		tween = get_tree().create_tween()
+		var counter := get_node("CanvasLayer/CenterContainer/Counter%d" % i)
+		tween.tween_property(counter, "modulate:a", 1.0, 0.1)
+		tween.tween_property(counter, "scale", Vector2(max_scale, max_scale), 1.5)
+		tween.tween_property(counter, "modulate:a", 0.0, 0.3)
+		await tween.finished
+		
+	%GreyRect.visible = false
+	toggle_players(true)
 	timer.start()
+	
+func toggle_players(active: bool) -> void:
+	for i in range(4):
+		get_node("Player%d" % (i+1)).active = active
 
 func on_player_dig(pos: Vector2, player_id: int) -> void:
 	var map_position := map.pos_to_tile(pos)
@@ -69,11 +100,23 @@ func kill_player(player_id: int) -> void:
 func on_timer_end():
 	EventBus.on_game_ended.emit()
 
-func on_game_ended():
+func on_game_ended() -> void:
 	timer.stop()
-	# Wait a bit, then restart the game.
-	# TODO: instead, reveal the endgame HUD.
-	await get_tree().create_timer(5).timeout
+	for i in range(4):
+		get_node("Player%d" % [i+1]).active = false
+	%GreyRect.material.set_shader_parameter("alpha", 0.0);
+	%GreyRect.visible = true
+	var tween := get_tree().create_tween()
+	tween.tween_property(%GreyRect, "material:shader_parameter/alpha", 1.0, 0.5)
+	await tween.finished
+	$CanvasLayer/ScoreCard.on_show()
+		
+func on_game_restarted() -> void:
+	var tween := get_tree().create_tween()
+	%FadeRect.modulate.a = 0.0
+	%FadeRect.visible = true
+	tween.tween_property(%FadeRect, "modulate:a", 1.0, 0.2)
+	await tween.finished
 	GameState.randomize_next_game()
 	get_tree().reload_current_scene()
 	

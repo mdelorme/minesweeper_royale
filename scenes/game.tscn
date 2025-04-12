@@ -1,4 +1,4 @@
-[gd_scene load_steps=21 format=3 uid="uid://mostrtwvswno"]
+[gd_scene load_steps=29 format=3 uid="uid://mostrtwvswno"]
 
 [ext_resource type="Script" uid="uid://bimu248y1t0ka" path="res://scripts/game.gd" id="1_lnu2h"]
 [ext_resource type="PackedScene" uid="uid://bcoffnw0mrm78" path="res://scenes/map.tscn" id="1_uwrxv"]
@@ -11,6 +11,13 @@
 [ext_resource type="PackedScene" uid="uid://cjrldkt1yuita" path="res://scenes/timer_hud.tscn" id="5_p57ef"]
 [ext_resource type="Texture2D" uid="uid://dmpr5haeoteyv" path="res://assets/crown.png" id="8_vtaks"]
 [ext_resource type="Texture2D" uid="uid://cwwq8rcwd2yw1" path="res://assets/skull.png" id="9_kvpfn"]
+[ext_resource type="PackedScene" uid="uid://vtmapdr3lve8" path="res://scenes/score_container.tscn" id="11_dinhu"]
+[ext_resource type="Script" uid="uid://bni32a3cnpj3w" path="res://scripts/score_card.gd" id="11_kvuet"]
+[ext_resource type="Shader" uid="uid://bu0ca6xnqvm2h" path="res://scripts/grey_rect.gdshader" id="13_trtic"]
+[ext_resource type="Texture2D" uid="uid://bdnt0l2am758c" path="res://assets/counter_4.png" id="14_ssvqc"]
+[ext_resource type="Texture2D" uid="uid://b3ak6hdw67ab2" path="res://assets/counter_3.png" id="15_264po"]
+[ext_resource type="Texture2D" uid="uid://csokrerhfvlhc" path="res://assets/counter_2.png" id="16_1kice"]
+[ext_resource type="Texture2D" uid="uid://cpx4lgj2uhv14" path="res://assets/counter_1.png" id="17_5newe"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_dinhu"]
 shader = ExtResource("2_vtaks")
@@ -78,6 +85,10 @@ corner_radius_top_right = 5
 corner_radius_bottom_right = 5
 corner_radius_bottom_left = 5
 
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_ir15t"]
+shader = ExtResource("13_trtic")
+shader_parameter/alpha = 1.0
+
 [node name="Game" type="Node2D"]
 script = ExtResource("1_lnu2h")
 
@@ -113,7 +124,7 @@ id = 4
 map = NodePath("../Map")
 
 [node name="TimerGameEnd" type="Timer" parent="."]
-wait_time = 90.0
+wait_time = 60.0
 
 [node name="TopWall" type="StaticBody2D" parent="."]
 position = Vector2(248, 16)
@@ -393,6 +404,92 @@ texture = ExtResource("9_kvpfn")
 [node name="TimerHud" parent="CanvasLayer/MarginContainer/HBoxContainer/ScoreBox" instance=ExtResource("5_p57ef")]
 unique_name_in_owner = true
 layout_mode = 2
+
+[node name="GreyRect" type="ColorRect" parent="CanvasLayer"]
+unique_name_in_owner = true
+visible = false
+material = SubResource("ShaderMaterial_ir15t")
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="ScoreCard" type="MarginContainer" parent="CanvasLayer"]
+visible = false
+custom_minimum_size = Vector2(480, 250)
+offset_top = -250.0
+offset_right = 483.0
+theme_override_constants/margin_left = 5
+theme_override_constants/margin_top = 30
+theme_override_constants/margin_right = 5
+theme_override_constants/margin_bottom = 30
+script = ExtResource("11_kvuet")
+
+[node name="HBoxContainer" type="HBoxContainer" parent="CanvasLayer/ScoreCard"]
+layout_mode = 2
+
+[node name="ScoreContainer" parent="CanvasLayer/ScoreCard/HBoxContainer" instance=ExtResource("11_dinhu")]
+layout_mode = 2
+size_flags_horizontal = 3
+player_id = 0
+
+[node name="ScoreContainer2" parent="CanvasLayer/ScoreCard/HBoxContainer" instance=ExtResource("11_dinhu")]
+layout_mode = 2
+size_flags_horizontal = 3
+player_id = 1
+
+[node name="ScoreContainer3" parent="CanvasLayer/ScoreCard/HBoxContainer" instance=ExtResource("11_dinhu")]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="ScoreContainer4" parent="CanvasLayer/ScoreCard/HBoxContainer" instance=ExtResource("11_dinhu")]
+layout_mode = 2
+size_flags_horizontal = 3
+player_id = 3
+
+[node name="FadeRect" type="ColorRect" parent="CanvasLayer"]
+unique_name_in_owner = true
+visible = false
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+color = Color(0, 0, 0, 1)
+
+[node name="CenterContainer" type="CenterContainer" parent="CanvasLayer"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Counter4" type="TextureRect" parent="CanvasLayer/CenterContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+texture = ExtResource("14_ssvqc")
+stretch_mode = 3
+
+[node name="Counter3" type="TextureRect" parent="CanvasLayer/CenterContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+texture = ExtResource("15_264po")
+stretch_mode = 3
+
+[node name="Counter2" type="TextureRect" parent="CanvasLayer/CenterContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+texture = ExtResource("16_1kice")
+stretch_mode = 3
+
+[node name="Counter1" type="TextureRect" parent="CanvasLayer/CenterContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+texture = ExtResource("17_5newe")
+stretch_mode = 3
 
 [node name="Music" type="AudioStreamPlayer2D" parent="."]
 stream = ExtResource("5_iywne")

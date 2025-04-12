@@ -1,6 +1,12 @@
 extends Node
 class_name PlayerState
 
+static var player_names: Array[String] = [
+	"Jean Poule II",
+	"Dead Poule", 
+	"Crapoule",
+	"Swimming Poule"
+]
 
 static var COLORS: Array[Color] = [
 	Color("#076598"),
@@ -28,10 +34,12 @@ var hearts: int = MAX_HEARTS
 var invincible: bool = false
 var score: int = 1
 var is_leader: bool = false
+var player_name: String
 
 func _init(_id: int):
 	id = _id
 	score = 1
+	player_name = player_names[_id-1]
 
 
 func unset_invincible():
