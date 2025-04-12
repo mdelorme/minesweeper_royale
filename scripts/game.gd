@@ -2,7 +2,8 @@ extends Node2D
 
 @onready var map : Map = $Map
 @onready var timer : Timer = $TimerGameEnd
-@onready var crowns: Array[Control] = [%Score_p1/Crown,%Score_p2/Crown,%Score_p3/Crown,%Score_p4/Crown]
+@onready var crowns: Array[Control] = [%Score_p1/Markers/Box/Crown,%Score_p2/Markers/Box/Crown,%Score_p3/Markers/Box/Crown,%Score_p4/Markers/Box/Crown]
+@onready var skulls: Array[Control] = [%Score_p1/Markers/Box/Skull,%Score_p2/Markers/Box/Skull,%Score_p3/Markers/Box/Skull,%Score_p4/Markers/Box/Skull]
 
 const dig_sound            := preload("res://sounds/dig.wav")
 const explosion_sound      := preload("res://sounds/explosion.wav")
@@ -10,6 +11,10 @@ const flag_on_sound        := preload("res://sounds/flag_on.wav")
 const flag_off_sound       := preload("res://sounds/flag_off.wav")
 const explosion_scene      := preload("res://scenes/explosion.tscn")
 const detonated_mine_scene := preload("res://scenes/detonated_mine.tscn")
+
+var time := 0.0
+var squish_scale : float = 0.1
+var time_scale   : float = 10.0
 
 func _ready() -> void:
 	## Connecting to relevant signals of the event bus
@@ -78,6 +83,11 @@ func on_reveal_mine(pos: Vector2i) -> void:
 	add_child(new_mine)
 
 func _process(_dt):
+	time += _dt
 	GameState.compute_leaders()
 	for i in range(4):
 		crowns[i].visible = GameState.players[i].is_leader
+		skulls[i].visible = GameState.players[i].is_dead()
+		
+		crowns[i].get_node("Control/Sprite").scale = Vector2(1.0, 1.0) + Vector2(cos(time*time_scale), sin(time*time_scale))*squish_scale
+		skulls[i].get_node("Control/Sprite").scale  = Vector2(1.0, 1.0) + Vector2(cos(time*time_scale+0.213), sin(time*time_scale+0.234))*squish_scale

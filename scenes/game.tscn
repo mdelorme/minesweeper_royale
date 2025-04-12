@@ -1,15 +1,16 @@
-[gd_scene load_steps=20 format=3 uid="uid://mostrtwvswno"]
+[gd_scene load_steps=21 format=3 uid="uid://mostrtwvswno"]
 
 [ext_resource type="Script" uid="uid://bimu248y1t0ka" path="res://scripts/game.gd" id="1_lnu2h"]
 [ext_resource type="PackedScene" uid="uid://bcoffnw0mrm78" path="res://scenes/map.tscn" id="1_uwrxv"]
-[ext_resource type="Shader" uid="uid://ty7hg2c526kh" path="res://scripts/background_shader.gdshader" id="2_vtaks"]
+[ext_resource type="Shader" path="res://scripts/background_shader.gdshader" id="2_vtaks"]
 [ext_resource type="PackedScene" uid="uid://byy5a0wd3wx42" path="res://scenes/player.tscn" id="2_yqjtg"]
 [ext_resource type="Texture2D" uid="uid://boddmekl73kn8" path="res://assets/kenney-pattern-pack/pattern_81.png" id="3_kvpfn"]
 [ext_resource type="Script" uid="uid://cjxltybofifg3" path="res://scripts/score_box.gd" id="4_lbhrr"]
 [ext_resource type="Theme" uid="uid://rk6qj71lika4" path="res://assets/theme_hud.tres" id="4_u5sy4"]
 [ext_resource type="AudioStream" uid="uid://bmkv3p0dgqcer" path="res://sounds/game_music.wav" id="5_iywne"]
-[ext_resource type="PackedScene" uid="uid://ciypk2uq81l4" path="res://scenes/timer_hud.tscn" id="5_p57ef"]
+[ext_resource type="PackedScene" uid="uid://cjrldkt1yuita" path="res://scenes/timer_hud.tscn" id="5_p57ef"]
 [ext_resource type="Texture2D" uid="uid://dmpr5haeoteyv" path="res://assets/crown.png" id="8_vtaks"]
+[ext_resource type="Texture2D" uid="uid://cwwq8rcwd2yw1" path="res://assets/skull.png" id="9_kvpfn"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_dinhu"]
 shader = ExtResource("2_vtaks")
@@ -165,7 +166,7 @@ layout_mode = 2
 size_flags_horizontal = 3
 theme_override_styles/panel = SubResource("StyleBoxFlat_u5sy4")
 
-[node name="Crown" type="CenterContainer" parent="CanvasLayer/MarginContainer/HBoxContainer/ScoreBox/Score_p1"]
+[node name="Markers" type="CenterContainer" parent="CanvasLayer/MarginContainer/HBoxContainer/ScoreBox/Score_p1"]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -173,9 +174,48 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="sprite" type="TextureRect" parent="CanvasLayer/MarginContainer/HBoxContainer/ScoreBox/Score_p1/Crown"]
+[node name="Box" type="HBoxContainer" parent="CanvasLayer/MarginContainer/HBoxContainer/ScoreBox/Score_p1/Markers"]
 layout_mode = 2
+
+[node name="Crown" type="TextureRect" parent="CanvasLayer/MarginContainer/HBoxContainer/ScoreBox/Score_p1/Markers/Box"]
+self_modulate = Color(1, 1, 1, 0)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
 texture = ExtResource("8_vtaks")
+
+[node name="Control" type="Control" parent="CanvasLayer/MarginContainer/HBoxContainer/ScoreBox/Score_p1/Markers/Box/Crown"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Sprite" type="Sprite2D" parent="CanvasLayer/MarginContainer/HBoxContainer/ScoreBox/Score_p1/Markers/Box/Crown/Control"]
+texture = ExtResource("8_vtaks")
+
+[node name="Skull" type="TextureRect" parent="CanvasLayer/MarginContainer/HBoxContainer/ScoreBox/Score_p1/Markers/Box"]
+self_modulate = Color(1, 1, 1, 0)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+texture = ExtResource("9_kvpfn")
+
+[node name="Control" type="Control" parent="CanvasLayer/MarginContainer/HBoxContainer/ScoreBox/Score_p1/Markers/Box/Skull"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Sprite" type="Sprite2D" parent="CanvasLayer/MarginContainer/HBoxContainer/ScoreBox/Score_p1/Markers/Box/Skull/Control"]
+texture = ExtResource("9_kvpfn")
 
 [node name="Score_p2" type="Panel" parent="CanvasLayer/MarginContainer/HBoxContainer/ScoreBox"]
 unique_name_in_owner = true
@@ -183,7 +223,7 @@ layout_mode = 2
 size_flags_horizontal = 3
 theme_override_styles/panel = SubResource("StyleBoxFlat_gee14")
 
-[node name="Crown" type="CenterContainer" parent="CanvasLayer/MarginContainer/HBoxContainer/ScoreBox/Score_p2"]
+[node name="Markers" type="CenterContainer" parent="CanvasLayer/MarginContainer/HBoxContainer/ScoreBox/Score_p2"]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -191,9 +231,48 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="sprite" type="TextureRect" parent="CanvasLayer/MarginContainer/HBoxContainer/ScoreBox/Score_p2/Crown"]
+[node name="Box" type="HBoxContainer" parent="CanvasLayer/MarginContainer/HBoxContainer/ScoreBox/Score_p2/Markers"]
 layout_mode = 2
+
+[node name="Crown" type="TextureRect" parent="CanvasLayer/MarginContainer/HBoxContainer/ScoreBox/Score_p2/Markers/Box"]
+self_modulate = Color(1, 1, 1, 0)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
 texture = ExtResource("8_vtaks")
+
+[node name="Control" type="Control" parent="CanvasLayer/MarginContainer/HBoxContainer/ScoreBox/Score_p2/Markers/Box/Crown"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Sprite" type="Sprite2D" parent="CanvasLayer/MarginContainer/HBoxContainer/ScoreBox/Score_p2/Markers/Box/Crown/Control"]
+texture = ExtResource("8_vtaks")
+
+[node name="Skull" type="TextureRect" parent="CanvasLayer/MarginContainer/HBoxContainer/ScoreBox/Score_p2/Markers/Box"]
+self_modulate = Color(1, 1, 1, 0)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+texture = ExtResource("9_kvpfn")
+
+[node name="Control" type="Control" parent="CanvasLayer/MarginContainer/HBoxContainer/ScoreBox/Score_p2/Markers/Box/Skull"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Sprite" type="Sprite2D" parent="CanvasLayer/MarginContainer/HBoxContainer/ScoreBox/Score_p2/Markers/Box/Skull/Control"]
+texture = ExtResource("9_kvpfn")
 
 [node name="Score_p3" type="Panel" parent="CanvasLayer/MarginContainer/HBoxContainer/ScoreBox"]
 unique_name_in_owner = true
@@ -202,7 +281,7 @@ size_flags_horizontal = 3
 theme_type_variation = &"score_box"
 theme_override_styles/panel = SubResource("StyleBoxFlat_0tnpc")
 
-[node name="Crown" type="CenterContainer" parent="CanvasLayer/MarginContainer/HBoxContainer/ScoreBox/Score_p3"]
+[node name="Markers" type="CenterContainer" parent="CanvasLayer/MarginContainer/HBoxContainer/ScoreBox/Score_p3"]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -210,9 +289,48 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="sprite" type="TextureRect" parent="CanvasLayer/MarginContainer/HBoxContainer/ScoreBox/Score_p3/Crown"]
+[node name="Box" type="HBoxContainer" parent="CanvasLayer/MarginContainer/HBoxContainer/ScoreBox/Score_p3/Markers"]
 layout_mode = 2
+
+[node name="Crown" type="TextureRect" parent="CanvasLayer/MarginContainer/HBoxContainer/ScoreBox/Score_p3/Markers/Box"]
+self_modulate = Color(1, 1, 1, 0)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
 texture = ExtResource("8_vtaks")
+
+[node name="Control" type="Control" parent="CanvasLayer/MarginContainer/HBoxContainer/ScoreBox/Score_p3/Markers/Box/Crown"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Sprite" type="Sprite2D" parent="CanvasLayer/MarginContainer/HBoxContainer/ScoreBox/Score_p3/Markers/Box/Crown/Control"]
+texture = ExtResource("8_vtaks")
+
+[node name="Skull" type="TextureRect" parent="CanvasLayer/MarginContainer/HBoxContainer/ScoreBox/Score_p3/Markers/Box"]
+self_modulate = Color(1, 1, 1, 0)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+texture = ExtResource("9_kvpfn")
+
+[node name="Control" type="Control" parent="CanvasLayer/MarginContainer/HBoxContainer/ScoreBox/Score_p3/Markers/Box/Skull"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Sprite" type="Sprite2D" parent="CanvasLayer/MarginContainer/HBoxContainer/ScoreBox/Score_p3/Markers/Box/Skull/Control"]
+texture = ExtResource("9_kvpfn")
 
 [node name="Score_p4" type="Panel" parent="CanvasLayer/MarginContainer/HBoxContainer/ScoreBox"]
 unique_name_in_owner = true
@@ -221,7 +339,7 @@ size_flags_horizontal = 3
 theme_type_variation = &"score_box"
 theme_override_styles/panel = SubResource("StyleBoxFlat_vtaks")
 
-[node name="Crown" type="CenterContainer" parent="CanvasLayer/MarginContainer/HBoxContainer/ScoreBox/Score_p4"]
+[node name="Markers" type="CenterContainer" parent="CanvasLayer/MarginContainer/HBoxContainer/ScoreBox/Score_p4"]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -229,9 +347,48 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="sprite" type="TextureRect" parent="CanvasLayer/MarginContainer/HBoxContainer/ScoreBox/Score_p4/Crown"]
+[node name="Box" type="HBoxContainer" parent="CanvasLayer/MarginContainer/HBoxContainer/ScoreBox/Score_p4/Markers"]
 layout_mode = 2
+
+[node name="Crown" type="TextureRect" parent="CanvasLayer/MarginContainer/HBoxContainer/ScoreBox/Score_p4/Markers/Box"]
+self_modulate = Color(1, 1, 1, 0)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
 texture = ExtResource("8_vtaks")
+
+[node name="Control" type="Control" parent="CanvasLayer/MarginContainer/HBoxContainer/ScoreBox/Score_p4/Markers/Box/Crown"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Sprite" type="Sprite2D" parent="CanvasLayer/MarginContainer/HBoxContainer/ScoreBox/Score_p4/Markers/Box/Crown/Control"]
+texture = ExtResource("8_vtaks")
+
+[node name="Skull" type="TextureRect" parent="CanvasLayer/MarginContainer/HBoxContainer/ScoreBox/Score_p4/Markers/Box"]
+self_modulate = Color(1, 1, 1, 0)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+texture = ExtResource("9_kvpfn")
+
+[node name="Control" type="Control" parent="CanvasLayer/MarginContainer/HBoxContainer/ScoreBox/Score_p4/Markers/Box/Skull"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Sprite" type="Sprite2D" parent="CanvasLayer/MarginContainer/HBoxContainer/ScoreBox/Score_p4/Markers/Box/Skull/Control"]
+texture = ExtResource("9_kvpfn")
 
 [node name="TimerHud" parent="CanvasLayer/MarginContainer/HBoxContainer/ScoreBox" instance=ExtResource("5_p57ef")]
 unique_name_in_owner = true
@@ -240,6 +397,7 @@ layout_mode = 2
 [node name="Music" type="AudioStreamPlayer2D" parent="."]
 stream = ExtResource("5_iywne")
 autoplay = true
+bus = &"Music"
 
 [node name="AudioListener2D" type="AudioListener2D" parent="."]
 position = Vector2(248, 140)
