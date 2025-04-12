@@ -34,7 +34,6 @@ func _ready() -> void:
 	EventBus.on_player_rename.connect(on_rename)
 	on_rename(id, state.label)
 	$PlayerName.modulate = state.color
-	modulate = state.color.blend(Color(1.0, 1.0, 1.0, 0.5))
 	%Highlight.modulate = state.color
 	$Sprite.region_rect.position.y += index * 16
 
