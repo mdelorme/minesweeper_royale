@@ -23,6 +23,10 @@ GameState="*res://autoload/game_state.gd"
 AudioBus="*res://autoload/audio_bus.gd"
 GlobalUtils="*res://scripts/global_utils.gd"
 
+[debug]
+
+gdscript/warnings/unused_signal=0
+
 [display]
 
 window/size/viewport_width=480
