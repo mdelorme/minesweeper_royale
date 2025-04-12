@@ -1,7 +1,6 @@
 extends Node
 class_name MapState
 
-
 # TODO: Replace with Array[Array[CellState]] when Godot supports it.
 var grid: Array[Array]
 var width: int
@@ -83,6 +82,7 @@ func player_digs(position: Vector2i, player_id: int, propagate: bool = true) -> 
 	EventBus.on_tile_update.emit(position)
 	var dead := cell_state.secret == CellState.Secret.MINED
 	var score := cell_state.secret if not dead else 0
+
 	EventBus.on_player_score.emit(player_id, score)
 	return not dead 
 

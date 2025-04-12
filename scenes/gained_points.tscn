@@ -3,12 +3,21 @@
 [ext_resource type="Script" uid="uid://dlt4s6mf4iiu2" path="res://scripts/gained_points.gd" id="1_yyvtm"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_74lnr"]
-font_size = 10
-outline_size = 2
-outline_color = Color(0.5, 0.5, 0.5, 1)
+font_size = 12
 
-[node name="GainedPoints" type="Label"]
-offset_right = 40.0
-offset_bottom = 23.0
+[node name="Label" type="Label"]
+z_index = 100
+anchors_preset = -1
+anchor_right = 0.083
+anchor_bottom = 0.063
+offset_right = 0.159996
+offset_bottom = -0.0100002
+grow_horizontal = 2
+grow_vertical = 2
+pivot_offset = Vector2(20, 9)
+size_flags_vertical = 1
+text = "+0"
 label_settings = SubResource("LabelSettings_74lnr")
+horizontal_alignment = 1
+vertical_alignment = 2
 script = ExtResource("1_yyvtm")
