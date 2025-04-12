@@ -1,0 +1,19 @@
+[gd_scene load_steps=3 format=3 uid="uid://ciypk2uq81l4"]
+
+[ext_resource type="Script" uid="uid://c0o65g8egn3u2" path="res://scripts/timer_hud.gd" id="1_2u28t"]
+[ext_resource type="Theme" uid="uid://rk6qj71lika4" path="res://assets/theme_hud.tres" id="1_y8pur"]
+
+[node name="hbox" type="HBoxContainer"]
+anchors_preset = 10
+anchor_right = 1.0
+offset_bottom = 25.0
+grow_horizontal = 2
+theme = ExtResource("1_y8pur")
+alignment = 1
+script = ExtResource("1_2u28t")
+
+[node name="label" type="Label" parent="."]
+layout_mode = 2
+text = "54"
+horizontal_alignment = 1
+vertical_alignment = 1

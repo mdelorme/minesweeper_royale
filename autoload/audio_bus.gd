@@ -11,10 +11,10 @@ func _ready() -> void:
 		streams.append(asp2d)
 		add_child(asp2d)
 		
-func play_sound(sound: String, variation:float = 0.5, playback_speed: float = 1.0) -> void:
+func play_sound(sound: AudioStreamWAV, variation:float = 0.5, playback_speed: float = 1.0) -> void:
 	for i in range(nstream_max):
 		if not streams[i].playing:
-			streams[i].stream = load(sound)
+			streams[i].stream = sound
 			streams[i].pitch_scale = playback_speed + (rng.randf() - 0.5) * variation 
 			streams[i].play()
 			break

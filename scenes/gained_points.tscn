@@ -1,0 +1,14 @@
+[gd_scene load_steps=3 format=3 uid="uid://bwmql6rwykrdb"]
+
+[ext_resource type="Script" uid="uid://dlt4s6mf4iiu2" path="res://scripts/gained_points.gd" id="1_yyvtm"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_74lnr"]
+font_size = 10
+outline_size = 2
+outline_color = Color(0.5, 0.5, 0.5, 1)
+
+[node name="GainedPoints" type="Label"]
+offset_right = 40.0
+offset_bottom = 23.0
+label_settings = SubResource("LabelSettings_74lnr")
+script = ExtResource("1_yyvtm")
