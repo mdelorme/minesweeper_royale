@@ -4,4 +4,4 @@ extends Control
 var timer: Timer
 
 func _process(_dt: float):
-	label.text = "%d" % timer.time_left
+	label.text = "%02d" % timer.time_left

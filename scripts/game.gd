@@ -5,7 +5,7 @@ extends Node2D
 @onready var players: Array[Node] = [$Player1, $Player2, $Player3, $Player4]
 @onready var vfx_desaturate: CanvasItem = %VfxDesaturateScreen
 @onready var black_overlay: CanvasItem = %BlackOverlay
-@onready var timer_hud = %ScoreBar/HBoxContainer/ScoreBox/TimerHud
+@onready var timer_hud = %ScoreBar/HBoxContainer/TimerHud
 
 const dig_sound            := preload("res://sounds/dig.wav")
 const explosion_sound      := preload("res://sounds/explosion.wav")
