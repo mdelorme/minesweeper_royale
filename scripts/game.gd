@@ -32,6 +32,17 @@ func _ready() -> void:
 	await _play_pregame_countdown()
 	timer.start()
 
+func _process(_dt):
+	time += _dt
+	GameState.compute_leaders()
+	for i in range(4):
+		crowns[i].visible = GameState.players[i].is_leader
+		skulls[i].visible = GameState.players[i].is_dead()
+		
+		crowns[i].get_node("Control/Sprite").scale = Vector2(1.0, 1.0) + Vector2(cos(time*time_scale), sin(time*time_scale))*squish_scale
+		skulls[i].get_node("Control/Sprite").scale  = Vector2(1.0, 1.0) + Vector2(cos(time*time_scale+0.213), sin(time*time_scale+0.234))*squish_scale
+
+
 const _duration_pregame_countdown_step = .3
 func _play_pregame_countdown():
 	_toggle_players_active(false)
@@ -126,13 +137,3 @@ func on_reveal_mine(pos: Vector2i) -> void:
 	var new_mine := detonated_mine_scene.instantiate()
 	new_mine.global_position = map.tile_to_pos(pos)
 	add_child(new_mine)
-
-func _process(_dt):
-	time += _dt
-	GameState.compute_leaders()
-	for i in range(4):
-		crowns[i].visible = GameState.players[i].is_leader
-		skulls[i].visible = GameState.players[i].is_dead()
-		
-		crowns[i].get_node("Control/Sprite").scale = Vector2(1.0, 1.0) + Vector2(cos(time*time_scale), sin(time*time_scale))*squish_scale
-		skulls[i].get_node("Control/Sprite").scale  = Vector2(1.0, 1.0) + Vector2(cos(time*time_scale+0.213), sin(time*time_scale+0.234))*squish_scale
