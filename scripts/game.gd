@@ -43,7 +43,7 @@ func _process(_dt):
 		skulls[i].get_node("Control/Sprite").scale  = Vector2(1.0, 1.0) + Vector2(cos(time*time_scale+0.213), sin(time*time_scale+0.234))*squish_scale
 
 
-const _duration_pregame_countdown_step = .3
+const _duration_pregame_countdown_step = .35
 func _play_pregame_countdown():
 	_toggle_players_active(false)
 	
@@ -60,12 +60,12 @@ func _play_pregame_countdown():
 	
 	const max_scale := 1.5
 	const base_dur = _duration_pregame_countdown_step
-	for i in range(3, 0, -1):
+	for i in range(4, 0, -1):
 		tween = get_tree().create_tween()
 		var counter = counters[i-1]
 		tween.tween_property(counter, "modulate:a", 1.0, base_dur/3.)
 		tween.tween_property(counter, "scale", Vector2(max_scale, max_scale), base_dur/2.)
-		tween.tween_property(counter, "modulate:a", 0.0, base_dur)
+		tween.tween_property(counter, "modulate:a", 0.0, base_dur/3.)
 		await tween.finished
 	
 	%GreyRect.visible = false
