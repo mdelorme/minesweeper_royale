@@ -12,8 +12,8 @@
 [ext_resource type="Texture2D" uid="uid://dmpr5haeoteyv" path="res://assets/crown.png" id="8_vtaks"]
 [ext_resource type="Texture2D" uid="uid://cwwq8rcwd2yw1" path="res://assets/skull.png" id="9_kvpfn"]
 [ext_resource type="PackedScene" uid="uid://vtmapdr3lve8" path="res://scenes/score_container.tscn" id="11_dinhu"]
-[ext_resource type="Script" uid="uid://bni32a3cnpj3w" path="res://scripts/score_card.gd" id="11_kvuet"]
-[ext_resource type="Shader" uid="uid://bu0ca6xnqvm2h" path="res://scripts/grey_rect.gdshader" id="13_trtic"]
+[ext_resource type="Script" path="res://scripts/score_card.gd" id="11_kvuet"]
+[ext_resource type="Shader" path="res://scripts/grey_rect.gdshader" id="13_trtic"]
 [ext_resource type="Texture2D" uid="uid://bdnt0l2am758c" path="res://assets/counter_4.png" id="14_ssvqc"]
 [ext_resource type="Texture2D" uid="uid://b3ak6hdw67ab2" path="res://assets/counter_3.png" id="15_264po"]
 [ext_resource type="Texture2D" uid="uid://csokrerhfvlhc" path="res://assets/counter_2.png" id="16_1kice"]
@@ -467,28 +467,56 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="Counter4" type="TextureRect" parent="CanvasLayer/CenterContainer"]
+[node name="Counter1" type="Control" parent="CanvasLayer/CenterContainer"]
 unique_name_in_owner = true
 layout_mode = 2
-texture = ExtResource("14_ssvqc")
+
+[node name="texture" type="TextureRect" parent="CanvasLayer/CenterContainer/Counter1"]
+layout_mode = 2
+offset_left = -32.0
+offset_top = -32.0
+offset_right = 32.0
+offset_bottom = 32.0
+texture = ExtResource("17_5newe")
 stretch_mode = 3
 
-[node name="Counter3" type="TextureRect" parent="CanvasLayer/CenterContainer"]
+[node name="Counter2" type="Control" parent="CanvasLayer/CenterContainer"]
 unique_name_in_owner = true
 layout_mode = 2
-texture = ExtResource("15_264po")
-stretch_mode = 3
 
-[node name="Counter2" type="TextureRect" parent="CanvasLayer/CenterContainer"]
-unique_name_in_owner = true
+[node name="texture" type="TextureRect" parent="CanvasLayer/CenterContainer/Counter2"]
 layout_mode = 2
+offset_left = -32.0
+offset_top = -32.0
+offset_right = 32.0
+offset_bottom = 32.0
 texture = ExtResource("16_1kice")
 stretch_mode = 3
 
-[node name="Counter1" type="TextureRect" parent="CanvasLayer/CenterContainer"]
+[node name="Counter3" type="Control" parent="CanvasLayer/CenterContainer"]
 unique_name_in_owner = true
 layout_mode = 2
-texture = ExtResource("17_5newe")
+
+[node name="texture" type="TextureRect" parent="CanvasLayer/CenterContainer/Counter3"]
+layout_mode = 2
+offset_left = -32.0
+offset_top = -32.0
+offset_right = 32.0
+offset_bottom = 32.0
+texture = ExtResource("15_264po")
+stretch_mode = 3
+
+[node name="Counter4" type="Control" parent="CanvasLayer/CenterContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="texture" type="TextureRect" parent="CanvasLayer/CenterContainer/Counter4"]
+layout_mode = 2
+offset_left = -32.0
+offset_top = -32.0
+offset_right = 32.0
+offset_bottom = 32.0
+texture = ExtResource("14_ssvqc")
 stretch_mode = 3
 
 [node name="Music" type="AudioStreamPlayer2D" parent="."]

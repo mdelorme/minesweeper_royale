@@ -4,6 +4,7 @@ extends Node2D
 @onready var timer : Timer = $TimerGameEnd
 @onready var crowns: Array[Control] = [%Score_p1/Markers/Box/Crown,%Score_p2/Markers/Box/Crown,%Score_p3/Markers/Box/Crown,%Score_p4/Markers/Box/Crown]
 @onready var skulls: Array[Control] = [%Score_p1/Markers/Box/Skull,%Score_p2/Markers/Box/Skull,%Score_p3/Markers/Box/Skull,%Score_p4/Markers/Box/Skull]
+@onready var players: Array[Node] = [$Player1, $Player2, $Player3, $Player4]
 
 const dig_sound            := preload("res://sounds/dig.wav")
 const explosion_sound      := preload("res://sounds/explosion.wav")
@@ -28,13 +29,16 @@ func _ready() -> void:
 	timer.timeout.connect(on_timer_end)
 	
 	%TimerHud.timer = timer
+	await _play_pregame_countdown()
+	timer.start()
+
+const _duration_pregame_countdown_step = .3
+func _play_pregame_countdown():
+	_toggle_players_active(false)
 	
-	toggle_players(false)
-	
-	%Counter1.modulate.a = 0.0
-	%Counter2.modulate.a = 0.0
-	%Counter3.modulate.a = 0.0
-	%Counter4.modulate.a = 0.0
+	var counters = [%Counter1,%Counter2,%Counter3,%Counter4]
+	for i in range(4):
+		counters[i].modulate.a = 0.
 	
 	var tween := get_tree().create_tween()
 	%FadeRect.modulate.a = 1.0
@@ -44,21 +48,20 @@ func _ready() -> void:
 	await tween.finished
 	
 	const max_scale := 1.5
-	for i in range(4, 0, -1):
+	const base_dur = _duration_pregame_countdown_step
+	for i in range(3, 0, -1):
 		tween = get_tree().create_tween()
-		var counter := get_node("CanvasLayer/CenterContainer/Counter%d" % i)
-		tween.tween_property(counter, "modulate:a", 1.0, 0.1)
-		tween.tween_property(counter, "scale", Vector2(max_scale, max_scale), 1.5)
-		tween.tween_property(counter, "modulate:a", 0.0, 0.3)
+		var counter = counters[i-1]
+		tween.tween_property(counter, "modulate:a", 1.0, base_dur/3.)
+		tween.tween_property(counter, "scale", Vector2(max_scale, max_scale), base_dur/2.)
+		tween.tween_property(counter, "modulate:a", 0.0, base_dur)
 		await tween.finished
-		
-	%GreyRect.visible = false
-	toggle_players(true)
-	timer.start()
 	
-func toggle_players(active: bool) -> void:
+	%GreyRect.visible = false
+	_toggle_players_active(true)
+func _toggle_players_active(active: bool) -> void:
 	for i in range(4):
-		get_node("Player%d" % (i+1)).active = active
+		players[i].active = active
 
 func on_player_dig(pos: Vector2, player_id: int) -> void:
 	var map_position := map.pos_to_tile(pos)
@@ -69,7 +72,6 @@ func on_player_dig(pos: Vector2, player_id: int) -> void:
 		if not map_state.player_digs(map_position, player_id):
 			AudioBus.play_sound(explosion_sound)
 			kill_player(player_id)
-
 
 func on_player_flag(pos: Vector2, player_id: int) -> void:
 	var map_position := map.pos_to_tile(pos)
