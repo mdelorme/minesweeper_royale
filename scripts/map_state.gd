@@ -70,10 +70,9 @@ func player_digs(position: Vector2i, player_id: int, propagate: bool = true) -> 
 			var nx := position.x + i
 			if nx < 0 or nx > width-1:
 				continue
-				
 			for j in range(-1, 2):
 				var ny := position.y + j
-				if ny < 0 or ny >= height-1:
+				if ny < 0 or ny >= height:
 					continue
 				
 				var new_pos := Vector2i(nx, ny)
