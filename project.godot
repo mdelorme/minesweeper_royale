@@ -21,7 +21,7 @@ run/dpi/allow_hidpi=true
 EventBus="*res://autoload/event_bus.gd"
 GameState="*res://autoload/game_state.gd"
 AudioBus="*res://autoload/audio_bus.gd"
-GlobalUtils="*res://scripts/global_utils.gd"
+GlobalUtils="*res://autoload/global_utils.gd"
 
 [debug]
 
