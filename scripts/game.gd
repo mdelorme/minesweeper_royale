@@ -68,7 +68,9 @@ func _play_pregame_countdown():
 		tween.tween_property(counter, "modulate:a", 0.0, base_dur/3.)
 		await tween.finished
 	
-	%GreyRect.visible = false
+	var tw = get_tree().create_tween()
+	tw.tween_property(%GreyRect, "material:shader_parameter/alpha", 0., base_dur/2.)
+	await tw.finished
 	_toggle_players_active(true)
 func _toggle_players_active(active: bool) -> void:
 	for i in range(4):

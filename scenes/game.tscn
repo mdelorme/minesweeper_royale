@@ -13,7 +13,7 @@
 [ext_resource type="Texture2D" uid="uid://cwwq8rcwd2yw1" path="res://assets/skull.png" id="9_kvpfn"]
 [ext_resource type="PackedScene" uid="uid://vtmapdr3lve8" path="res://scenes/score_container.tscn" id="11_dinhu"]
 [ext_resource type="Script" path="res://scripts/score_card.gd" id="11_kvuet"]
-[ext_resource type="Shader" path="res://scripts/grey_rect.gdshader" id="13_trtic"]
+[ext_resource type="Shader" uid="uid://bu0ca6xnqvm2h" path="res://scripts/grey_rect.gdshader" id="13_trtic"]
 [ext_resource type="Texture2D" uid="uid://bdnt0l2am758c" path="res://assets/counter_4.png" id="14_ssvqc"]
 [ext_resource type="Texture2D" uid="uid://b3ak6hdw67ab2" path="res://assets/counter_3.png" id="15_264po"]
 [ext_resource type="Texture2D" uid="uid://csokrerhfvlhc" path="res://assets/counter_2.png" id="16_1kice"]
