@@ -405,7 +405,7 @@ texture = ExtResource("9_kvpfn")
 unique_name_in_owner = true
 layout_mode = 2
 
-[node name="GreyRect" type="ColorRect" parent="CanvasLayer"]
+[node name="VfxDesaturateScreen" type="ColorRect" parent="CanvasLayer"]
 unique_name_in_owner = true
 visible = false
 material = SubResource("ShaderMaterial_ir15t")
@@ -449,7 +449,7 @@ layout_mode = 2
 size_flags_horizontal = 3
 player_id = 3
 
-[node name="FadeRect" type="ColorRect" parent="CanvasLayer"]
+[node name="BlackOverlay" type="ColorRect" parent="CanvasLayer"]
 unique_name_in_owner = true
 visible = false
 anchors_preset = 15
@@ -458,7 +458,7 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
-color = Color(0, 0, 0, 1)
+color = Color(0.152941, 0.113725, 0.2, 1)
 
 [node name="centered_pregame_counters" type="CenterContainer" parent="CanvasLayer"]
 anchors_preset = 15

@@ -5,6 +5,8 @@ extends Node2D
 @onready var crowns: Array[Control] = [%Score_p1/Markers/Box/Crown,%Score_p2/Markers/Box/Crown,%Score_p3/Markers/Box/Crown,%Score_p4/Markers/Box/Crown]
 @onready var skulls: Array[Control] = [%Score_p1/Markers/Box/Skull,%Score_p2/Markers/Box/Skull,%Score_p3/Markers/Box/Skull,%Score_p4/Markers/Box/Skull]
 @onready var players: Array[Node] = [$Player1, $Player2, $Player3, $Player4]
+@onready var vfx_desaturate: CanvasItem = %VfxDesaturateScreen
+@onready var black_overlay: CanvasItem = %BlackOverlay
 
 const dig_sound            := preload("res://sounds/dig.wav")
 const explosion_sound      := preload("res://sounds/explosion.wav")
@@ -52,10 +54,10 @@ func _play_pregame_countdown():
 		counters[i].modulate.a = 0.
 	
 	var tween := get_tree().create_tween()
-	%FadeRect.modulate.a = 1.0
-	%FadeRect.visible = true
-	%GreyRect.visible = true
-	tween.tween_property(%FadeRect, "modulate:a", 0.0, 0.2)
+	black_overlay.modulate.a = 1.0
+	black_overlay.visible = true
+	vfx_desaturate.visible = true
+	tween.tween_property(black_overlay, "modulate:a", 0.0, 0.2)
 	await tween.finished
 	
 	const max_scale := 1.5
@@ -69,7 +71,7 @@ func _play_pregame_countdown():
 		await tween.finished
 	
 	var tw = get_tree().create_tween()
-	tw.tween_property(%GreyRect, "material:shader_parameter/alpha", 0., base_dur/2.)
+	tw.tween_property(vfx_desaturate, "material:shader_parameter/alpha", 0., base_dur/2.)
 	await tw.finished
 	_toggle_players_active(true)
 func _toggle_players_active(active: bool) -> void:
@@ -119,18 +121,18 @@ func on_game_ended() -> void:
 	timer.stop()
 	for i in range(4):
 		get_node("Player%d" % [i+1]).active = false
-	%GreyRect.material.set_shader_parameter("alpha", 0.0);
-	%GreyRect.visible = true
+	vfx_desaturate.material.set_shader_parameter("alpha", 0.0);
+	vfx_desaturate.visible = true
 	var tween := get_tree().create_tween()
-	tween.tween_property(%GreyRect, "material:shader_parameter/alpha", 1.0, 0.5)
+	tween.tween_property(vfx_desaturate, "material:shader_parameter/alpha", 1.0, 0.5)
 	await tween.finished
 	$CanvasLayer/ScoreCard.on_show()
 		
 func on_score_screen_finish() -> void:
 	var tween := get_tree().create_tween()
-	%FadeRect.modulate.a = 0.0
-	%FadeRect.visible = true
-	tween.tween_property(%FadeRect, "modulate:a", 1.0, 0.2)
+	black_overlay.modulate.a = 0.0
+	black_overlay.visible = true
+	tween.tween_property(black_overlay, "modulate:a", 1.0, 0.2)
 	await tween.finished
 	GameState.randomize_next_game()
 	get_tree().reload_current_scene()
