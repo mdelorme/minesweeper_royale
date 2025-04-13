@@ -4,7 +4,7 @@
 [ext_resource type="PackedScene" uid="uid://bcoffnw0mrm78" path="res://scenes/map.tscn" id="1_uwrxv"]
 [ext_resource type="Shader" uid="uid://ty7hg2c526kh" path="res://scripts/background_shader.gdshader" id="2_vtaks"]
 [ext_resource type="PackedScene" uid="uid://byy5a0wd3wx42" path="res://scenes/player.tscn" id="2_yqjtg"]
-[ext_resource type="Texture2D" uid="uid://dbgw1tvteahnd" path="res://assets/kenney-pattern-pack/Pattern_Pixel_3.png" id="3_ssvqc"]
+[ext_resource type="Texture2D" uid="uid://dbgw1tvteahnd" path="res://assets/background_pattern.png" id="3_ssvqc"]
 [ext_resource type="Script" uid="uid://cjxltybofifg3" path="res://scripts/score_box.gd" id="4_lbhrr"]
 [ext_resource type="Theme" uid="uid://rk6qj71lika4" path="res://assets/theme_hud.tres" id="4_u5sy4"]
 [ext_resource type="AudioStream" uid="uid://bmkv3p0dgqcer" path="res://sounds/game_music.wav" id="5_iywne"]
