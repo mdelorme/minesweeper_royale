@@ -34,6 +34,10 @@ window/size/viewport_height=270
 window/size/mode=2
 window/stretch/mode="canvas_items"
 
+[dotnet]
+
+project/assembly_name="Minesweeper Royale"
+
 [input]
 
 move_left_p0={
