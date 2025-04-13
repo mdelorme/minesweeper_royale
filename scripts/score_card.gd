@@ -38,5 +38,5 @@ func _unhandled_input(event: InputEvent) -> void:
 				tween = get_tree().create_tween()
 				tween.tween_property(self, "position", Vector2(0.0, init_pos), 0.25).set_ease(Tween.EASE_OUT)
 				await tween.finished
-				EventBus.on_game_restarted.emit()
+				EventBus.on_score_screen_finish.emit()
 			cooldown = 0.5

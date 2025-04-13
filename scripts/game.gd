@@ -23,7 +23,7 @@ func _ready() -> void:
 	EventBus.on_player_flag.connect(on_player_flag)
 	EventBus.on_player_score.connect(on_player_score)
 	EventBus.on_game_ended.connect(on_game_ended)
-	EventBus.on_game_restarted.connect(on_game_restarted)
+	EventBus.on_score_screen_finish.connect(on_score_screen_finish)
 	EventBus.on_explosion.connect(on_explosion)
 	EventBus.on_reveal_mine.connect(on_reveal_mine)
 	timer.timeout.connect(on_timer_end)
@@ -126,7 +126,7 @@ func on_game_ended() -> void:
 	await tween.finished
 	$CanvasLayer/ScoreCard.on_show()
 		
-func on_game_restarted() -> void:
+func on_score_screen_finish() -> void:
 	var tween := get_tree().create_tween()
 	%FadeRect.modulate.a = 0.0
 	%FadeRect.visible = true
