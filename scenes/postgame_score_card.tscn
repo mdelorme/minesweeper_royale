@@ -1,7 +1,7 @@
 [gd_scene load_steps=5 format=3 uid="uid://vtmapdr3lve8"]
 
 [ext_resource type="Theme" uid="uid://rk6qj71lika4" path="res://assets/theme_hud.tres" id="1_ve0d0"]
-[ext_resource type="Script" uid="uid://dsetgl7bk34m2" path="res://scripts/score_container.gd" id="2_ixdsg"]
+[ext_resource type="Script" uid="uid://dsetgl7bk34m2" path="res://scripts/postgame_score_card.gd" id="2_ixdsg"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_88dsx"]
 bg_color = Color(0.615076, 0.612658, 0.443193, 1)
@@ -21,7 +21,7 @@ corner_radius_top_right = 5
 corner_radius_bottom_right = 5
 corner_radius_bottom_left = 5
 
-[node name="ScoreContainer" type="PanelContainer"]
+[node name="PostgameScoreCard" type="PanelContainer"]
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0

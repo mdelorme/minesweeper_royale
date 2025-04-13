@@ -1,4 +1,4 @@
-[gd_scene load_steps=29 format=3 uid="uid://mostrtwvswno"]
+[gd_scene load_steps=28 format=3 uid="uid://mostrtwvswno"]
 
 [ext_resource type="Script" uid="uid://bimu248y1t0ka" path="res://scripts/game.gd" id="1_lnu2h"]
 [ext_resource type="PackedScene" uid="uid://bcoffnw0mrm78" path="res://scenes/map.tscn" id="1_uwrxv"]
@@ -11,8 +11,7 @@
 [ext_resource type="PackedScene" uid="uid://cjrldkt1yuita" path="res://scenes/timer_hud.tscn" id="5_p57ef"]
 [ext_resource type="Texture2D" uid="uid://dmpr5haeoteyv" path="res://assets/crown.png" id="8_vtaks"]
 [ext_resource type="Texture2D" uid="uid://cwwq8rcwd2yw1" path="res://assets/skull.png" id="9_kvpfn"]
-[ext_resource type="PackedScene" uid="uid://vtmapdr3lve8" path="res://scenes/score_container.tscn" id="11_dinhu"]
-[ext_resource type="Script" uid="uid://bni32a3cnpj3w" path="res://scripts/score_card.gd" id="11_kvuet"]
+[ext_resource type="PackedScene" uid="uid://dsuphamb13cis" path="res://scenes/postgame_score_panel.tscn" id="12_rysoc"]
 [ext_resource type="Shader" uid="uid://bu0ca6xnqvm2h" path="res://scripts/grey_rect.gdshader" id="13_trtic"]
 [ext_resource type="Texture2D" uid="uid://bdnt0l2am758c" path="res://assets/counter_4.png" id="14_ssvqc"]
 [ext_resource type="Texture2D" uid="uid://b3ak6hdw67ab2" path="res://assets/counter_3.png" id="15_264po"]
@@ -416,38 +415,8 @@ grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
 
-[node name="ScoreCard" type="MarginContainer" parent="CanvasLayer"]
-visible = false
-custom_minimum_size = Vector2(480, 250)
-offset_top = -250.0
-offset_right = 483.0
-theme_override_constants/margin_left = 5
-theme_override_constants/margin_top = 30
-theme_override_constants/margin_right = 5
-theme_override_constants/margin_bottom = 30
-script = ExtResource("11_kvuet")
-
-[node name="HBoxContainer" type="HBoxContainer" parent="CanvasLayer/ScoreCard"]
-layout_mode = 2
-
-[node name="ScoreContainer" parent="CanvasLayer/ScoreCard/HBoxContainer" instance=ExtResource("11_dinhu")]
-layout_mode = 2
-size_flags_horizontal = 3
-player_id = 0
-
-[node name="ScoreContainer2" parent="CanvasLayer/ScoreCard/HBoxContainer" instance=ExtResource("11_dinhu")]
-layout_mode = 2
-size_flags_horizontal = 3
-player_id = 1
-
-[node name="ScoreContainer3" parent="CanvasLayer/ScoreCard/HBoxContainer" instance=ExtResource("11_dinhu")]
-layout_mode = 2
-size_flags_horizontal = 3
-
-[node name="ScoreContainer4" parent="CanvasLayer/ScoreCard/HBoxContainer" instance=ExtResource("11_dinhu")]
-layout_mode = 2
-size_flags_horizontal = 3
-player_id = 3
+[node name="PostgameScorePanel" parent="CanvasLayer" instance=ExtResource("12_rysoc")]
+unique_name_in_owner = true
 
 [node name="BlackOverlay" type="ColorRect" parent="CanvasLayer"]
 unique_name_in_owner = true

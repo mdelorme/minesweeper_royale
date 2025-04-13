@@ -136,7 +136,7 @@ func on_game_ended() -> void:
 	var tween := get_tree().create_tween()
 	tween.tween_property(vfx_desaturate, "material:shader_parameter/alpha", 1.0, 0.5)
 	await tween.finished
-	$CanvasLayer/ScoreCard.on_show()
+	%PostgameScorePanel.reveal()
 		
 func on_score_screen_finish() -> void:
 	var tween := get_tree().create_tween()
