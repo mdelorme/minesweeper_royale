@@ -30,6 +30,8 @@ func _ready() -> void:
 	EventBus.on_reveal_mine.connect(on_reveal_mine)
 	timer.timeout.connect(on_timer_end)
 	
+	_center_map()
+	
 	%TimerHud.timer = timer
 	await _play_pregame_countdown()
 	timer.start()
@@ -44,6 +46,14 @@ func _process(_dt):
 		crowns[i].get_node("Control/Sprite").scale = Vector2(1.0, 1.0) + Vector2(cos(time*time_scale), sin(time*time_scale))*squish_scale
 		skulls[i].get_node("Control/Sprite").scale  = Vector2(1.0, 1.0) + Vector2(cos(time*time_scale+0.213), sin(time*time_scale+0.234))*squish_scale
 
+
+func _center_map():
+	var topleft_of_available_space = Vector2(0, %ScoreBoxContainer.size.y)
+	var screen_size = get_viewport_rect().size
+	var available_space_size = screen_size - topleft_of_available_space
+	var map_size = map.tile_to_pos(Vector2i(GameState.map.width, GameState.map.height)) - map.tile_to_pos(Vector2i.ZERO)
+	var padding = .5*(available_space_size - map_size)
+	map.position = topleft_of_available_space + padding
 
 const _duration_pregame_countdown_step = .35
 func _play_pregame_countdown():
