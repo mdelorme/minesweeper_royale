@@ -25,7 +25,7 @@ func _ready() -> void:
 	EventBus.on_reveal_mine.connect(on_reveal_mine)
 	timer.timeout.connect(on_timer_end)
 	
-	_center_map()
+	_center_map_and_position_players()
 	
 	timer_hud.timer = timer
 	await _play_pregame_countdown()
@@ -35,13 +35,22 @@ func _process(_dt):
 	GameState.compute_leaders()
 	%ScoreBar.render()
 
-func _center_map():
+func _center_map_and_position_players():
+	var player_offset = map.tile_to_pos(Vector2i(2,1)) + map.tile_to_pos(Vector2i(1,1))*.2
+	
+	# center map
 	var topleft_of_available_space = Vector2(0, %ScoreBar.size.y)
 	var screen_size = get_viewport_rect().size
 	var available_space_size = screen_size - topleft_of_available_space
 	var map_size = map.tile_to_pos(Vector2i(GameState.map.width, GameState.map.height)) - map.tile_to_pos(Vector2i.ZERO)
 	var padding = .5*(available_space_size - map_size)
 	map.position = topleft_of_available_space + padding
+
+	# position players
+	players[0].position = map.position + player_offset
+	players[1].position = map.position + player_offset*Vector2(1,-1) + Vector2(0,map_size.y)
+	players[2].position = map.position + player_offset*Vector2(-1,1) + Vector2(map_size.x,0)
+	players[3].position = map.position + player_offset*Vector2(-1,-1) + Vector2(map_size.x,map_size.y)
 
 const _duration_pregame_countdown_step = .35
 func _play_pregame_countdown():
