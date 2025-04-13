@@ -1,7 +1,6 @@
 [gd_scene load_steps=7 format=3 uid="uid://byy5a0wd3wx42"]
 
 [ext_resource type="Script" uid="uid://12btqrrgnu8s" path="res://scripts/player.gd" id="1_g2els"]
-[ext_resource type="Texture2D" uid="uid://ymmbv74j1jm6" path="res://assets/heart.png" id="3_dqkch"]
 [ext_resource type="Texture2D" uid="uid://dskuafc8g8m5p" path="res://assets/Tileset.png" id="3_qhqgy"]
 
 [sub_resource type="CompressedTexture2D" id="CompressedTexture2D_g2els"]
@@ -14,6 +13,10 @@ region = Rect2(464, 96, 16, 16)
 [sub_resource type="CircleShape2D" id="CircleShape2D_dqkch"]
 radius = 6.08276
 
+[sub_resource type="AtlasTexture" id="AtlasTexture_g2els"]
+atlas = ExtResource("3_qhqgy")
+region = Rect2(176, 70, 11, 10)
+
 [node name="Player" type="CharacterBody2D"]
 z_index = 2
 motion_mode = 1
@@ -25,6 +28,7 @@ texture = SubResource("AtlasTexture_qlg0r")
 
 [node name="Sprite" type="Sprite2D" parent="."]
 unique_name_in_owner = true
+rotation = 0.0026106
 texture = ExtResource("3_qhqgy")
 region_enabled = true
 region_rect = Rect2(160, 0, 32, 16)
@@ -34,34 +38,34 @@ shape = SubResource("CircleShape2D_dqkch")
 
 [node name="HBoxContainer" type="HBoxContainer" parent="."]
 anchors_preset = -1
-anchor_right = 0.5
-anchor_bottom = 0.5
+anchor_right = 0.818
+anchor_bottom = 0.818
 offset_left = -28.0
-offset_top = -24.0
+offset_top = 10.61
 offset_right = 28.0
-offset_bottom = -8.0
+offset_bottom = 21.61
 grow_horizontal = 2
 grow_vertical = 2
-scale = Vector2(0.5, 0.5)
 pivot_offset = Vector2(28, 8)
 size_flags_horizontal = 4
 size_flags_vertical = 4
+theme_override_constants/separation = -5
 alignment = 1
 
 [node name="Heart1" type="TextureRect" parent="HBoxContainer"]
 unique_name_in_owner = true
 layout_mode = 2
-texture = ExtResource("3_dqkch")
+texture = SubResource("AtlasTexture_g2els")
 stretch_mode = 2
 
 [node name="Heart2" type="TextureRect" parent="HBoxContainer"]
 unique_name_in_owner = true
 layout_mode = 2
-texture = ExtResource("3_dqkch")
+texture = SubResource("AtlasTexture_g2els")
 stretch_mode = 2
 
 [node name="Heart3" type="TextureRect" parent="HBoxContainer"]
 unique_name_in_owner = true
 layout_mode = 2
-texture = ExtResource("3_dqkch")
+texture = SubResource("AtlasTexture_g2els")
 stretch_mode = 2
