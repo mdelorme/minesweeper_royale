@@ -1,0 +1,309 @@
+[gd_scene load_steps=10 format=3 uid="uid://dwm1syx151f5j"]
+
+[ext_resource type="Script" uid="uid://cjxltybofifg3" path="res://scripts/score_bar.gd" id="1_iau4u"]
+[ext_resource type="Theme" uid="uid://rk6qj71lika4" path="res://assets/theme_hud.tres" id="2_vqcqe"]
+[ext_resource type="Texture2D" uid="uid://dmpr5haeoteyv" path="res://assets/crown.png" id="3_fbi37"]
+[ext_resource type="Texture2D" uid="uid://cwwq8rcwd2yw1" path="res://assets/skull.png" id="4_cdy0v"]
+[ext_resource type="PackedScene" uid="uid://cjrldkt1yuita" path="res://scenes/timer_hud.tscn" id="5_50j2f"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_u5sy4"]
+bg_color = Color(0.027451, 0.396078, 0.596078, 1)
+border_width_left = 3
+border_width_top = 3
+border_width_right = 3
+border_width_bottom = 3
+border_color = Color(0.272, 0.6477, 0.85, 1)
+corner_radius_top_left = 5
+corner_radius_top_right = 5
+corner_radius_bottom_right = 5
+corner_radius_bottom_left = 5
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_gee14"]
+bg_color = Color(0.262745, 0.529412, 0.101961, 1)
+border_width_left = 3
+border_width_top = 3
+border_width_right = 3
+border_width_bottom = 3
+border_color = Color(0.470855, 0.77, 0.2849, 1)
+corner_radius_top_left = 5
+corner_radius_top_right = 5
+corner_radius_bottom_right = 5
+corner_radius_bottom_left = 5
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_0tnpc"]
+bg_color = Color(0.690196, 0.435294, 0.0941176, 1)
+border_width_left = 3
+border_width_top = 3
+border_width_right = 3
+border_width_bottom = 3
+border_color = Color(0.85, 0.636367, 0.357, 1)
+corner_radius_top_left = 5
+corner_radius_top_right = 5
+corner_radius_bottom_right = 5
+corner_radius_bottom_left = 5
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_vtaks"]
+bg_color = Color(0.552941, 0.121569, 0.521569, 1)
+border_width_left = 3
+border_width_top = 3
+border_width_right = 3
+border_width_bottom = 3
+border_color = Color(0.89, 0.4005, 0.857367, 1)
+corner_radius_top_left = 5
+corner_radius_top_right = 5
+corner_radius_bottom_right = 5
+corner_radius_bottom_left = 5
+
+[node name="ScoreBar" type="MarginContainer"]
+anchors_preset = 10
+anchor_right = 1.0
+offset_bottom = 27.0
+grow_horizontal = 2
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 2
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 0
+script = ExtResource("1_iau4u")
+
+[node name="HBoxContainer" type="HBoxContainer" parent="."]
+layout_mode = 2
+
+[node name="ScoreBox" type="HBoxContainer" parent="HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme = ExtResource("2_vqcqe")
+
+[node name="Score_p1" type="Panel" parent="HBoxContainer/ScoreBox"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_styles/panel = SubResource("StyleBoxFlat_u5sy4")
+
+[node name="Markers" type="CenterContainer" parent="HBoxContainer/ScoreBox/Score_p1"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Box" type="HBoxContainer" parent="HBoxContainer/ScoreBox/Score_p1/Markers"]
+layout_mode = 2
+
+[node name="Crown" type="TextureRect" parent="HBoxContainer/ScoreBox/Score_p1/Markers/Box"]
+self_modulate = Color(1, 1, 1, 0)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+texture = ExtResource("3_fbi37")
+
+[node name="Control" type="Control" parent="HBoxContainer/ScoreBox/Score_p1/Markers/Box/Crown"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Sprite" type="Sprite2D" parent="HBoxContainer/ScoreBox/Score_p1/Markers/Box/Crown/Control"]
+texture = ExtResource("3_fbi37")
+
+[node name="Skull" type="TextureRect" parent="HBoxContainer/ScoreBox/Score_p1/Markers/Box"]
+self_modulate = Color(1, 1, 1, 0)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+texture = ExtResource("4_cdy0v")
+
+[node name="Control" type="Control" parent="HBoxContainer/ScoreBox/Score_p1/Markers/Box/Skull"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Sprite" type="Sprite2D" parent="HBoxContainer/ScoreBox/Score_p1/Markers/Box/Skull/Control"]
+texture = ExtResource("4_cdy0v")
+
+[node name="Score_p2" type="Panel" parent="HBoxContainer/ScoreBox"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_styles/panel = SubResource("StyleBoxFlat_gee14")
+
+[node name="Markers" type="CenterContainer" parent="HBoxContainer/ScoreBox/Score_p2"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Box" type="HBoxContainer" parent="HBoxContainer/ScoreBox/Score_p2/Markers"]
+layout_mode = 2
+
+[node name="Crown" type="TextureRect" parent="HBoxContainer/ScoreBox/Score_p2/Markers/Box"]
+self_modulate = Color(1, 1, 1, 0)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+texture = ExtResource("3_fbi37")
+
+[node name="Control" type="Control" parent="HBoxContainer/ScoreBox/Score_p2/Markers/Box/Crown"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Sprite" type="Sprite2D" parent="HBoxContainer/ScoreBox/Score_p2/Markers/Box/Crown/Control"]
+texture = ExtResource("3_fbi37")
+
+[node name="Skull" type="TextureRect" parent="HBoxContainer/ScoreBox/Score_p2/Markers/Box"]
+self_modulate = Color(1, 1, 1, 0)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+texture = ExtResource("4_cdy0v")
+
+[node name="Control" type="Control" parent="HBoxContainer/ScoreBox/Score_p2/Markers/Box/Skull"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Sprite" type="Sprite2D" parent="HBoxContainer/ScoreBox/Score_p2/Markers/Box/Skull/Control"]
+texture = ExtResource("4_cdy0v")
+
+[node name="Score_p3" type="Panel" parent="HBoxContainer/ScoreBox"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+theme_type_variation = &"score_box"
+theme_override_styles/panel = SubResource("StyleBoxFlat_0tnpc")
+
+[node name="Markers" type="CenterContainer" parent="HBoxContainer/ScoreBox/Score_p3"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Box" type="HBoxContainer" parent="HBoxContainer/ScoreBox/Score_p3/Markers"]
+layout_mode = 2
+
+[node name="Crown" type="TextureRect" parent="HBoxContainer/ScoreBox/Score_p3/Markers/Box"]
+self_modulate = Color(1, 1, 1, 0)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+texture = ExtResource("3_fbi37")
+
+[node name="Control" type="Control" parent="HBoxContainer/ScoreBox/Score_p3/Markers/Box/Crown"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Sprite" type="Sprite2D" parent="HBoxContainer/ScoreBox/Score_p3/Markers/Box/Crown/Control"]
+texture = ExtResource("3_fbi37")
+
+[node name="Skull" type="TextureRect" parent="HBoxContainer/ScoreBox/Score_p3/Markers/Box"]
+self_modulate = Color(1, 1, 1, 0)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+texture = ExtResource("4_cdy0v")
+
+[node name="Control" type="Control" parent="HBoxContainer/ScoreBox/Score_p3/Markers/Box/Skull"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Sprite" type="Sprite2D" parent="HBoxContainer/ScoreBox/Score_p3/Markers/Box/Skull/Control"]
+texture = ExtResource("4_cdy0v")
+
+[node name="Score_p4" type="Panel" parent="HBoxContainer/ScoreBox"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+theme_type_variation = &"score_box"
+theme_override_styles/panel = SubResource("StyleBoxFlat_vtaks")
+
+[node name="Markers" type="CenterContainer" parent="HBoxContainer/ScoreBox/Score_p4"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Box" type="HBoxContainer" parent="HBoxContainer/ScoreBox/Score_p4/Markers"]
+layout_mode = 2
+
+[node name="Crown" type="TextureRect" parent="HBoxContainer/ScoreBox/Score_p4/Markers/Box"]
+self_modulate = Color(1, 1, 1, 0)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+texture = ExtResource("3_fbi37")
+
+[node name="Control" type="Control" parent="HBoxContainer/ScoreBox/Score_p4/Markers/Box/Crown"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Sprite" type="Sprite2D" parent="HBoxContainer/ScoreBox/Score_p4/Markers/Box/Crown/Control"]
+texture = ExtResource("3_fbi37")
+
+[node name="Skull" type="TextureRect" parent="HBoxContainer/ScoreBox/Score_p4/Markers/Box"]
+self_modulate = Color(1, 1, 1, 0)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+texture = ExtResource("4_cdy0v")
+
+[node name="Control" type="Control" parent="HBoxContainer/ScoreBox/Score_p4/Markers/Box/Skull"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Sprite" type="Sprite2D" parent="HBoxContainer/ScoreBox/Score_p4/Markers/Box/Skull/Control"]
+texture = ExtResource("4_cdy0v")
+
+[node name="TimerHud" parent="HBoxContainer/ScoreBox" instance=ExtResource("5_50j2f")]
+layout_mode = 2
+
+[connection signal="resized" from="HBoxContainer/ScoreBox" to="HBoxContainer/ScoreBox" method="_on_resized"]
