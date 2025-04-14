@@ -1,25 +1,19 @@
-[gd_scene load_steps=20 format=3 uid="uid://mostrtwvswno"]
+[gd_scene load_steps=19 format=3 uid="uid://mostrtwvswno"]
 
 [ext_resource type="Script" uid="uid://bimu248y1t0ka" path="res://scripts/game.gd" id="1_lnu2h"]
 [ext_resource type="PackedScene" uid="uid://bcoffnw0mrm78" path="res://scenes/map.tscn" id="1_uwrxv"]
-[ext_resource type="Shader" uid="uid://ty7hg2c526kh" path="res://scripts/scrolling_background.gdshader" id="2_vtaks"]
 [ext_resource type="PackedScene" uid="uid://byy5a0wd3wx42" path="res://scenes/player.tscn" id="2_yqjtg"]
 [ext_resource type="Texture2D" uid="uid://dbgw1tvteahnd" path="res://assets/background_pattern.png" id="3_ssvqc"]
 [ext_resource type="AudioStream" uid="uid://bmkv3p0dgqcer" path="res://sounds/game_music.wav" id="5_iywne"]
 [ext_resource type="PackedScene" uid="uid://dwm1syx151f5j" path="res://scenes/score_bar.tscn" id="6_kvuet"]
 [ext_resource type="PackedScene" uid="uid://dsuphamb13cis" path="res://scenes/postgame_score_panel.tscn" id="12_rysoc"]
-[ext_resource type="Shader" uid="uid://bu0ca6xnqvm2h" path="res://scripts/vfx_desaturate_screen.gdshader" id="13_trtic"]
+[ext_resource type="Shader" uid="uid://dip8vkl00udsu" path="res://scripts/grey_rect.gdshader" id="13_trtic"]
 [ext_resource type="Texture2D" uid="uid://bdnt0l2am758c" path="res://assets/counter_4.png" id="14_ssvqc"]
 [ext_resource type="Texture2D" uid="uid://b3ak6hdw67ab2" path="res://assets/counter_3.png" id="15_264po"]
 [ext_resource type="Texture2D" uid="uid://csokrerhfvlhc" path="res://assets/counter_2.png" id="16_1kice"]
 [ext_resource type="Texture2D" uid="uid://cpx4lgj2uhv14" path="res://assets/counter_1.png" id="17_5newe"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_dinhu"]
-shader = ExtResource("2_vtaks")
-shader_parameter/color1 = Color(0.121569, 0.0980392, 0.145098, 1)
-shader_parameter/color2 = Color(0.152941, 0.113725, 0.2, 1)
-shader_parameter/scroll_speed = Vector2(0.25, -0.25)
-shader_parameter/scale = 0.155
 
 [sub_resource type="WorldBoundaryShape2D" id="WorldBoundaryShape2D_yqjtg"]
 normal = Vector2(0, 1)

@@ -114,3 +114,27 @@ func get_score_at(position: Vector2i) -> int:
 		return 0
 	else:
 		return cell_state.secret
+
+func count_valid_flags(player_id: int) -> int:
+	var total := 0
+	for i in range(height):
+		for j in range(width):
+			var cell_state : CellState = grid[i][j]
+			if cell_state.owner_id != player_id+1:
+				continue
+				
+			if cell_state.flagged() and cell_state.secret == CellState.Secret.MINED:
+				total += 1
+	return total
+	
+func count_invalid_flags(player_id: int) -> int:
+	var total := 0
+	for i in range(height):
+		for j in range(width):
+			var cell_state : CellState = grid[i][j]
+			if cell_state.owner_id != player_id+1:
+				continue
+			
+			if cell_state.flagged() and cell_state.secret != CellState.Secret.MINED:
+				total += 1
+	return total
