@@ -6,9 +6,6 @@ func _unhandled_input(ev: InputEvent) -> void:
 	if ev.is_action_pressed("meta_fullscreen"):
 		_toggle_fullscreen()
 
-	if OS.is_debug_build() and ev.is_action_pressed("dev_quit"):
-		get_tree().quit()
-
 func _take_screenshot():
 	var capture = get_viewport().get_texture().get_image()
 	var _time = Time.get_datetime_string_from_system()

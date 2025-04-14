@@ -41,6 +41,10 @@ func _physics_process(_dt: float) -> void:
 		else:
 			_label_above_start_area.text = "Starting..."
 
+func _unhandled_input(event: InputEvent) -> void:
+	if event.is_action_pressed("game_quit"):
+		get_tree().quit()
+
 func _on_timer_end():
 	if not _will_start_when_timer_ends:
 		return

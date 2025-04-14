@@ -37,6 +37,10 @@ func _process(_dt):
 	GameState.compute_leaders()
 	%ScoreBar.render()
 
+func _unhandled_input(event: InputEvent) -> void:
+	if event.is_action_pressed("game_quit"):
+		get_tree().change_scene_to_file("res://scenes/pregame_lobby.tscn")
+
 func _center_map_and_position_players():
 	var player_offset = map.tile_to_pos(Vector2i(2,1)) + map.tile_to_pos(Vector2i(1,1))*.2
 	
