@@ -3,6 +3,8 @@ class_name Player
 
 @export var id: int = 1
 @export var map: Map
+@export var show_highlight: bool = true
+@export var show_hearts: bool = true
 var state: PlayerState
 var poot_sound := preload("res://sounds/poooot.wav")
 var hurt_sound := preload("res://sounds/poulou_mort.wav")
@@ -27,10 +29,7 @@ enum Actions {
 
 var rng : RandomNumberGenerator
 var poot_cooldown : float
-
-@onready var hearts_rects: Array[TextureRect] = [
-	%Heart1, %Heart2, %Heart3
-]
+@onready var hearts_rects: Array[TextureRect] = [%Heart1, %Heart2, %Heart3]
 
 func _ready() -> void:
 	var index := id - 1
@@ -45,6 +44,8 @@ func _ready() -> void:
 	poot_cooldown = rng.randf_range(1.0, 20.0)
 
 	%Highlight.modulate = state.color
+	%Highlight.visible = show_highlight
+	%HeartsContainer.visible = show_hearts
 	%Sprite.region_rect.position.y += index * 16
 
 	action_map.append('move_left_p%d'  % [index])
@@ -71,7 +72,8 @@ func _physics_process(_delta: float) -> void:
 		%Sprite.flip_h = velocity.x < 0
 	move_and_slide()
 
-	%Highlight.global_position = map.snap_to_grid(global_position)
+	if show_highlight:
+		%Highlight.global_position = map.snap_to_grid(global_position)
 
 func _unhandled_input(event: InputEvent) -> void:
 	if state.is_dead() or state.discarded or not active:
