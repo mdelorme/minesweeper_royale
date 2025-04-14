@@ -11,6 +11,8 @@ var time_scale   : float = 10.0
 
 func _ready() -> void:
 	EventBus.on_update_player_score.connect(_on_update_player_score)
+	for i in range(4):
+		player_scores[i].visible = not GameState.players[i].discarded
 
 func _process(dt: float):
 	time += dt

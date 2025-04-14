@@ -36,6 +36,11 @@ func _ready() -> void:
 	var index := id - 1
 	active = true
 	state = GameState.players[index]
+	if state.discarded:
+		visible = false
+		collision_layer = 0
+		return
+	
 	rng = RandomNumberGenerator.new()
 	poot_cooldown = rng.randf_range(1.0, 20.0)
 
@@ -53,7 +58,7 @@ func _ready() -> void:
 	time = rng.randf()*PI
 
 func _physics_process(_delta: float) -> void:
-	if state.is_dead() or not active:
+	if state.is_dead() or state.discarded or not active:
 		return
 
 	velocity = Input.get_vector(
@@ -69,7 +74,7 @@ func _physics_process(_delta: float) -> void:
 	%Highlight.global_position = map.snap_to_grid(global_position)
 
 func _unhandled_input(event: InputEvent) -> void:
-	if state.is_dead() or not active:
+	if state.is_dead() or state.discarded or not active:
 		return
 
 	if event.is_action_pressed(action_map[Actions.ACTION_DIG]):
@@ -79,7 +84,7 @@ func _unhandled_input(event: InputEvent) -> void:
 		EventBus.on_player_flag.emit(position, id)
 
 func _process(delta: float) -> void:
-	if state.is_dead() or not active:
+	if state.is_dead() or state.discarded or not active:
 		return
 
 	poot_cooldown = max(0.0, poot_cooldown - delta)
@@ -100,7 +105,7 @@ func dig() -> void:
 
 
 func hit() -> void:
-	if state.invincible or state.is_dead() or not active:
+	if state.invincible or state.is_dead() or state.discarded or not active:
 		return
 
 	state.hearts -= 1
@@ -138,7 +143,7 @@ func die():
 
 	EventBus.on_player_die.emit(id)
 
-	if GameState.nb_players_alive == 1:
+	if GameState.nb_players_alive == 0:
 		EventBus.on_game_ended.emit()
 
 
