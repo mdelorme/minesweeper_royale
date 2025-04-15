@@ -93,7 +93,6 @@ func on_player_dig(pos: Vector2, player_id: int) -> void:
 		## Player is still alive, score increased
 		if not map_state.player_digs(map_position, player_id):
 			AudioBus.play_sound(explosion_sound)
-			kill_player(player_id)
 
 func on_player_flag(pos: Vector2, player_id: int) -> void:
 	var map_position := map.pos_to_tile(pos)
@@ -113,13 +112,6 @@ func on_explosion(pos: Vector2i) -> void:
 	var new_explosion := explosion_scene.instantiate()
 	new_explosion.global_position = map.tile_to_pos(pos)
 	add_child(new_explosion)
-
-func kill_player(player_id: int) -> void:
-	var player: Player = get_node("Player%d" % [player_id])
-	assert(player)
-	player.die()
-	if GameState.nb_players_alive == 1:
-		EventBus.on_game_ended.emit()
 
 func on_timer_end():
 	EventBus.on_game_ended.emit()

@@ -51,8 +51,6 @@ func _ready() -> void:
 
 	base_scale = %Sprite.scale
 	time = rng.randf()*PI
-	
-	EventBus.on_player_die.connect(on_player_die)
 
 func _physics_process(_delta: float) -> void:
 	if state.is_dead() or not active:
@@ -101,25 +99,29 @@ func dig() -> void:
 	tween.tween_property(%Sprite, "rotation", 0.0, 0.05)
 
 
-func die() -> void:
+func hit() -> void:
 	if state.invincible or state.is_dead() or not active:
 		return
 
 	state.hearts -= 1
-	
-	AudioBus.play_sound(hurt_sound, global_position)
-	
-	for heart in range(state.MAX_HEARTS):
-		hearts_rects[heart].visible = heart < state.hearts
-	
+
 	if state.hearts > 0:
 		state.invincible = true
 		var blink_tween := get_tree().create_tween().set_loops(5)
 		blink_tween.tween_property(%Sprite, "modulate:v", 2.0, 0.2)
 		blink_tween.tween_property(%Sprite, "modulate:v", 1.0, 0.2)
 		blink_tween.tween_callback(state.unset_invincible)
-		return
 
+	AudioBus.play_sound(hurt_sound, global_position)
+	
+	for heart in range(state.MAX_HEARTS):
+		hearts_rects[heart].visible = heart < state.hearts
+
+	if state.hearts <= 0:
+		die()
+
+
+func die():
 	var shake_tween := get_tree().create_tween().set_loops(10)
 	shake_tween.tween_property(%Sprite, "rotation", PI/8, 0.015)
 	shake_tween.tween_property(%Sprite, "rotation", -PI/8, 0.015)
@@ -130,18 +132,19 @@ func die() -> void:
 
 	explode_tween.tween_property(%Sprite, "scale", base_scale, 0.3)
 	explode_tween.parallel().tween_property(%Sprite, "modulate:a", 1.0, 0.2).set_delay(0.1)
-	await explode_tween.finished
+	explode_tween.tween_callback(set_dead_sprite)
+	
+	active = false
 
+	EventBus.on_player_die.emit(id)
+
+	if GameState.nb_players_alive == 1:
+		EventBus.on_game_ended.emit()
+
+
+func set_dead_sprite():
 	%Sprite.rotation = 0.0
 	%Sprite.region_rect = Rect2(160.0, 64.0, 16.0, 16.0)
 	%Highlight.hide()
-	
-	EventBus.on_player_die.emit()
 
-	active = false
-
-func on_player_die() -> void:
-	if state.is_dead() or not active:
-		return
-	
 	AudioBus.play_sound(laughing_sound, global_position)

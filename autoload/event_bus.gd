@@ -3,7 +3,7 @@ extends Node
 signal on_game_reset()
 signal on_game_ended()
 signal on_score_screen_finish()
-signal on_player_die()
+signal on_player_die(player_id: int)
 signal on_player_dig(position: Vector2, player_id: int)
 signal on_player_flag(position: Vector2, player_id: int)
 signal on_player_score(player_id: int, score: int)
