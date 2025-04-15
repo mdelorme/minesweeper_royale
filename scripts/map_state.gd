@@ -99,8 +99,7 @@ func get_score_at(position: Vector2i) -> int:
 func count_valid_flags(player_id: int) -> int:
 	var total := 0
 	for cell_state: CellState in cells.values():
-		# FIXME: Why +1 here?
-		if cell_state.owner_id != player_id+1:
+		if cell_state.owner_id != player_id:
 			continue
 
 		if cell_state.flagged() and cell_state.mined():
@@ -110,8 +109,7 @@ func count_valid_flags(player_id: int) -> int:
 func count_invalid_flags(player_id: int) -> int:
 	var total := 0
 	for cell_state: CellState in cells.values():
-		# FIXME: Why +1 here?
-		if cell_state.owner_id != player_id+1:
+		if cell_state.owner_id != player_id:
 			continue
 
 		if cell_state.flagged() and not cell_state.mined():

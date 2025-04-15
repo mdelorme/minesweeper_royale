@@ -1,6 +1,6 @@
 extends PanelContainer
 
-@export var player_id: int
+@export var player_index: int = 0
 @onready var stylebox : StyleBoxFlat
 @onready var cont_1 := $MarginContainer/VBoxContainer/Cont1
 @onready var cont_2 := $MarginContainer/VBoxContainer/Cont2
@@ -18,7 +18,7 @@ const valid_flag_bonus := 5
 const invalid_flag_malus := 8
 
 func _ready() -> void:
-	player = GameState.players[player_id]
+	player = GameState.players[player_index]
 	stylebox = self.get_theme_stylebox('panel').duplicate()
 	final_color = player.color
 	stylebox.bg_color = Color('#666666')
@@ -43,8 +43,8 @@ func update() -> void:
 	tween = create_tween()
 	$"../../".tween = tween # Link parent tween to this to allow skipping
 	
-	var valid_score   := GameState.map.count_valid_flags(player_id)
-	var invalid_score := GameState.map.count_invalid_flags(player_id) 
+	var valid_score   := GameState.map.count_valid_flags(player.id)
+	var invalid_score := GameState.map.count_invalid_flags(player.id) 
 	var final_score = player.score + valid_score*valid_flag_bonus - invalid_score*invalid_flag_malus - 1
 	
 	# Calculating flag scores
