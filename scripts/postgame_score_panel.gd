@@ -1,21 +1,22 @@
 extends MarginContainer
 
 var init_pos := -273
-@onready var score_containers := [$HBoxContainer/ScoreContainer, $HBoxContainer/ScoreContainer2, $HBoxContainer/ScoreContainer3, $HBoxContainer/ScoreContainer4]
+@onready var score_containers := $HBoxContainer.get_children()
 var tween : Tween
 var cooldown : float
 
 func _ready() -> void:
-	EventBus.on_game_reset.connect(on_game_reset)
+	EventBus.on_game_reset.connect(_setup)
+	_setup()
 	
 func _process(delta: float) -> void:
 	cooldown -= delta
 	
-func on_game_reset() -> void:
+func _setup() -> void:
 	visible = false
 	position.y = init_pos
 	
-func on_show() -> void:
+func reveal() -> void:
 	visible = true
 	for score_container in score_containers:
 		score_container.reset()
@@ -38,5 +39,5 @@ func _unhandled_input(event: InputEvent) -> void:
 				tween = get_tree().create_tween()
 				tween.tween_property(self, "position", Vector2(0.0, init_pos), 0.25).set_ease(Tween.EASE_OUT)
 				await tween.finished
-				EventBus.on_game_restarted.emit()
+				EventBus.on_score_screen_finish.emit()
 			cooldown = 0.5

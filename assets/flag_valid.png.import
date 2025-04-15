@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://ckhsumgh055oy"
-path="res://.godot/imported/pattern_54.png-f82bccdc2ad910effa13c015489b6d3e.ctex"
+uid="uid://drbu2abtwev4p"
+path="res://.godot/imported/flag_valid.png-c281c321a00260f7fdbf2e08617226b6.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/kenney-pattern-pack/pattern_54.png"
-dest_files=["res://.godot/imported/pattern_54.png-f82bccdc2ad910effa13c015489b6d3e.ctex"]
+source_file="res://assets/flag_valid.png"
+dest_files=["res://.godot/imported/flag_valid.png-c281c321a00260f7fdbf2e08617226b6.ctex"]
 
 [params]
 
