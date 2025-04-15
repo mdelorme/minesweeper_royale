@@ -50,19 +50,16 @@ func add_mines() -> void:
 			randi_range(0, width - 1),
 			randi_range(0, height - 1),
 		)
-		var cell_state: CellState = get_cell(position)
+		var cell_state: CellState = cells[position]
 		if cell_state.mined():
 			continue
 		cell_state.secret = CellState.Secret.MINED
 		increment_neighbors(position)
 		mines_count -= 1
 
-func get_cell(position: Vector2i) -> CellState:
-	return cells[position]
-
 func player_digs(position: Vector2i, player_id: int, propagate: bool = true) -> bool:
 	## Returns true if the player is still alive, false otherwise
-	var cell_state : CellState = get_cell(position)
+	var cell_state : CellState = cells[position]
 	cell_state.interaction = CellState.Interaction.DUG
 	cell_state.owner_id = player_id
 	print("player digs called at pos %d %d; with id %d" % [position.x, position.y, player_id])

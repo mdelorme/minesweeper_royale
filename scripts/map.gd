@@ -30,7 +30,7 @@ func add_gained_points(coords: Vector2i, cell_state: CellState) -> void:
 
 func update_tile(coords: Vector2i) -> void:
 	## Numbers
-	var cell_state : CellState = GameState.map.get_cell(coords)
+	var cell_state := GameState.map.cells[coords]
 	var atlas_coords := Vector2i(0, 3)
 	var source_id := 0
 	## Hide the number if not dug
