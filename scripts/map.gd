@@ -60,9 +60,8 @@ func update_tile(coords: Vector2i) -> void:
 
 func update_tiles() -> void:
 	var map := GameState.map
-	for y in map.height:
-		for x in map.width:
-			update_tile(Vector2i(x, y))
+	for coords in map.cells:
+		update_tile(coords)
 
 func _ready() -> void:
 	EventBus.on_game_reset.connect(update_tiles)
