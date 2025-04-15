@@ -14,7 +14,6 @@ const explosion_sound      := preload("res://sounds/explosion.wav")
 const flag_on_sound        := preload("res://sounds/flag_on.wav")
 const flag_off_sound       := preload("res://sounds/flag_off.wav")
 const explosion_scene      := preload("res://scenes/explosion.tscn")
-const detonated_mine_scene := preload("res://scenes/detonated_mine.tscn")
 
 func _ready() -> void:
 	## Connecting to relevant signals of the event bus
