@@ -11,7 +11,7 @@ var player: PlayerState
 var cell_counter := 0
 var valid_flag_counter := 0
 var invalid_flag_counter := 0
-var total_counter := 0
+var total_counter := -1000000
 var tween : Tween
 
 const valid_flag_bonus := 5
