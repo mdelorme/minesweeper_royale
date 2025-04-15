@@ -35,6 +35,7 @@ var invincible: bool = false
 var score: int = 1
 var is_leader: bool = false
 var player_name: String
+var discarded := false
 
 func _init(_id: int):
 	id = _id

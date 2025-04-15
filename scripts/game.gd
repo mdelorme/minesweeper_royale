@@ -7,6 +7,8 @@ extends Node2D
 @onready var black_overlay: CanvasItem = %BlackOverlay
 @onready var timer_hud = %ScoreBar/HBoxContainer/TimerHud
 
+const _delay_after_all_are_dead := 2. # seconds
+
 const dig_sound            := preload("res://sounds/dig.wav")
 const explosion_sound      := preload("res://sounds/explosion.wav")
 const flag_on_sound        := preload("res://sounds/flag_on.wav")
@@ -33,6 +35,10 @@ func _ready() -> void:
 func _process(_dt):
 	GameState.compute_leaders()
 	%ScoreBar.render()
+
+func _unhandled_input(event: InputEvent) -> void:
+	if event.is_action_pressed("game_quit"):
+		get_tree().change_scene_to_file("res://scenes/pregame_lobby.tscn")
 
 func _center_map_and_position_players():
 	var player_offset = map.tile_to_pos(Vector2i(2,1)) + map.tile_to_pos(Vector2i(1,1))*.2
@@ -120,16 +126,18 @@ func on_timer_end():
 	EventBus.on_game_ended.emit()
 
 func on_game_ended() -> void:
-	timer.stop()
+	timer.paused = true
 	for i in range(4):
-		get_node("Player%d" % [i+1]).active = false
+		players[i].active = false
 	vfx_desaturate.material.set_shader_parameter("alpha", 0.0);
 	vfx_desaturate.visible = true
 	var tween := get_tree().create_tween()
 	tween.tween_property(vfx_desaturate, "material:shader_parameter/alpha", 1.0, 0.5)
 	await tween.finished
+	if GameState.nb_players_alive == 0:
+		await get_tree().create_timer(_delay_after_all_are_dead).timeout
 	%PostgameScorePanel.reveal()
-		
+
 func on_score_screen_finish() -> void:
 	var tween := get_tree().create_tween()
 	black_overlay.modulate.a = 0.0

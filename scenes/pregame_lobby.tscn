@@ -1,0 +1,93 @@
+[gd_scene load_steps=9 format=3 uid="uid://d1jaw7e82b50f"]
+
+[ext_resource type="Script" uid="uid://7slt46ukhwt6" path="res://scripts/pregame_lobby.gd" id="1_60bol"]
+[ext_resource type="Shader" uid="uid://ty7hg2c526kh" path="res://scripts/scrolling_background.gdshader" id="2_wfkoc"]
+[ext_resource type="FontFile" uid="uid://1xgm7jd4tf71" path="res://assets/font-pixeloid/PixeloidSans.ttf" id="3_ok6de"]
+[ext_resource type="Texture2D" uid="uid://dbgw1tvteahnd" path="res://assets/background_pattern.png" id="3_udq4s"]
+[ext_resource type="PackedScene" uid="uid://byy5a0wd3wx42" path="res://scenes/player.tscn" id="4_yywyi"]
+[ext_resource type="AudioStream" uid="uid://bmkv3p0dgqcer" path="res://sounds/game_music.wav" id="5_e5uvk"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_wfkoc"]
+shader = ExtResource("2_wfkoc")
+shader_parameter/color1 = Color(0.121569, 0.0980392, 0.145098, 1)
+shader_parameter/color2 = Color(0.152941, 0.113725, 0.2, 1)
+shader_parameter/scroll_speed = Vector2(0.25, -0.25)
+shader_parameter/scale = 0.155
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_60bol"]
+size = Vector2(140, 100)
+
+[node name="PregameLobby" type="Node2D"]
+script = ExtResource("1_60bol")
+
+[node name="ScrollingBackground" type="TextureRect" parent="."]
+material = SubResource("ShaderMaterial_wfkoc")
+offset_right = 2678.0
+offset_bottom = 1517.0
+scale = Vector2(0.18, 0.18)
+texture = ExtResource("3_udq4s")
+expand_mode = 1
+stretch_mode = 1
+
+[node name="Music" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("5_e5uvk")
+autoplay = true
+bus = &"Music"
+
+[node name="AudioListener2D" type="AudioListener2D" parent="."]
+position = Vector2(248, 140)
+
+[node name="players" type="Node2D" parent="."]
+
+[node name="Player1" parent="players" instance=ExtResource("4_yywyi")]
+position = Vector2(80, 120)
+show_highlight = false
+show_hearts = false
+
+[node name="Player2" parent="players" instance=ExtResource("4_yywyi")]
+position = Vector2(80, 230)
+id = 2
+show_highlight = false
+show_hearts = false
+
+[node name="Player3" parent="players" instance=ExtResource("4_yywyi")]
+position = Vector2(400, 120)
+id = 3
+show_highlight = false
+show_hearts = false
+
+[node name="Player4" parent="players" instance=ExtResource("4_yywyi")]
+position = Vector2(400, 230)
+id = 4
+show_highlight = false
+show_hearts = false
+
+[node name="Area2D_StartGame" type="Area2D" parent="."]
+unique_name_in_owner = true
+position = Vector2(237, 176)
+collision_layer = 2
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D_StartGame"]
+shape = SubResource("RectangleShape2D_60bol")
+
+[node name="ColorRect" type="ColorRect" parent="Area2D_StartGame"]
+offset_left = -70.0
+offset_top = -50.0
+offset_right = 70.0
+offset_bottom = 50.0
+color = Color(1, 1, 1, 0.364706)
+
+[node name="label_above_start_area" type="Label" parent="."]
+unique_name_in_owner = true
+offset_left = 132.0
+offset_top = 103.0
+offset_right = 342.0
+offset_bottom = 126.0
+theme_override_fonts/font = ExtResource("3_ok6de")
+text = "v  Start  v"
+horizontal_alignment = 1
+vertical_alignment = 2
+
+[node name="TimerGameStart" type="Timer" parent="."]
+wait_time = 3.0
+one_shot = true
