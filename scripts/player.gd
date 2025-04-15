@@ -132,7 +132,7 @@ func die() -> void:
 	await explode_tween.finished
 
 	%Sprite.rotation = 0.0
-	%Sprite.region_rect.position = Vector2(192, 0)
+	%Sprite.region_rect = Rect2(160.0, 64.0, 16.0, 16.0)
 	%Highlight.hide()
 	
 	EventBus.on_player_die.emit()
