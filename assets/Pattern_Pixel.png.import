@@ -3,15 +3,15 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://dofwfmu7nmyqe"
-path="res://.godot/imported/Pattern_Pixel.png-a894ca666473a96570fb132d6310a700.ctex"
+path="res://.godot/imported/Pattern_Pixel.png-476272c7c27a21a4e95c9b42469077d2.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/kenney-pattern-pack/Pattern_Pixel.png"
-dest_files=["res://.godot/imported/Pattern_Pixel.png-a894ca666473a96570fb132d6310a700.ctex"]
+source_file="res://assets/Pattern_Pixel.png"
+dest_files=["res://.godot/imported/Pattern_Pixel.png-476272c7c27a21a4e95c9b42469077d2.ctex"]
 
 [params]
 
