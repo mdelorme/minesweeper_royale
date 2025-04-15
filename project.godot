@@ -13,7 +13,7 @@ config_version=5
 config/name="Minesweeper Royale"
 run/main_scene="uid://mostrtwvswno"
 config/features=PackedStringArray("4.4", "Forward Plus")
-config/icon="uid://cwa34rgt2grqm"
+config/icon="uid://b4iot4jpnpohf"
 run/dpi/allow_hidpi=true
 
 [autoload]
