@@ -22,7 +22,6 @@ func _ready() -> void:
 	EventBus.on_game_ended.connect(on_game_ended)
 	EventBus.on_score_screen_finish.connect(on_score_screen_finish)
 	EventBus.on_explosion.connect(on_explosion)
-	EventBus.on_reveal_mine.connect(on_reveal_mine)
 	timer.timeout.connect(on_timer_end)
 	
 	_center_map_and_position_players()
@@ -139,8 +138,3 @@ func on_score_screen_finish() -> void:
 	await tween.finished
 	GameState.randomize_next_game()
 	get_tree().reload_current_scene()
-	
-func on_reveal_mine(pos: Vector2i) -> void:
-	var new_mine := detonated_mine_scene.instantiate()
-	new_mine.global_position = map.tile_to_pos(pos)
-	add_child(new_mine)

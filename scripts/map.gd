@@ -39,7 +39,7 @@ func update_tile(coords: Vector2i) -> void:
 		if secret == 0:
 			atlas_coords = Vector2i(0, 3)
 		elif secret == 9:
-			atlas_coords = Vector2i(0, 3)
+			atlas_coords = Vector2i(1, 0)
 		else:
 			atlas_coords = Vector2i(1 + secret, cell_state.owner_id-1)
 			if cell_state.owner_id < 5:
