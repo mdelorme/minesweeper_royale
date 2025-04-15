@@ -30,6 +30,8 @@ func diggable() -> bool:
 func flagged() -> bool:
 	return interaction == Interaction.FLAGGED
 
+func mined() -> bool:
+	return secret == Secret.MINED
 
 func toggle_flag(player_id: int) -> bool:
 	if not diggable():

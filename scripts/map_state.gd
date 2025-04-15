@@ -49,7 +49,7 @@ func add_mines() -> void:
 		var x := randi_range(0, width - 1)
 		var y := randi_range(0, height - 1)
 		var cell_state: CellState = grid[y][x]
-		if cell_state.secret == CellState.Secret.MINED:
+		if cell_state.mined():
 			continue
 		cell_state.secret = CellState.Secret.MINED
 		increment_neighbors(x, y)
@@ -60,17 +60,17 @@ func get_cell(position: Vector2i) -> CellState:
 
 func player_digs(position: Vector2i, player_id: int, propagate: bool = true) -> bool:
 	## Returns true if the player is still alive, false otherwise
-	var cell_state : CellState = grid[position.y][position.x]
+	var cell_state : CellState = get_cell(position)
 	cell_state.interaction = CellState.Interaction.DUG
 	cell_state.owner_id = player_id
 	print("player digs called at pos %d %d; with id %d" % [position.x, position.y, player_id])
 	## Propagate if cell is empty
 	if propagate and cell_state.secret == 0:
-		for i in range(-1, 2):
+		for i: int in [-1, 0, 1]:
 			var nx := position.x + i
 			if nx < 0 or nx > width-1:
 				continue
-			for j in range(-1, 2):
+			for j: int in [-1, 0, 1]:
 				var ny := position.y + j
 				if ny < 0 or ny >= height:
 					continue
@@ -79,18 +79,18 @@ func player_digs(position: Vector2i, player_id: int, propagate: bool = true) -> 
 				if get_cell(new_pos).diggable():
 					player_digs(new_pos, player_id, false)
 	EventBus.on_tile_update.emit(position)
-	var cell_exploded := cell_state.secret == CellState.Secret.MINED
+	var cell_exploded := cell_state.mined()
 	
 	if not cell_exploded and player_id < 5:
 		var score := cell_state.secret if not cell_exploded else 0
 		EventBus.on_player_score.emit(player_id, score)
 	elif cell_exploded:
 		EventBus.on_reveal_mine.emit(position)
-		for i in range(-1, 2):
+		for i: int in [-1, 0, 1]:
 			var nx := position.x + i
 			if nx < 0 or nx > width-1:
 				continue
-			for j in range(-1, 2):
+			for j: int in [-1, 0, 1]:
 				var ny := position.y + j
 				if ny < 0 or ny > height-1:
 					continue
@@ -98,7 +98,7 @@ func player_digs(position: Vector2i, player_id: int, propagate: bool = true) -> 
 				var new_pos := Vector2i(nx, ny)
 				if not get_cell(new_pos).dug():
 					player_digs(new_pos, 5, false)
-				EventBus.on_explosion.emit(Vector2i(nx, ny))
+				EventBus.on_explosion.emit(new_pos)
 	return not cell_exploded
 
 func player_flag(position: Vector2i, player_id: int) -> bool:
@@ -109,11 +109,10 @@ func player_flag(position: Vector2i, player_id: int) -> bool:
 	return changed
 
 func get_score_at(position: Vector2i) -> int:
-	var cell_state : CellState = grid[position.y][position.x]
-	if cell_state.secret == CellState.Secret.MINED:
+	var cell_state : CellState = get_cell(position)
+	if cell_state.mined():
 		return 0
-	else:
-		return cell_state.secret
+	return cell_state.secret
 
 func count_valid_flags(player_id: int) -> int:
 	var total := 0
@@ -123,7 +122,7 @@ func count_valid_flags(player_id: int) -> int:
 			if cell_state.owner_id != player_id+1:
 				continue
 				
-			if cell_state.flagged() and cell_state.secret == CellState.Secret.MINED:
+			if cell_state.flagged() and cell_state.mined():
 				total += 1
 	return total
 	
@@ -134,7 +133,7 @@ func count_invalid_flags(player_id: int) -> int:
 			var cell_state : CellState = grid[i][j]
 			if cell_state.owner_id != player_id+1:
 				continue
-			
-			if cell_state.flagged() and cell_state.secret != CellState.Secret.MINED:
+
+			if cell_state.flagged() and cell_state.mined():
 				total += 1
 	return total
