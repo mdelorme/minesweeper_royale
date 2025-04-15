@@ -4,34 +4,32 @@
 [ext_resource type="PackedScene" uid="uid://vtmapdr3lve8" path="res://scenes/postgame_score_card.tscn" id="2_gwdlp"]
 
 [node name="PostgameScorePanel" type="MarginContainer"]
-custom_minimum_size = Vector2(480, 250)
-offset_right = 481.0
-offset_bottom = 250.0
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
 theme_override_constants/margin_left = 5
-theme_override_constants/margin_top = 30
+theme_override_constants/margin_top = 31
 theme_override_constants/margin_right = 5
 theme_override_constants/margin_bottom = 30
 script = ExtResource("1_6ney4")
 
 [node name="HBoxContainer" type="HBoxContainer" parent="."]
 layout_mode = 2
-theme_override_constants/separation = 1
+alignment = 1
 
 [node name="ScoreCard1" parent="HBoxContainer" instance=ExtResource("2_gwdlp")]
 layout_mode = 2
-size_flags_horizontal = 3
 
 [node name="ScoreCard2" parent="HBoxContainer" instance=ExtResource("2_gwdlp")]
 layout_mode = 2
-size_flags_horizontal = 3
 player_index = 1
 
 [node name="ScoreCard3" parent="HBoxContainer" instance=ExtResource("2_gwdlp")]
 layout_mode = 2
-size_flags_horizontal = 3
 player_index = 2
 
 [node name="ScoreCard4" parent="HBoxContainer" instance=ExtResource("2_gwdlp")]
 layout_mode = 2
-size_flags_horizontal = 3
 player_index = 3

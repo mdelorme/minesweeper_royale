@@ -6,6 +6,9 @@ var tween : Tween
 var cooldown : float
 
 func _ready() -> void:
+	for i in range(4):
+		score_containers[i].visible = not GameState.players[i].discarded
+	
 	EventBus.on_game_reset.connect(_setup)
 	_setup()
 	
@@ -19,6 +22,7 @@ func _setup() -> void:
 func reveal() -> void:
 	visible = true
 	for score_container in score_containers:
+		if not score_container.visible: continue
 		score_container.reset()
 		
 	tween = create_tween()
@@ -26,6 +30,7 @@ func reveal() -> void:
 	await tween.finished
 	
 	for score_container in score_containers:
+		if not score_container.visible: continue
 		await score_container.update()
 		
 func _unhandled_input(event: InputEvent) -> void:
