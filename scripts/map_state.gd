@@ -1,8 +1,18 @@
 extends Node
 class_name MapState
 
-# TODO: Replace with Array[Array[CellState]] when Godot supports it.
-var grid: Array[Array]
+const NEIGHBORS_DELTAS: Array[Vector2i] = [
+	Vector2i(-1, -1),
+	Vector2i(-1, 0),
+	Vector2i(-1, 1),
+	Vector2i(0, -1),
+	Vector2i(0, 1),
+	Vector2i(1, -1),
+	Vector2i(1, 0),
+	Vector2i(1, 1),
+]
+
+var cells: Dictionary[Vector2i, CellState]
 var width: int
 var height: int
 var mines_count: int
@@ -16,26 +26,16 @@ func _init(_width: int, _height: int, _mines_count: int) -> void:
 
 
 func fill_empty() -> void:
-	grid = []
-	grid.resize(height)
 	for y in range(height):
-		var row: Array[CellState] = []
-		row.resize(width)
-		grid[y] = row
 		for x in range(width):
-			row[x] = CellState.new()
+			cells[Vector2i(x, y)] = CellState.new()
 
 
-func increment_neighbors(x: int, y: int):
-	for dy: int in [-1, 0, 1]:
-		for dx: int in [-1, 0, 1]:
-			if dx == 0 and dy == 0:
-				continue
-			var x2 := x + dx
-			var y2 := y + dy
-			if x2 < 0 or x2 >= width or y2 < 0 or y2 >= height:
-				continue
-			var cell_state: CellState = grid[y2][x2]
+func increment_neighbors(position: Vector2i):
+	for delta in NEIGHBORS_DELTAS:
+		var neighbor_position := position + delta
+		if cells.has(neighbor_position):
+			var cell_state := cells[neighbor_position]
 			cell_state.secret = min(cell_state.secret + 1, CellState.Secret.MINED)
 
 
@@ -46,17 +46,19 @@ func add_mines() -> void:
 	)
 	
 	while mines_count > 0:
-		var x := randi_range(0, width - 1)
-		var y := randi_range(0, height - 1)
-		var cell_state: CellState = grid[y][x]
+		var position := Vector2i(
+			randi_range(0, width - 1),
+			randi_range(0, height - 1),
+		)
+		var cell_state: CellState = get_cell(position)
 		if cell_state.mined():
 			continue
 		cell_state.secret = CellState.Secret.MINED
-		increment_neighbors(x, y)
+		increment_neighbors(position)
 		mines_count -= 1
 
 func get_cell(position: Vector2i) -> CellState:
-	return grid[position.y][position.x]
+	return cells[position]
 
 func player_digs(position: Vector2i, player_id: int, propagate: bool = true) -> bool:
 	## Returns true if the player is still alive, false otherwise
@@ -65,19 +67,11 @@ func player_digs(position: Vector2i, player_id: int, propagate: bool = true) -> 
 	cell_state.owner_id = player_id
 	print("player digs called at pos %d %d; with id %d" % [position.x, position.y, player_id])
 	## Propagate if cell is empty
-	if propagate and cell_state.secret == 0:
-		for i: int in [-1, 0, 1]:
-			var nx := position.x + i
-			if nx < 0 or nx > width-1:
-				continue
-			for j: int in [-1, 0, 1]:
-				var ny := position.y + j
-				if ny < 0 or ny >= height:
-					continue
-				
-				var new_pos := Vector2i(nx, ny)
-				if get_cell(new_pos).diggable():
-					player_digs(new_pos, player_id, false)
+	if propagate and cell_state.empty():
+		for delta in NEIGHBORS_DELTAS:
+			var new_pos := position + delta
+			if cells.has(new_pos) and cells[new_pos].diggable():
+				player_digs(new_pos, player_id, false)
 	EventBus.on_tile_update.emit(position)
 	var cell_exploded := cell_state.mined()
 	
@@ -86,54 +80,43 @@ func player_digs(position: Vector2i, player_id: int, propagate: bool = true) -> 
 		EventBus.on_player_score.emit(player_id, score)
 	elif cell_exploded:
 		EventBus.on_reveal_mine.emit(position)
-		for i: int in [-1, 0, 1]:
-			var nx := position.x + i
-			if nx < 0 or nx > width-1:
-				continue
-			for j: int in [-1, 0, 1]:
-				var ny := position.y + j
-				if ny < 0 or ny > height-1:
-					continue
-					
-				var new_pos := Vector2i(nx, ny)
-				if not get_cell(new_pos).dug():
-					player_digs(new_pos, 5, false)
-				EventBus.on_explosion.emit(new_pos)
+		for delta in NEIGHBORS_DELTAS:
+			var new_pos := position + delta
+			if cells.has(new_pos) and not cells[new_pos].dug():
+				player_digs(new_pos, 5, false)
+			EventBus.on_explosion.emit(new_pos)
 	return not cell_exploded
 
 func player_flag(position: Vector2i, player_id: int) -> bool:
-	var cell := get_cell(position)
-	var changed := cell.toggle_flag(player_id)
+	var changed := cells[position].toggle_flag(player_id)
 	if changed:
 		EventBus.on_tile_update.emit(position)
 	return changed
 
 func get_score_at(position: Vector2i) -> int:
-	var cell_state : CellState = get_cell(position)
+	var cell_state : CellState = cells[position]
 	if cell_state.mined():
 		return 0
 	return cell_state.secret
 
 func count_valid_flags(player_id: int) -> int:
 	var total := 0
-	for i in range(height):
-		for j in range(width):
-			var cell_state : CellState = grid[i][j]
-			if cell_state.owner_id != player_id+1:
-				continue
-				
-			if cell_state.flagged() and cell_state.mined():
-				total += 1
+	for cell_state: CellState in cells.values():
+		# FIXME: Why +1 here?
+		if cell_state.owner_id != player_id+1:
+			continue
+
+		if cell_state.flagged() and cell_state.mined():
+			total += 1
 	return total
 	
 func count_invalid_flags(player_id: int) -> int:
 	var total := 0
-	for i in range(height):
-		for j in range(width):
-			var cell_state : CellState = grid[i][j]
-			if cell_state.owner_id != player_id+1:
-				continue
+	for cell_state: CellState in cells.values():
+		# FIXME: Why +1 here?
+		if cell_state.owner_id != player_id+1:
+			continue
 
-			if cell_state.flagged() and cell_state.mined():
-				total += 1
+		if cell_state.flagged() and not cell_state.mined():
+			total += 1
 	return total

@@ -30,6 +30,9 @@ func diggable() -> bool:
 func flagged() -> bool:
 	return interaction == Interaction.FLAGGED
 
+func empty() -> bool:
+	return secret == Secret.EMPTY
+
 func mined() -> bool:
 	return secret == Secret.MINED
 
