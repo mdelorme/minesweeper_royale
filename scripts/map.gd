@@ -67,8 +67,3 @@ func _ready() -> void:
 	EventBus.on_game_reset.connect(update_tiles)
 	EventBus.on_tile_update.connect(update_tile)
 	GameState.reset()
-
-
-func _process(_delta: float) -> void:
-	if Input.is_action_just_pressed("reset"):
-		GameState.reset()
