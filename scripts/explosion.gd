@@ -1,15 +1,9 @@
-extends AnimatedSprite2D
+extends CollisionShape2D
 
 func _ready() -> void:
 	var rng := RandomNumberGenerator.new()
-	rotate(rng.randf()*PI)
-	play('default')
+	rotate(rng.randf_range(0.0, PI))
+	$AnimatedSprite2D.play('default')
 
 func _on_animation_finished() -> void:
 	queue_free()
-
-
-
-func _on_area_2d_body_entered(body: Node2D) -> void:
-	if body is Player:
-		body.hit()

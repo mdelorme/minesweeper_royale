@@ -68,6 +68,7 @@ func player_digs(position: Vector2i, player_id: int, propagate: bool = true) -> 
 	
 	if cell_exploded:
 		EventBus.on_reveal_mine.emit(position)
+		EventBus.on_explosion.emit(position)
 		for delta in NEIGHBORS_DELTAS:
 			var new_pos := position + delta
 			if cells.has(new_pos) and not cells[new_pos].dug():

@@ -3,6 +3,9 @@
 [ext_resource type="Texture2D" uid="uid://dqk4f0qtjdpos" path="res://assets/explosion.png" id="1_17npe"]
 [ext_resource type="Script" uid="uid://cgqx1gleyq0a" path="res://scripts/explosion.gd" id="2_nfeox"]
 
+[sub_resource type="CircleShape2D" id="CircleShape2D_nfeox"]
+radius = 8.0
+
 [sub_resource type="AtlasTexture" id="AtlasTexture_nfeox"]
 atlas = ExtResource("1_17npe")
 region = Rect2(0, 0, 16, 16)
@@ -46,19 +49,12 @@ animations = [{
 "speed": 20.0
 }]
 
-[sub_resource type="CircleShape2D" id="CircleShape2D_nfeox"]
-radius = 8.06226
-
-[node name="Explosion" type="AnimatedSprite2D"]
-sprite_frames = SubResource("SpriteFrames_hbmxj")
-frame = 4
-frame_progress = 1.0
+[node name="Explosion" type="CollisionShape2D"]
+shape = SubResource("CircleShape2D_nfeox")
 script = ExtResource("2_nfeox")
 
-[node name="Area2D" type="Area2D" parent="."]
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+z_index = 1
+sprite_frames = SubResource("SpriteFrames_hbmxj")
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
-shape = SubResource("CircleShape2D_nfeox")
-
-[connection signal="animation_finished" from="." to="." method="_on_animation_finished"]
-[connection signal="body_entered" from="Area2D" to="." method="_on_area_2d_body_entered"]
+[connection signal="animation_finished" from="AnimatedSprite2D" to="." method="_on_animation_finished"]

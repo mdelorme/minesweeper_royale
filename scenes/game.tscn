@@ -50,6 +50,9 @@ stretch_mode = 1
 
 [node name="Map" parent="." instance=ExtResource("1_uwrxv")]
 
+[node name="ExplosionArea" type="Area2D" parent="."]
+unique_name_in_owner = true
+
 [node name="Player1" parent="." node_paths=PackedStringArray("map") instance=ExtResource("2_yqjtg")]
 position = Vector2(65, 53)
 map = NodePath("../Map")
@@ -192,3 +195,5 @@ bus = &"Music"
 
 [node name="AudioListener2D" type="AudioListener2D" parent="."]
 position = Vector2(248, 140)
+
+[connection signal="body_entered" from="ExplosionArea" to="." method="_on_explosion_area_body_entered"]

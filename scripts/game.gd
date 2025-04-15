@@ -111,7 +111,11 @@ func on_player_score(player_id: int, score: int) -> void:
 func on_explosion(pos: Vector2i) -> void:
 	var new_explosion := explosion_scene.instantiate()
 	new_explosion.global_position = map.tile_to_pos(pos)
-	add_child(new_explosion)
+	%ExplosionArea.add_child(new_explosion)
+
+func _on_explosion_area_body_entered(body: Node2D) -> void:
+	if body is Player:
+		body.hit()
 
 func on_timer_end():
 	EventBus.on_game_ended.emit()
