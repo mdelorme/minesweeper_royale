@@ -95,8 +95,9 @@ func _process(delta: float) -> void:
 	time += delta
 
 func dig() -> void:
+	var rotation_sign: float = -1.0 if %Sprite.flip_h else 1.0
 	var tween := get_tree().create_tween()
-	tween.tween_property(%Sprite, "rotation", PI*0.5, 0.05)
+	tween.tween_property(%Sprite, "rotation", PI*0.5 * rotation_sign, 0.05)
 	tween.tween_property(%Sprite, "rotation", 0.0, 0.05)
 
 
