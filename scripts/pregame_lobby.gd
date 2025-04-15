@@ -13,6 +13,15 @@ var _players_ready_ids := []
 var _nb_players_ready = 0
 const _freeze_duration_before_start: float = 1.
 
+func _enter_tree():
+	# When returning to the lobby after having played a game with <4 players,
+	# we need to display 4 players just like before the first game.
+	# Since we share player.tscn with game.tscn, and since player.tscn
+	# reads GameState.players during _ready, then we need to reset the players before that.
+	# Yup, the principles of encapsulation and single-responsiblity sob silently.
+	GameState.players_to_start_next_game_with = [1,2,3,4]
+	GameState.reset()
+
 func _ready():
 	Input.mouse_mode = Input.MOUSE_MODE_HIDDEN
 	
