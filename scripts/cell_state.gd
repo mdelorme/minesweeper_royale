@@ -17,9 +17,16 @@ enum Secret {
 enum Interaction { UNTOUCHED, DUG, FLAGGED }
 
 
+var position: Vector2i
 var secret: Secret = Secret.EMPTY
 var owner_id: int = -1
 var interaction: Interaction = Interaction.UNTOUCHED
+
+# AI variables
+var mine_probability: float = 0.5
+
+func untouched() -> bool:
+	return interaction == Interaction.UNTOUCHED
 
 func dug() -> bool:
 	return interaction == Interaction.DUG
@@ -35,6 +42,15 @@ func empty() -> bool:
 
 func mined() -> bool:
 	return secret == Secret.MINED
+
+func should_flag() -> bool:
+	return mine_probability >= 1.0 and untouched()
+
+func should_dig() -> bool:
+	return mine_probability < 1.0 and diggable()
+
+func ai_excluded() -> bool:
+	return dug() or (mine_probability >= 1.0 and flagged())
 
 func toggle_flag(player_id: int) -> bool:
 	if not diggable():

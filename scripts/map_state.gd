@@ -2,13 +2,13 @@ extends Node
 class_name MapState
 
 const NEIGHBORS_DELTAS: Array[Vector2i] = [
-	Vector2i(-1, -1),
 	Vector2i(-1, 0),
-	Vector2i(-1, 1),
-	Vector2i(0, -1),
 	Vector2i(0, 1),
-	Vector2i(1, -1),
 	Vector2i(1, 0),
+	Vector2i(0, -1),
+	Vector2i(-1, -1),
+	Vector2i(-1, 1),
+	Vector2i(1, -1),
 	Vector2i(1, 1),
 ]
 
@@ -23,20 +23,53 @@ func _init(_width: int, _height: int, _mines_count: int) -> void:
 	mines_count = _mines_count
 	fill_empty()
 	add_mines()
+	EventBus.on_tile_update.connect(update_mine_probabilities)
 
 
 func fill_empty() -> void:
+	var default_mine_probability := mines_count / float(width * height)
 	for y in range(height):
 		for x in range(width):
-			cells[Vector2i(x, y)] = CellState.new()
+			var cell_state := CellState.new()
+			cell_state.position = Vector2i(x, y)
+			cell_state.mine_probability = default_mine_probability
+			cells[cell_state.position] = cell_state
+
+
+# TODO: Cache this.
+func get_neighbors(position: Vector2i) -> Array[CellState]:
+	var neighbors: Array[CellState] = []
+	for neighbor_delta in NEIGHBORS_DELTAS:
+		var neighbor_position := position + neighbor_delta
+		if neighbor_position in cells:
+			neighbors.append(cells[neighbor_position])
+	return neighbors
+
+
+func get_diggable_neighbors(position: Vector2i) -> Array[CellState]:
+	return get_neighbors(position).filter(
+		func (neighbor: CellState): return neighbor.diggable()
+	)
+
+
+func get_dug_neighbors(position: Vector2i) -> Array[CellState]:
+	return get_neighbors(position).filter(
+		func (neighbor: CellState): return neighbor.dug()
+	)
+
+
+func get_probable_mines_neighbors(position: Vector2i) -> Array[CellState]:
+	return get_neighbors(position).filter(
+		func (neighbor: CellState): return (
+			neighbor.dug() and neighbor.mined()
+			or neighbor.mine_probability >= 1.0
+		)
+	)
 
 
 func increment_neighbors(position: Vector2i):
-	for delta in NEIGHBORS_DELTAS:
-		var neighbor_position := position + delta
-		if cells.has(neighbor_position):
-			var cell_state := cells[neighbor_position]
-			cell_state.secret = min(cell_state.secret + 1, CellState.Secret.MINED)
+	for neighbor in get_neighbors(position):
+		neighbor.secret = min(neighbor.secret + 1, CellState.Secret.MINED)
 
 
 func add_mines() -> void:
@@ -44,7 +77,6 @@ func add_mines() -> void:
 		mines_count <= width * height,
 		"ERROR: More mines than cells in this map!"
 	)
-	
 	while mines_count > 0:
 		var position := Vector2i(
 			randi_range(0, width - 1),
@@ -54,6 +86,7 @@ func add_mines() -> void:
 		if cell_state.mined():
 			continue
 		cell_state.secret = CellState.Secret.MINED
+		
 		increment_neighbors(position)
 		mines_count -= 1
 
@@ -62,33 +95,32 @@ func player_digs(position: Vector2i, player_id: int, propagate: bool = true) -> 
 	var cell_state : CellState = cells[position]
 	cell_state.interaction = CellState.Interaction.DUG
 	cell_state.owner_id = player_id
-	EventBus.on_tile_update.emit(position)
+	EventBus.on_tile_update.emit(cell_state)
 
 	var cell_exploded := cell_state.mined()
 	
 	if cell_exploded:
 		EventBus.on_explosion.emit(position)
-		for delta in NEIGHBORS_DELTAS:
-			var new_pos := position + delta
-			if cells.has(new_pos) and not cells[new_pos].dug():
-				player_digs(new_pos, 5, false)
-			EventBus.on_explosion.emit(new_pos)
+		for neighbor in get_neighbors(position):
+			if not neighbor.dug():
+				player_digs(neighbor.position, 5, false)
+			EventBus.on_explosion.emit(neighbor.position)
 	elif player_id < 5:
 		var score := cell_state.secret if not cell_exploded else 0
 		EventBus.on_player_score.emit(player_id, score)
 
 	if cell_state.empty() and propagate:
-		for delta in NEIGHBORS_DELTAS:
-			var new_pos := position + delta
-			if cells.has(new_pos) and cells[new_pos].diggable():
-				player_digs(new_pos, player_id, false)
+		for neighbor in get_neighbors(position):
+			if neighbor.diggable():
+				player_digs(neighbor.position, player_id, false)
 
 	return not cell_exploded
 
 func player_flag(position: Vector2i, player_id: int) -> bool:
-	var changed := cells[position].toggle_flag(player_id)
+	var cell_state := cells[position]
+	var changed := cell_state.toggle_flag(player_id)
 	if changed:
-		EventBus.on_tile_update.emit(position)
+		EventBus.on_tile_update.emit(cell_state)
 	return changed
 
 func get_score_at(position: Vector2i) -> int:
@@ -116,3 +148,59 @@ func count_invalid_flags(player_id: int) -> int:
 		if cell_state.flagged() and not cell_state.mined():
 			total += 1
 	return total
+
+func update_mine_probabilities(cell_state: CellState) -> void:
+	if cell_state.mined():
+		return
+	var diggable_neighbors := get_diggable_neighbors(cell_state.position)
+	if len(diggable_neighbors) == 0:
+		return
+	var mine_neighbors := get_probable_mines_neighbors(cell_state.position)
+	var neighbors_probability := (
+		cell_state.secret - len(mine_neighbors)
+	) / float(len(diggable_neighbors))
+	for neighbor in diggable_neighbors:
+		if neighbor.mine_probability < 1.0 and (
+			neighbors_probability == 0.0
+			or (
+				neighbors_probability > neighbor.mine_probability
+				and neighbor.mine_probability > 0.0
+			)
+		):
+			neighbor.mine_probability = neighbors_probability
+
+
+func get_ai_target_weight(cell_state: CellState, distance: float) -> float:
+	if cell_state.ai_excluded():
+		return INF
+	if cell_state.should_flag() or cell_state.mine_probability == 0.0:
+		return log(distance)
+	return (1.0 + 100.0 * cell_state.mine_probability) * (1.0 + distance)
+
+func get_ai_target(coords: Vector2i, sampling: float = 0.2) -> CellState:
+	var cells_states: Array[CellState] = cells.values()
+	var max_samples := int(ceil(len(cells_states) * sampling))
+	var agent_cell := (
+		cells[coords] if coords in cells
+		# Take a cell around the middle of the map by default.
+		else cells_states[int(len(cells_states) / 2.0)]
+	)
+	var best_weight: float = get_ai_target_weight(agent_cell, 0.0)
+	cells_states = cells_states.filter(
+		func (cell_state: CellState): return not cell_state.ai_excluded()
+	)
+	if best_weight == 0.0 or len(cells_states) == 0:
+		return agent_cell
+
+	var best_cell := agent_cell
+	cells_states.shuffle()
+	for cell_state: CellState in cells_states.slice(0, max_samples):
+		var distance := (cell_state.position - coords).length()
+		var weight := get_ai_target_weight(cell_state, distance)
+		if weight < best_weight:
+			if weight == 0.0:
+				return cell_state
+			best_weight = weight
+			best_cell = cell_state
+
+	return best_cell

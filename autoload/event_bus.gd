@@ -8,7 +8,7 @@ signal on_player_dig(position: Vector2, player_id: int)
 signal on_player_flag(position: Vector2, player_id: int)
 signal on_player_score(player_id: int, score: int)
 signal on_update_player_score(player_id: int)
-signal on_tile_update(coord: Vector2i)
+signal on_tile_update(cell_state: CellState)
 signal on_explosion(coord: Vector2i)
 
 func _input(ev: InputEvent):

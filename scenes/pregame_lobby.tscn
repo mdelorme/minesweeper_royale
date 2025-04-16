@@ -57,7 +57,7 @@ show_highlight = false
 show_hearts = false
 
 [node name="Player4" parent="players" instance=ExtResource("4_yywyi")]
-position = Vector2(400, 230)
+position = Vector2(286, 203)
 id = 4
 show_highlight = false
 show_hearts = false

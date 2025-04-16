@@ -1,10 +1,23 @@
-[gd_resource type="TileSet" load_steps=3 format=3 uid="uid://2rcav2tndt34"]
+[gd_resource type="TileSet" load_steps=5 format=3 uid="uid://2rcav2tndt34"]
 
 [ext_resource type="Texture2D" uid="uid://dskuafc8g8m5p" path="res://assets/Tileset.png" id="1_gio8g"]
+
+[sub_resource type="NavigationPolygon" id="NavigationPolygon_gio8g"]
+vertices = PackedVector2Array(8, 8, -8, 8, -8, -8, 8, -8)
+polygons = Array[PackedInt32Array]([PackedInt32Array(0, 1, 2, 3)])
+outlines = Array[PackedVector2Array]([PackedVector2Array(-8, -8, 8, -8, 8, 8, -8, 8)])
+agent_radius = 0.0
+
+[sub_resource type="NavigationPolygon" id="NavigationPolygon_ton7p"]
+vertices = PackedVector2Array(8, 8, -8, 8, -8, -8, 8, -8)
+polygons = Array[PackedInt32Array]([PackedInt32Array(0, 1, 2, 3)])
+outlines = Array[PackedVector2Array]([PackedVector2Array(-8, -8, 8, -8, 8, 8, -8, 8)])
+agent_radius = 0.0
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_0cso3"]
 texture = ExtResource("1_gio8g")
 0:0/0 = 0
+0:0/0/navigation_layer_0/polygon = SubResource("NavigationPolygon_gio8g")
 2:0/0 = 0
 3:0/0 = 0
 4:0/0 = 0
@@ -18,6 +31,7 @@ texture = ExtResource("1_gio8g")
 12:0/0 = 0
 13:0/0 = 0
 0:1/0 = 0
+0:1/0/navigation_layer_0/polygon = SubResource("NavigationPolygon_ton7p")
 2:1/0 = 0
 3:1/0 = 0
 4:1/0 = 0
@@ -80,4 +94,5 @@ texture = ExtResource("1_gio8g")
 1:0/0 = 0
 
 [resource]
+navigation_layer_0/layers = 1
 sources/0 = SubResource("TileSetAtlasSource_0cso3")

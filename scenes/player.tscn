@@ -70,3 +70,18 @@ unique_name_in_owner = true
 layout_mode = 2
 texture = SubResource("AtlasTexture_g2els")
 stretch_mode = 2
+
+[node name="NavigationAgent2D" type="NavigationAgent2D" parent="."]
+radius = 8.0
+
+[node name="AiUpdateTimer" type="Timer" parent="."]
+unique_name_in_owner = true
+autostart = true
+
+[node name="AiActionTimer" type="Timer" parent="."]
+unique_name_in_owner = true
+wait_time = 0.25
+one_shot = true
+
+[connection signal="timeout" from="AiUpdateTimer" to="." method="_on_ai_update_timer_timeout"]
+[connection signal="timeout" from="AiActionTimer" to="." method="_on_ai_action_timer_timeout"]
