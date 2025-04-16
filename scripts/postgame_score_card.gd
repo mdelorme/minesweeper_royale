@@ -1,4 +1,5 @@
 extends PanelContainer
+class_name PostgameScoreCard
 
 @export var player_index: int = 0
 @onready var stylebox : StyleBoxFlat

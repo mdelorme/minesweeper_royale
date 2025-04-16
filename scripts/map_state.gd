@@ -16,61 +16,38 @@ var cells: Dictionary[Vector2i, CellState]
 var width: int
 var height: int
 var mines_count: int
+var default_mine_probability: float
 
 func _init(_width: int, _height: int, _mines_count: int) -> void:
 	width = _width
 	height = _height
 	mines_count = _mines_count
+	default_mine_probability = mines_count / float(width * height)
 	fill_empty()
+	assign_neighbors()
 	add_mines()
-	EventBus.on_tile_update.connect(update_mine_probabilities)
+	update_probabilities()
+	EventBus.on_tile_update.connect(update_cell_probabilities)
 
 
 func fill_empty() -> void:
-	var default_mine_probability := mines_count / float(width * height)
 	for y in range(height):
 		for x in range(width):
 			var cell_state := CellState.new()
+			cell_state.map_state = self
 			cell_state.position = Vector2i(x, y)
-			cell_state.mine_probability = default_mine_probability
 			cells[cell_state.position] = cell_state
 
+func assign_neighbors():
+	for position in cells:
+		for neighbor_delta in NEIGHBORS_DELTAS:
+			var neighbor_position := position + neighbor_delta
+			if neighbor_position in cells:
+				cells[position].neighbors.append(cells[neighbor_position])
 
-# TODO: Cache this.
-func get_neighbors(position: Vector2i) -> Array[CellState]:
-	var neighbors: Array[CellState] = []
-	for neighbor_delta in NEIGHBORS_DELTAS:
-		var neighbor_position := position + neighbor_delta
-		if neighbor_position in cells:
-			neighbors.append(cells[neighbor_position])
-	return neighbors
-
-
-func get_diggable_neighbors(position: Vector2i) -> Array[CellState]:
-	return get_neighbors(position).filter(
-		func (neighbor: CellState): return neighbor.diggable()
-	)
-
-
-func get_dug_neighbors(position: Vector2i) -> Array[CellState]:
-	return get_neighbors(position).filter(
-		func (neighbor: CellState): return neighbor.dug()
-	)
-
-
-func get_probable_mines_neighbors(position: Vector2i) -> Array[CellState]:
-	return get_neighbors(position).filter(
-		func (neighbor: CellState): return (
-			neighbor.dug() and neighbor.mined()
-			or neighbor.mine_probability >= 1.0
-		)
-	)
-
-
-func increment_neighbors(position: Vector2i):
-	for neighbor in get_neighbors(position):
+func increment_neighbors(cell_state: CellState):
+	for neighbor in cell_state.neighbors:
 		neighbor.secret = min(neighbor.secret + 1, CellState.Secret.MINED)
-
 
 func add_mines() -> void:
 	assert(
@@ -87,8 +64,12 @@ func add_mines() -> void:
 			continue
 		cell_state.secret = CellState.Secret.MINED
 		
-		increment_neighbors(position)
+		increment_neighbors(cell_state)
 		mines_count -= 1
+
+func update_probabilities() -> void:
+	for cell: CellState in cells.values():
+		cell.update_probabilities()
 
 func player_digs(position: Vector2i, player_id: int, propagate: bool = true) -> bool:
 	## Returns true if the player is still alive, false otherwise
@@ -101,7 +82,7 @@ func player_digs(position: Vector2i, player_id: int, propagate: bool = true) -> 
 	
 	if cell_exploded:
 		EventBus.on_explosion.emit(position)
-		for neighbor in get_neighbors(position):
+		for neighbor in cell_state.neighbors:
 			if not neighbor.dug():
 				player_digs(neighbor.position, 5, false)
 			EventBus.on_explosion.emit(neighbor.position)
@@ -110,7 +91,7 @@ func player_digs(position: Vector2i, player_id: int, propagate: bool = true) -> 
 		EventBus.on_player_score.emit(player_id, score)
 
 	if cell_state.empty() and propagate:
-		for neighbor in get_neighbors(position):
+		for neighbor in cell_state.neighbors:
 			if neighbor.diggable():
 				player_digs(neighbor.position, player_id, false)
 
@@ -149,35 +130,23 @@ func count_invalid_flags(player_id: int) -> int:
 			total += 1
 	return total
 
-func update_mine_probabilities(cell_state: CellState) -> void:
-	if cell_state.mined():
-		return
-	var diggable_neighbors := get_diggable_neighbors(cell_state.position)
-	if len(diggable_neighbors) == 0:
-		return
-	var mine_neighbors := get_probable_mines_neighbors(cell_state.position)
-	var neighbors_probability := (
-		cell_state.secret - len(mine_neighbors)
-	) / float(len(diggable_neighbors))
-	for neighbor in diggable_neighbors:
-		if neighbor.mine_probability < 1.0 and (
-			neighbors_probability == 0.0
-			or (
-				neighbors_probability > neighbor.mine_probability
-				and neighbor.mine_probability > 0.0
-			)
-		):
-			neighbor.mine_probability = neighbors_probability
+
+func update_cell_probabilities(cell_state: CellState) -> void:
+	cell_state.update_probabilities()
 
 
 func get_ai_target_weight(cell_state: CellState, distance: float) -> float:
 	if cell_state.ai_excluded():
 		return INF
-	if cell_state.should_flag() or cell_state.mine_probability == 0.0:
+	if cell_state.should_flag():
 		return log(distance)
-	return (1.0 + 100.0 * cell_state.mine_probability) * (1.0 + distance)
+	if cell_state.mine_probability == 0.0:
+		return distance
+	return (
+		1.0 + PostgameScoreCard.valid_flag_bonus * cell_state.mine_probability
+	) * (1.0 + distance)
 
-func get_ai_target(coords: Vector2i, sampling: float = 0.2) -> CellState:
+func get_ai_target(coords: Vector2i, sampling: float = 0.1) -> CellState:
 	var cells_states: Array[CellState] = cells.values()
 	var max_samples := int(ceil(len(cells_states) * sampling))
 	var agent_cell := (
