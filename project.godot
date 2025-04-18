@@ -11,8 +11,9 @@ config_version=5
 [application]
 
 config/name="Minesweeper Royale"
-run/main_scene="uid://d1jaw7e82b50f"
+run/main_scene="uid://d3vrl4j55hjfm"
 config/features=PackedStringArray("4.4", "Forward Plus")
+boot_splash/image="uid://b4iot4jpnpohf"
 config/icon="uid://b4iot4jpnpohf"
 run/dpi/allow_hidpi=true
 
