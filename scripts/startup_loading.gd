@@ -1,14 +1,25 @@
 extends Node2D
 
 var is_loading: bool = true
+
+# Fake waiting of ProgressBar
 var waiting_progress: float = 0.0
 var waiting_speed: float = 10.0
 var waiting_goal: float = 25.0
+var waiting_chance: int = 60
+var min_waiting_time: float = 15.0
+var max_waiting_time: float = 30.0
+
+# Loading of ProgressBar
 var loading_progress: float = 0.0
 var loading_speed: float = 20.0
 
-var last_index: int = -1
+# Configuration of Audio
+var min_audio_pitch: float = 0.8
+var max_audio_pitch: float = 1.2
 
+# Random sentences (tips)
+var last_index: int = -1
 var tips: Array[String] = [
 	"Tentes de faire exploser tes adversaires !",
 	"Un drapeau bien placé est la clé de la réussite !",
@@ -28,9 +39,10 @@ var tips: Array[String] = [
 ]
 
 
-@onready var progress_bar = $CanvasLayer/Bottom/ProgressBar
-@onready var tips_label = $CanvasLayer/Bottom/Tips/TipsLabel
-@onready var tips_audio = $CanvasLayer/Bottom/Tips/TipsAudio
+# Objects used
+@onready var progress_bar: ProgressBar = $CanvasLayer/Bottom/ProgressBar
+@onready var tips_label: Label = $CanvasLayer/Bottom/Tips/TipsLabel
+@onready var tips_audio: AudioStreamPlayer = $CanvasLayer/Bottom/Tips/TipsAudio
 
 
 func _process(delta):
@@ -39,9 +51,9 @@ func _process(delta):
 	#less linear and more dynamic
 	if loading_progress < 100.0:
 		if is_loading == true:
-			if randi() % 80 == 0:
+			if randi() % waiting_chance == 0:
 				is_loading = false
-				waiting_goal = randf_range(15.0, 30.0)
+				waiting_goal = randf_range(min_waiting_time, max_waiting_time)
 				return
 			loading_progress += loading_speed * delta
 			progress_bar.value = loading_progress
@@ -71,8 +83,7 @@ func get_random_tips() -> String:
 func update_tips_label() -> void:
 	var _new_tips: String = get_random_tips()
 	tips_label.text = _new_tips
-	tips_audio.pitch_scale = randf_range(0.8, 1.2)
-	tips_audio.volume_db = randf_range(0.0, 10.0)
+	tips_audio.pitch_scale = randf_range(min_audio_pitch, max_audio_pitch)
 	tips_audio.play()
 
 
